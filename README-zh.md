@@ -97,7 +97,7 @@ npm run lint -- --fix
 
 ## Browsers support
 
-Modern browsers and Internet Explorer 15+.
+Modern browsers and Internet Explorer 16+.
 
 
 ## License
