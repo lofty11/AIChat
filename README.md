@@ -26,13 +26,7 @@ yarn dev（但是这个我没成功）
 
 写了后端之后麻烦负责后端的同学记录一下怎么启动后端
 
-## setting.js和permission.js
 
-![image-20240220112303702](./assets/image-20240220112303702.png)
-
-![image-20240220112435923](./assets/image-20240220112435923.png)
-
-<img src="./assets/image-20240220112503140.png" alt="image-20240220112503140" style="zoom:67%;" />
 
 ## Vuex
 
@@ -43,6 +37,18 @@ yarn dev（但是这个我没成功）
 ### 设计思想
 
 ![image-20240220115326145](./assets/image-20240220115326145.png)
+
+## git管理
+
+![image-20240220152947982](./assets/image-20240220152947982.png)
+
+## setting.js和permission.js
+
+![image-20240220112303702](./assets/image-20240220112303702.png)
+
+![image-20240220112435923](./assets/image-20240220112435923.png)
+
+<img src="./assets/image-20240220112503140.png" alt="image-20240220112503140" style="zoom:67%;" />
 
 ## icon
 
@@ -56,17 +62,13 @@ svgicon+svg图标即可显示
 
 
 
-设置svg-icon方法
+### 设置svg-icon方法
 
 ![image-20240220120112825](./assets/image-20240220120112825.png)
 
 只要把svg文件拖入svg目录下即可
 
 ![image-20240220150714811](./assets/image-20240220150714811.png)
-
-## git管理
-
-![image-20240220152947982](./assets/image-20240220152947982.png)
 
 # 路径问题
 
