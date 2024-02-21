@@ -32,7 +32,7 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example',
+    path: '/account',
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
@@ -54,7 +54,7 @@ export const constantRoutes = [
   },
 
   {
-    path: '/form',
+    path: '/prompt',
     component: Layout,
     children: [
       {
@@ -66,40 +66,40 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/nested',
+    path: '/appinfo',
     component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
+    redirect: '/appinfo/plug',
+    name: 'Appinfo',
     meta: {
       title: '应用信息管理',
       icon: 'nested'
     },
     children: [
       {
-        path: 'menu1',
+        path: 'plug',
         component: () => import('@/views/appInfoManagement/plugManagement/index'), // Parent router-view
-        name: 'Menu1',
+        name: 'Plug',
         meta: { title: '插件管理' }
       },
       {
-        path: 'menu2',
+        path: 'appservice',
         component: () => import('@/views/appInfoManagement/appServiceAPI/index'),
-        name: 'Menu2',
+        name: 'Appservice',
         meta: { title: '应用服务API' }
       }
     ]
   },
 
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
+  // {
+  //   path: 'external-link',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+  //       meta: { title: 'External Link', icon: 'link' }
+  //     }
+  //   ]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

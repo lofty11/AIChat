@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: TEST</div>
+    <div class="dashboard-text">主页</div>
   </div>
 </template>
 
