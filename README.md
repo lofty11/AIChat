@@ -86,11 +86,8 @@ svgicon+svg图标即可显示
 
 ![image-20240220100252907](./assets/image-20240220100252907.png)
 
+# 待完成的工作
 
+## 项目logo
 
-
-
-
-
-
-
+设计UI，插入左侧栏，logo图片放入assets/common下

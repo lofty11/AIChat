@@ -60,7 +60,7 @@ export const constantRoutes = [
       {
         path: 'index',
         name: 'Form',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/promptConfig/index'),
         meta: { title: '提示词配置', icon: 'form' }
       }
     ]
@@ -77,13 +77,13 @@ export const constantRoutes = [
     children: [
       {
         path: 'menu1',
-        component: () => import('@/views/nested/plugManagement/index'), // Parent router-view
+        component: () => import('@/views/appInfoManagement/plugManagement/index'), // Parent router-view
         name: 'Menu1',
         meta: { title: '插件管理' }
       },
       {
         path: 'menu2',
-        component: () => import('@/views/nested/appServiceAPI/index'),
+        component: () => import('@/views/appInfoManagement/appServiceAPI/index'),
         name: 'Menu2',
         meta: { title: '应用服务API' }
       }
