@@ -14,10 +14,10 @@
           <el-input v-model="funcInfo.name" placeholder="请输入函数名称" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="checkFuncList">查询</el-button>
+          <el-button type="primary" @click="checkFuncDialog(funcInfo.name)">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="createFunc">新建函数</el-button>
+          <el-button type="primary" @click="createFuncDialog">新建函数</el-button>
         </el-form-item>
       </el-form>
       <el-table
@@ -96,6 +96,27 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+    <el-dialog :visible.sync="createFuncDialogVisible" title="创建函数">
+      <el-form>
+        <!-- 表单内容 -->
+        <el-form-item label="函数名称">
+          <el-input v-model="funcInfo.name" />
+        </el-form-item>
+        <el-form-item label="函数类型">
+          <el-input v-model="funcInfo.type" />
+        </el-form-item>
+        <el-form-item label="服务API">
+          <el-input v-model="funcInfo.api" />
+        </el-form-item>
+        <el-form-item label="服务API">
+          <el-input v-model="funcInfo.description" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitFuncInfo">提交</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -105,6 +126,7 @@ export default {
     return {
       createPlugVisible: false, // 控制对话框的显示/隐藏
       updateFuncDialogVisible: false,
+      createFuncDialogVisible: false,
       plugInfo: {
         name: '',
         usage: '',
@@ -136,11 +158,11 @@ export default {
       // 提交完成后关闭对话框
       this.createPlugVisible = false
     },
-    checkFuncList() {
-
+    checkFuncDialog() {
+      console.log(this.funcInfo)
     },
-    createFunc() {
-
+    createFuncDialog() {
+      this.createFuncDialogVisible = true
     },
     updateFuncDialog() {
       this.updateFuncDialogVisible = true
