@@ -9,24 +9,77 @@
     <div class="divider" />
 
     <el-main class="right-main">
-      右侧内容
+      <el-form ref="funcInfo" :model="funcInfo" label-width="80px">
+        <el-form-item label="函数名称">
+          <el-input v-model="funcInfo.name" placeholder="函数名称" />
+        </el-form-item>
+      </el-form>
+      <el-table
+        :data="funcTable"
+        border
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="name"
+          label="函数名称"
+        />
+        <el-table-column
+          prop="type"
+          label="函数类型"
+        />
+        <el-table-column
+          prop="api"
+          label="服务Api"
+        />
+        <el-table-column
+          fixed="right"
+          label="操作"
+        >
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="updateFuncDialog(scope.row)">编辑</el-button>
+            <el-button type="text" size="small" @click="configFuncDialog(scope.row)">配置</el-button>
+            <el-button type="text" size="small">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-main>
 
-    <el-dialog :visible.sync="dialogVisible" title="新建插件">
+    <el-dialog :visible.sync="createPlugVisible" title="新建插件">
       <el-form>
         <!-- 表单内容 -->
         <el-form-item label="参数1">
-          <el-input v-model="formData.param1" />
+          <el-input v-model="plugInfo.param1" />
         </el-form-item>
 
         <el-form-item label="参数2">
-          <el-input v-model="formData.param2" />
+          <el-input v-model="plugInfo.param2" />
         </el-form-item>
 
         <!-- 其他表单项 -->
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm">提交</el-button>
+          <el-button type="primary" @click="submitPlugInfo">提交</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+    <el-dialog :visible.sync="updateFuncDialogVisible" title="编辑函数">
+      <el-form>
+        <!-- 表单内容 -->
+        <el-form-item label="函数名称">
+          <el-input v-model="funcInfo.name" />
+        </el-form-item>
+        <el-form-item label="函数类型">
+          <el-input v-model="funcInfo.type" />
+        </el-form-item>
+        <el-form-item label="服务API">
+          <el-input v-model="funcInfo.api" />
+        </el-form-item>
+        <el-form-item label="服务API">
+          <el-input v-model="funcInfo.description" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitFuncInfo">提交</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -37,25 +90,54 @@
 export default {
   data() {
     return {
-      dialogVisible: false, // 控制对话框的显示/隐藏
-      formData: {
+      createPlugVisible: false, // 控制对话框的显示/隐藏
+      updateFuncDialogVisible: false,
+      plugInfo: {
         param1: '',
         param2: ''
         // 其他参数
+      },
+      funcInfo: {
+        name: '',
+        type: '',
+        api: '',
+        description: ''
+      },
+      funcTable: [{
+        name: 'test1',
+        type: 'http请求',
+        api: 'SerpApi'
       }
+      ]
     }
   },
   methods: {
     openCreatPlugDialog() {
-      this.dialogVisible = true // 打开对话框
+      this.createPlugVisible = true // 打开对话框
     },
-    submitForm() {
+    submitPlugInfo() {
       // 在这里处理提交逻辑
       // 可以发送请求或执行其他操作
-      console.log('提交表单:', this.formData)
+      console.log('提交表单:', this.plugInfo)
 
       // 提交完成后关闭对话框
-      this.dialogVisible = false
+      this.createPlugVisible = false
+    },
+
+    updateFuncDialog() {
+      this.updateFuncDialogVisible = true
+    },
+    submitFuncInfo() {
+      // 在这里处理提交逻辑
+      // 可以发送请求或执行其他操作
+      console.log('提交表单:', this.funcInfo)
+
+      // 提交完成后关闭对话框
+      this.updateFuncDialogVisible = false
+    },
+
+    configFuncDialog() {
+
     }
   }
 }
