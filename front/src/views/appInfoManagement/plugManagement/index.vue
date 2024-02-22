@@ -117,6 +117,12 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+    <el-dialog :visible.sync="configFuncDialogVisible" title="配置函数">
+      <el-form>
+        <!--      -->
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -127,6 +133,7 @@ export default {
       createPlugVisible: false, // 控制对话框的显示/隐藏
       updateFuncDialogVisible: false,
       createFuncDialogVisible: false,
+      configFuncDialogVisible: false,
       plugInfo: {
         name: '',
         usage: '',
@@ -167,6 +174,7 @@ export default {
     updateFuncDialog() {
       this.updateFuncDialogVisible = true
     },
+
     submitFuncInfo() {
       // 在这里处理提交逻辑
       // 可以发送请求或执行其他操作
@@ -175,9 +183,8 @@ export default {
       // 提交完成后关闭对话框
       this.updateFuncDialogVisible = false
     },
-
     configFuncDialog() {
-
+      this.configFuncDialogVisible = true
     }
   }
 }
