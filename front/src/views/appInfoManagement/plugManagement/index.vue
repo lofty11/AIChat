@@ -50,6 +50,7 @@
       </el-table>
     </el-main>
     <add-plug :add-plug-dialog-visible.sync="addPlugDialogVisible" />
+
     <!--    编辑、创建、配置函数-->
     <el-dialog :visible.sync="updateFuncDialogVisible" title="编辑函数">
       <el-form>
@@ -72,26 +73,7 @@
       </el-form>
     </el-dialog>
 
-    <el-dialog :visible.sync="createFuncDialogVisible" title="创建函数">
-      <el-form>
-        <!-- 表单内容 -->
-        <el-form-item label="函数名称">
-          <el-input v-model="funcInfo.name" />
-        </el-form-item>
-        <el-form-item label="函数类型">
-          <el-input v-model="funcInfo.type" />
-        </el-form-item>
-        <el-form-item label="服务API">
-          <el-input v-model="funcInfo.api" />
-        </el-form-item>
-        <el-form-item label="服务API">
-          <el-input v-model="funcInfo.description" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitFuncInfo">提交</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+    <add-func :add-func-dialog-visible.sync="addFuncDialogVisible" />
 
     <el-dialog :visible.sync="configFuncDialogVisible" title="配置函数">
       <el-form>
@@ -104,13 +86,14 @@
 
 <script>
 import AddPlug from '@/views/appInfoManagement/plugManagement/components/addPlug.vue'
+import AddFunc from '@/views/appInfoManagement/plugManagement/components/addFunc.vue'
 export default {
-  components: { AddPlug },
+  components: { AddFunc, AddPlug },
   data() {
     return {
       addPlugDialogVisible: false,
       updateFuncDialogVisible: false,
-      createFuncDialogVisible: false,
+      addFuncDialogVisible: false,
       configFuncDialogVisible: false,
       funcInfo: {
         name: '',
@@ -134,7 +117,7 @@ export default {
       return this.funcInfo
     },
     addFuncDialog() {
-      this.createFuncDialogVisible = true
+      this.addFuncDialogVisible = true
     },
     updateFuncDialog() {
       this.updateFuncDialogVisible = true

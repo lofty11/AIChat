@@ -23,7 +23,7 @@
       <el-form-item>
         <el-row>
           <el-col span="10">
-            <el-button type="primary" @click="submitPlugInfo">关闭</el-button>
+            <el-button type="primary" @click="close">关闭</el-button>
             <el-button type="primary" @click="submitPlugInfo">确认</el-button>
           </el-col>
         </el-row>
@@ -65,7 +65,7 @@ export default {
       console.log('提交表单:', this.plugInfo)
 
       // 提交完成后关闭对话框
-      this.createPlugVisible = false
+      this.addPlugDialogVisible = false
     }
 
   }
