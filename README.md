@@ -76,6 +76,10 @@ svgicon+svg图标即可显示
 
 ![image-20240220150714811](./assets/image-20240220150714811.png)
 
+## Utils文件夹
+
+放公用文件函数
+
 # 路径问题
 
 ## Src/router/index.js文件
@@ -91,3 +95,8 @@ svgicon+svg图标即可显示
 ## 项目logo
 
 设计UI，插入左侧栏，logo图片放入assets/common下
+
+## 页面获取数据
+
+等后端封装完数据之后，就不用样例数据了，具体教程看[这个](https://www.bilibili.com/video/BV1Te411X7Wz/?p=42&spm_id_from=pageDriver&vd_source=211c68fed6443485e46395a3663fc0a6)
+
