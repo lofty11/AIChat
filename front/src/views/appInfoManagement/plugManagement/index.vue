@@ -112,11 +112,6 @@ export default {
       updateFuncDialogVisible: false,
       createFuncDialogVisible: false,
       configFuncDialogVisible: false,
-      plugInfo: {
-        name: '',
-        usage: '',
-        description: ''
-      },
       funcInfo: {
         name: '',
         type: '',
@@ -147,15 +142,6 @@ export default {
     configFuncDialog() {
       this.configFuncDialogVisible = true
     },
-
-    // submitPlugInfo() {
-    //   // 在这里处理提交逻辑
-    //   // 可以发送请求或执行其他操作
-    //   console.log('提交表单:', this.plugInfo)
-    //
-    //   // 提交完成后关闭对话框
-    //   this.createPlugVisible = false
-    // },
 
     submitFuncInfo() {
       // 在这里处理提交逻辑
