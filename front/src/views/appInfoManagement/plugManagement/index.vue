@@ -44,7 +44,11 @@
           <template v-slot="data">
             <el-button type="text" size="small" @click="updateFuncDialog(data.row)">编辑</el-button>
             <el-button type="text" size="small" @click="configFuncDialog(data.row)">配置</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-popconfirm
+              title="确定删除吗？"
+            >
+              <el-button slot="reference" type="text" size="small">删除</el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -55,12 +59,7 @@
     <!--    编辑、创建、配置函数-->
     <add-func :add-func-dialog-visible.sync="addFuncDialogVisible" @updateFuncTable="getFuncList" />
     <update-func ref="updateFunc" :update-func-dialog-visible.sync="updateFuncDialogVisible" :current-id="currentId" />
-
-    <el-dialog :visible.sync="configFuncDialogVisible" title="配置函数">
-      <el-form>
-        <!--      -->
-      </el-form>
-    </el-dialog>
+    <config-func ref="configFunc" :config-func-dialog-visible.sync="configFuncDialogVisible" />
     <!--    编辑、创建、配置函数-->
   </div>
 </template>
@@ -70,8 +69,9 @@ import AddPlug from '@/views/appInfoManagement/plugManagement/components/addPlug
 import AddFunc from '@/views/appInfoManagement/plugManagement/components/addFunc.vue'
 import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/updateFunc.vue'
 import { getFuncList } from '@/api/plug'
+import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
 export default {
-  components: { UpdateFunc, AddFunc, AddPlug },
+  components: { ConfigFunc, UpdateFunc, AddFunc, AddPlug },
   data() {
     return {
       currentId: null,
@@ -79,6 +79,7 @@ export default {
       updateFuncDialogVisible: false,
       addFuncDialogVisible: false,
       configFuncDialogVisible: false,
+      delFuncDialogVisible: false,
       funcInfo: {
         name: '',
         enName: '',
@@ -131,8 +132,11 @@ export default {
         this.$refs.updateFunc.getFuncDetail(data)
       })
     },
-    configFuncDialog() {
+    configFuncDialog(data) {
       this.configFuncDialogVisible = true
+      this.$nextTick(() => {
+        this.$refs.configFunc.getFuncDetail(data)
+      })
     }
   }
 }
