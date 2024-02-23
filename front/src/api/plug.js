@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getFunc() {
+export function getFuncList() {
   return request(
     {
       url: '/appinfo/plug'
@@ -23,4 +23,26 @@ export function getApiList() {
       url: '/appinfo/plug'
     }
   )
+}
+
+export function addFunc(data) {
+  return request({
+    method: 'post',
+    url: '/appinfo/plug',
+    data
+  })
+}
+
+export function updateFunc(data) {
+  return request({
+    method: 'put',
+    url: 'appinfo/plug',
+    data
+  })
+}
+
+export function getFuncDetail(id) {
+  return request({
+    url: `/appinfo/plug/${id}`
+  })
 }

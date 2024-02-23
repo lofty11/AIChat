@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :visible="addFuncDialogVisible" title="创建函数" @close="close">
-    <el-form ref="addFunc" :model="funcInfo" :rules="rules" align="right">
+  <el-dialog :visible="updateFuncDialogVisible" title="编辑函数" @close="close">
+    <el-form ref="updateFunc" :model="funcInfo" :rules="rules" align="right">
       <!-- 表单内容 -->
       <el-form-item prop="name" label="函数名称">
         <el-input v-model="funcInfo.name" style="width: 75%" placeholder="请输入函数名称" />
@@ -35,7 +35,7 @@
         <el-row>
           <el-col span="10">
             <el-button type="primary" @click="close">关闭</el-button>
-            <el-button type="primary" @click="submitFuncInfo">确认</el-button>
+            <el-button type="primary" @click="updateFuncInfo">确认</el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -43,17 +43,19 @@
   </el-dialog>
 </template>
 <script>
-import { getTypeList, getApiList, addFunc } from '@/api/plug'
+
+import { getFuncDetail, updateFunc } from '@/api/plug'
+
 export default {
   props: {
-    addFuncDialogVisible: {
+    updateFuncDialogVisible: {
       type: Boolean,
       default: false
     }
   },
   data() {
     return {
-      // 样例数据，后续等数据库完善，使用api提供的
+      currentId: null,
       typeList: [{ id: 1, type: '类型1' }, { id: 2, type: '类型2' }, { id: 3, type: '类型3' }],
       apiList: [{ id: 1, api: '服务API 1' }, { id: 2, api: '服务API 2' }, { id: 3, api: '服务API 3' }],
       funcInfo: {
@@ -73,34 +75,26 @@ export default {
       }
     }
   },
-  created() {
-    this.getTypeList()
-    this.getApiList()
-  },
-  methods: {
-    close() {
-      this.$emit('update:addFuncDialogVisible', false)
-    },
-    async getTypeList() {
-      this.typeList = await getTypeList()
-    },
-    async getApiList() {
-      this.apiList = await getApiList()
-    },
 
-    submitFuncInfo() {
-      // 在这里处理提交逻辑
-      // 可以发送请求或执行其他操作
-      console.log('提交表单:', this.funcInfo)
-      this.$refs.addFunc.validate(async isOk => {
+  methods: {
+    updateFuncInfo() {
+      console.log(this.funcInfo)
+      this.$refs.updateFunc.validate(async isOk => {
         if (isOk) {
-          await addFunc({ ...this.funcInfo })
+          await updateFunc({ ...this.funcInfo })
           this.$emit('updateFuncTable')
-          this.$message.success('新增函数成功')
+          this.$message.success('编辑函数成功')
         }
       })
-      // 提交完成后关闭对话框
-      this.addFuncDialogVisible = false
+      this.updateFuncDialogVisible = false
+    },
+    close() {
+      this.$emit('update:updateFuncDialogVisible', false)
+    },
+    async getFuncDetail(data) {
+      // 等以后api能搞定了再换成这个
+      // this.funcInfo = await getFuncDetail(this.currentId)
+      this.funcInfo = data
     }
   }
 }

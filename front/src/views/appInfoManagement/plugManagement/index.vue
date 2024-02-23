@@ -14,7 +14,7 @@
           <el-input v-model="funcInfo.name" placeholder="请输入函数名称" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="getFunc()">查询</el-button>
+          <el-button type="primary" @click="getFunc(funcInfo.name)">查询</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="addFuncDialog">新建函数</el-button>
@@ -41,39 +41,20 @@
           fixed="right"
           label="操作"
         >
-          <template slot-scope="scope">
-            <el-button type="text" size="small" @click="updateFuncDialog(scope.row)">编辑</el-button>
-            <el-button type="text" size="small" @click="configFuncDialog(scope.row)">配置</el-button>
+          <template v-slot="data">
+            <el-button type="text" size="small" @click="updateFuncDialog(data.row)">编辑</el-button>
+            <el-button type="text" size="small" @click="configFuncDialog(data.row)">配置</el-button>
             <el-button type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-main>
+    <!--    创建插件-->
     <add-plug :add-plug-dialog-visible.sync="addPlugDialogVisible" />
 
     <!--    编辑、创建、配置函数-->
-    <el-dialog :visible.sync="updateFuncDialogVisible" title="编辑函数">
-      <el-form>
-        <!-- 表单内容 -->
-        <el-form-item label="函数名称">
-          <el-input v-model="funcInfo.name" />
-        </el-form-item>
-        <el-form-item label="函数类型">
-          <el-input v-model="funcInfo.type" />
-        </el-form-item>
-        <el-form-item label="服务API">
-          <el-input v-model="funcInfo.api" />
-        </el-form-item>
-        <el-form-item label="服务API">
-          <el-input v-model="funcInfo.description" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitFuncInfo">提交</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-
-    <add-func :add-func-dialog-visible.sync="addFuncDialogVisible" />
+    <add-func :add-func-dialog-visible.sync="addFuncDialogVisible" @updateFuncTable="getFuncList" />
+    <update-func ref="updateFunc" :update-func-dialog-visible.sync="updateFuncDialogVisible" :current-id="currentId" />
 
     <el-dialog :visible.sync="configFuncDialogVisible" title="配置函数">
       <el-form>
@@ -87,24 +68,43 @@
 <script>
 import AddPlug from '@/views/appInfoManagement/plugManagement/components/addPlug.vue'
 import AddFunc from '@/views/appInfoManagement/plugManagement/components/addFunc.vue'
+import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/updateFunc.vue'
+import { getFuncList } from '@/api/plug'
 export default {
-  components: { AddFunc, AddPlug },
+  components: { UpdateFunc, AddFunc, AddPlug },
   data() {
     return {
+      currentId: null,
       addPlugDialogVisible: false,
       updateFuncDialogVisible: false,
       addFuncDialogVisible: false,
       configFuncDialogVisible: false,
       funcInfo: {
         name: '',
-        type: '',
-        api: '',
+        enName: '',
+        typeId: '',
+        apiId: '',
         description: ''
       },
       funcTable: [{
+        id: 1,
         name: 'test1',
+        enName: 'test1',
+        typeId: 1,
         type: 'http请求',
-        api: 'SerpApi'
+        apiId: 1,
+        api: 'SerpApi',
+        description: 'test1'
+      },
+      {
+        id: 2,
+        name: 'test2',
+        enName: 'test2',
+        typeId: 2,
+        type: 'http请求2',
+        apiId: 2,
+        api: 'SerpApi2',
+        description: 'test2'
       }
       ]
     }
@@ -116,25 +116,24 @@ export default {
     getFunc() {
       return this.funcInfo
     },
+    async getFuncList() {
+      this.funcTable = await getFuncList()
+    },
     addFuncDialog() {
       this.addFuncDialogVisible = true
     },
-    updateFuncDialog() {
+    updateFuncDialog(data) {
+      // console.log(data)
+      this.currentId = data.id
+      console.log(this.currentId)
       this.updateFuncDialogVisible = true
+      this.$nextTick(() => {
+        this.$refs.updateFunc.getFuncDetail(data)
+      })
     },
     configFuncDialog() {
       this.configFuncDialogVisible = true
-    },
-
-    submitFuncInfo() {
-      // 在这里处理提交逻辑
-      // 可以发送请求或执行其他操作
-      console.log('提交表单:', this.funcInfo)
-
-      // 提交完成后关闭对话框
-      this.updateFuncDialogVisible = false
     }
-
   }
 }
 </script>
