@@ -10,12 +10,14 @@
       </el-form-item>
       <el-form-item prop="typeId" label="函数类型">
         <el-select v-model="funcInfo.typeId" style="width: 75%" placeholder="请选择函数类型">
-          <el-option v-for="item in typeList" :key="item.id" :label="item.type" value="item.id" />
+          <el-option v-for="item in typeList" :key="item.id" :label="item.type" :value="item.id" />
         </el-select>
       </el-form-item>
 
-      <el-form-item prop="api" label="服务API">
-        <el-input v-model="funcInfo.api" style="width: 75%" placeholder="请输入服务API" />
+      <el-form-item prop="apiId" label="服务API">
+        <el-select v-model="funcInfo.apiId" style="width: 75%" placeholder="请选择服务API">
+          <el-option v-for="item in apiList" :key="item.id" :label="item.api" :value="item.id" />
+        </el-select>
       </el-form-item>
 
       <el-form-item prop="description" label="函数描述">
@@ -36,7 +38,7 @@
   </el-dialog>
 </template>
 <script>
-import { getTypeList } from '@/api/plug'
+import { getTypeList, getApiList } from '@/api/plug'
 export default {
   props: {
     addFuncDialogVisible: {
@@ -48,24 +50,26 @@ export default {
     return {
       // 样例数据，后续等数据库完善，使用api提供的
       typeList: [{ id: 1, type: '类型1' }, { id: 2, type: '类型2' }, { id: 3, type: '类型3' }],
+      apiList: [{ id: 1, api: '服务API 1' }, { id: 2, api: '服务API 2' }, { id: 3, api: '服务API 3' }],
       funcInfo: {
         name: '',
         enName: '',
         typeId: '',
-        api: '',
+        apiId: '',
         description: ''
       },
       rules: {
         name: [{ required: true, message: '函数名称不能为空', trigger: 'blur' }],
         enName: [{ required: true, message: '函数英文名称不能为空', trigger: 'blur' }],
         typeId: [{ required: true, message: '函数类型不能为空', trigger: 'blur' }],
-        api: [{ required: true, message: '服务API不能为空', trigger: 'blur' }],
+        apiId: [{ required: true, message: '服务API不能为空', trigger: 'blur' }],
         description: [{ required: true, message: '函数描述不能为空', trigger: 'blur' }]
       }
     }
   },
   created() {
     this.getTypeList()
+    this.getApiList()
   },
   methods: {
     close() {
@@ -74,6 +78,10 @@ export default {
     async getTypeList() {
       this.typeList = await getTypeList()
     },
+    async getApiList() {
+      this.apiList = await getApiList()
+    },
+
     submitFuncInfo() {
       // 在这里处理提交逻辑
       // 可以发送请求或执行其他操作
