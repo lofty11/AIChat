@@ -44,11 +44,7 @@
           <template v-slot="data">
             <el-button type="text" size="small" @click="updateFuncDialog(data.row)">编辑</el-button>
             <el-button type="text" size="small" @click="configFuncDialog(data.row)">配置</el-button>
-            <el-popconfirm
-              title="确定删除吗？"
-            >
-              <el-button slot="reference" type="text" size="small">删除</el-button>
-            </el-popconfirm>
+            <el-button type="text" size="small" @click="delFunc(data.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,7 +64,7 @@
 import AddPlug from '@/views/appInfoManagement/plugManagement/components/addPlug.vue'
 import AddFunc from '@/views/appInfoManagement/plugManagement/components/addFunc.vue'
 import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/updateFunc.vue'
-import { getFuncList } from '@/api/plug'
+import { getFuncList, delFunc } from '@/api/plug'
 import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
 export default {
   components: { ConfigFunc, UpdateFunc, AddFunc, AddPlug },
@@ -79,7 +75,6 @@ export default {
       updateFuncDialogVisible: false,
       addFuncDialogVisible: false,
       configFuncDialogVisible: false,
-      delFuncDialogVisible: false,
       funcInfo: {
         name: '',
         enName: '',
@@ -136,6 +131,13 @@ export default {
       this.configFuncDialogVisible = true
       this.$nextTick(() => {
         this.$refs.configFunc.getFuncDetail(data)
+      })
+    },
+    delFunc(id) {
+      this.$confirm('确定删除？').then(async() => {
+        // console.log('删除成功')
+        await delFunc(id)
+        this.$message.success('删除成功')
       })
     }
   }

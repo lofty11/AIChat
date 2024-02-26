@@ -1,18 +1,17 @@
 import request from '@/utils/request'
-
+// api待定，等待后端写好接口文档
 export function getFuncList() {
   return request(
     {
-      url: '/appinfo/plug'
+      url: '/appinfo/plug/functions'
     }
   )
 }
 
-// 不知道写得对不对啊，反正就是这么个意思，要取这个typelist，现在因为后端还没有数据，所以显示的是404
 export function getTypeList() {
   return request(
     {
-      url: '/appinfo/plug'
+      url: '/appinfo/plug/types'
     }
   )
 }
@@ -20,7 +19,7 @@ export function getTypeList() {
 export function getApiList() {
   return request(
     {
-      url: '/appinfo/plug'
+      url: '/appinfo/plug/apis'
     }
   )
 }
@@ -28,7 +27,7 @@ export function getApiList() {
 export function addFunc(data) {
   return request({
     method: 'post',
-    url: '/appinfo/plug',
+    url: '/appinfo/plug/function',
     data
   })
 }
@@ -36,13 +35,20 @@ export function addFunc(data) {
 export function updateFunc(data) {
   return request({
     method: 'put',
-    url: 'appinfo/plug',
+    url: `appinfo/plug/function/${data.id}`,
     data
   })
 }
 
 export function getFuncDetail(id) {
   return request({
-    url: `/appinfo/plug/${id}`
+    url: `/appinfo/plug/function/${id}`
+  })
+}
+
+export function delFunc(id) {
+  return request({
+    method: 'delete',
+    url: `appinfo/plug/function/${id}`
   })
 }
