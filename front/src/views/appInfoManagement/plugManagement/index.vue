@@ -44,19 +44,24 @@
           <template v-slot="data">
             <el-button type="text" size="small" @click="updateFuncDialog(data.row)">编辑</el-button>
             <el-button type="text" size="small" @click="configFuncDialog(data.row)">配置</el-button>
-            <el-button type="text" size="small" @click="delFunc(data.row.id)">删除</el-button>
+            <el-button type="text" size="small" style="color: red" @click="delFunc(data.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-main>
     <!--    创建插件-->
     <add-plug :add-plug-dialog-visible.sync="addPlugDialogVisible" />
+    <!--    创建插件-->
 
     <!--    编辑、创建、配置函数-->
     <add-func :add-func-dialog-visible.sync="addFuncDialogVisible" @updateFuncTable="getFuncList" />
     <update-func ref="updateFunc" :update-func-dialog-visible.sync="updateFuncDialogVisible" :current-id="currentId" />
     <config-func ref="configFunc" :config-func-dialog-visible.sync="configFuncDialogVisible" />
     <!--    编辑、创建、配置函数-->
+
+    <!--    添加插件参数配置-->
+    <config-plug-param ref="configPlugParam" />
+    <!--    添加插件参数配置-->
   </div>
 </template>
 
@@ -66,8 +71,9 @@ import AddFunc from '@/views/appInfoManagement/plugManagement/components/addFunc
 import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/updateFunc.vue'
 import { getFuncList, delFunc } from '@/api/plug'
 import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
+import ConfigPlugParam from '@/views/appInfoManagement/plugManagement/components/configPlugParam.vue'
 export default {
-  components: { ConfigFunc, UpdateFunc, AddFunc, AddPlug },
+  components: { ConfigPlugParam, ConfigFunc, UpdateFunc, AddFunc, AddPlug },
   data() {
     return {
       currentId: null,
