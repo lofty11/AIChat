@@ -26,6 +26,7 @@ import '@/permission' // permission control
 if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
+
 }
 
 // set ElementUI lang to EN.
