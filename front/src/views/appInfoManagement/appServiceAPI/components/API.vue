@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import Parameter from '@/views/appInfoManagement/appServiceAPI/components/Parameter'
+import Parameter from '@/views/appInfoManagement/appServiceAPI/components/parameter'
 
 export default {
   name: 'API',
