@@ -59,9 +59,6 @@
     <config-func ref="configFunc" :config-func-dialog-visible.sync="configFuncDialogVisible" />
     <!--    编辑、创建、配置函数-->
 
-    <!--    添加插件参数配置-->
-    <config-plug-param ref="configPlugParam" />
-    <!--    添加插件参数配置-->
   </div>
 </template>
 
@@ -71,9 +68,8 @@ import AddFunc from '@/views/appInfoManagement/plugManagement/components/addFunc
 import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/updateFunc.vue'
 import { getFuncList, delFunc } from '@/api/plug'
 import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
-import ConfigPlugParam from '@/views/appInfoManagement/plugManagement/components/configPlugParam.vue'
 export default {
-  components: { ConfigPlugParam, ConfigFunc, UpdateFunc, AddFunc, AddPlug },
+  components: { ConfigFunc, UpdateFunc, AddFunc, AddPlug },
   data() {
     return {
       currentId: null,

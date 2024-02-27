@@ -1,6 +1,6 @@
 <template>
   <!--    新增插件-->
-  <el-dialog :visible="addPlugDialogVisible" title="新建插件" @close="close">
+  <el-dialog :visible="addPlugDialogVisible" title="新建插件" append-to-body @close="close">
     <el-form ref="addPlug" :model="plugInfo" :rules="rules">
 
       <el-form-item prop="name" label="插件名称">
@@ -42,7 +42,7 @@
         /></el-table>
       <p>
         <el-row type="flex" align="middle" justify="center">
-          <el-button type="text">添加参数</el-button>
+          <el-button type="text" @click="configPlugParamDialog">添加参数</el-button>
         </el-row>
       </p>
 
@@ -99,11 +99,19 @@
         </el-row>
       </el-form-item>
     </el-form>
+    <!--    添加插件参数配置-->
+    <config-plug-param ref="configPlugParam" :config-plug-param-dialog-visible.sync="configPlugParamDialogVisible" />
+    <!--    添加插件参数配置-->
+    <!--    -->
   </el-dialog>
   <!--    新增插件-->
 </template>
 <script>
+
+import ConfigPlugParam from '@/views/appInfoManagement/plugManagement/components/configPlugParam.vue'
+
 export default {
+  components: { ConfigPlugParam },
   props: {
     addPlugDialogVisible: {
       type: Boolean,
@@ -112,6 +120,8 @@ export default {
   },
   data() {
     return {
+      configPlugParamDialogVisible: false,
+      configUserParamDialogVisible: false,
       plugInfo: {
         name: '',
         usage: '',
@@ -133,9 +143,9 @@ export default {
         operation: ''
       },
       rules: {
-        name: [{ required: true, message: '插件名称不能为空', trigger: 'blur' }],
-        usage: [{ required: true, message: '插件用途不能为空', trigger: 'blur' }],
-        description: [{ required: true, message: '插件描述不能为空', trigger: 'blur' }]
+        // name: [{ required: true, message: '插件名称不能为空', trigger: 'blur' }],
+        // usage: [{ required: true, message: '插件用途不能为空', trigger: 'blur' }],
+        // description: [{ required: true, message: '插件描述不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -151,6 +161,10 @@ export default {
 
       // 提交完成后关闭对话框
       this.addPlugDialogVisible = false
+    },
+    configPlugParamDialog() {
+      this.configPlugParamDialogVisible = true
+      // this.$emit('update:addPlugDialogVisible', false)
     }
 
   }

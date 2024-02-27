@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible="configPlugParamDialogVisible" title="添加参数" @close="close">
+  <el-dialog :visible="configPlugParamDialogVisible" title="添加参数" append-to-body @close="close">
     <el-form ref="configPlugParam" :model="paramTable" :rules="rules" align="right">
       <!-- 表单内容 -->
       <el-form-item prop="name" label="参数名">
@@ -23,7 +23,7 @@
 <script>
 export default {
   props: {
-    ConfigPlugParam: {
+    configPlugParamDialogVisible: {
       type: Boolean,
       default: false
     }
@@ -33,12 +33,20 @@ export default {
       paramTable: {
         name: '',
         value: ''
+      },
+      rules: {
+        name: [{ required: true, message: '参数名称不能为空', trigger: 'blur' }],
+        value: [{ required: true, message: '参数值不能为空', trigger: 'blur' }]
       }
     }
   },
   methods: {
+    close() {
+      this.$emit('update:configPlugParamDialogVisible', false)
+    },
     submitPlugParam() {
       console.log('成功添加参数')
+      this.configPlugParamDialogVisible = false
     }
   }
 }
