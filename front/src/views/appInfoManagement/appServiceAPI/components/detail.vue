@@ -1,24 +1,34 @@
 <template>
-  <el-dialog title="应用服务API详情"
-             :visible="detailDialogVisible"
-             width="50%"
-             top="0vh"
-             :before-close="handleClose">
-    <el-form :label-position="labelPosition" ref="form" :model="form" label-width="90px">
-      <el-form-item align="middle" prop="name" label="API名称：">
-        {{ form.name }}
-      </el-form-item>
-      <el-form-item align="middle" prop="code" label="API code：">
-        {{ form.code }}
-      </el-form-item>
-      <el-form-item align="middle" prop="URL" label="请求URL：">
-        {{ form.URL }}
-      </el-form-item>
-      <el-form-item align="middle" prop="format" label="请求方式：">
-        {{ form.format }}
-      </el-form-item>
+  <el-dialog
+    title="应用服务API详情"
+    :visible="detailDialogVisible"
+    width="50%"
+    top="5vh"
+    :before-close="handleClose"
+  >
+    <el-form ref="form" label-position="left" :model="form" label-width="90px" size="small">
+      <el-row type="flex" justify="center" align="middle">
+        <el-form-item prop="name" label="API名称：">
+          {{ form.name }}
+        </el-form-item>
+      </el-row>
+      <el-row type="flex" justify="center" align="middle">
+        <el-form-item prop="code" label="API code：">
+          {{ form.code }}
+        </el-form-item>
+      </el-row>
+      <el-row type="flex" justify="center" align="middle">
+        <el-form-item prop="URL" label="请求URL：">
+          {{ form.URL }}
+        </el-form-item>
+      </el-row>
+      <el-row type="flex" justify="center" align="middle">
+        <el-form-item prop="format" label="请求方式：">
+          {{ form.format }}
+        </el-form-item>
+      </el-row>
     </el-form>
-    <div>插件API入参定义：</div>
+    <p><strong>插件API入参定义：</strong></p>
     <el-table
       :data="inputParameterTableData"
       style="width: 100%"
@@ -28,7 +38,7 @@
         label="字段名称"
       />
       <el-table-column
-        prop="string"
+        prop="field"
         label="字段"
       />
       <el-table-column
@@ -49,7 +59,7 @@
       />
     </el-table>
 
-    <div>插件API出参定义：</div>
+    <p><strong>插件API出参定义：</strong></p>
     <el-table
       :data="outputParameterTableData"
       style="width: 100%"
@@ -59,7 +69,7 @@
         label="字段名称"
       />
       <el-table-column
-        prop="string"
+        prop="field"
         label="字段"
       />
       <el-table-column
@@ -88,16 +98,15 @@
 
 <script>
 export default {
-  name: "Detail",
+  name: 'Detail',
   props: {
     detailDialogVisible: {
       type: Boolean,
       default: false
-    },
+    }
   },
   data() {
     return {
-      labelPosition: 'right',
       form: {
         name: 'SerpAPI',
         code: 'SerpAPI',
@@ -108,7 +117,7 @@ export default {
         {
           name: '',
           code: '',
-          string: '',
+          field: '',
           type: '',
           required: '',
           description: '',
@@ -119,7 +128,7 @@ export default {
         {
           name: ' ',
           code: ' ',
-          string: ' ',
+          field: ' ',
           type: ' ',
           required: ' ',
           description: ' ',
@@ -129,7 +138,7 @@ export default {
     }
   },
   methods: {
-    handleClose(done) {
+    handleClose() {
       this.$emit('update:detailDialogVisible', false)
     },
     cancel() {
