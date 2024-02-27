@@ -81,7 +81,7 @@
       </el-table>
       <p>
         <el-row type="flex" align="middle" justify="center">
-          <el-button type="text">添加参数</el-button>
+          <el-button type="text" @click="configUserParamDialog">添加参数</el-button>
         </el-row>
       </p>
       <el-form-item label="是否可用">
@@ -102,16 +102,19 @@
     <!--    添加插件参数配置-->
     <config-plug-param ref="configPlugParam" :config-plug-param-dialog-visible.sync="configPlugParamDialogVisible" />
     <!--    添加插件参数配置-->
-    <!--    -->
+    <!--    添加用户参数配置-->
+    <config-user-param ref="configUserParam" :config-user-param-dialog-visible.sync="configUserParamDialogVisible" />
+    <!--    添加用户参数配置-->
   </el-dialog>
   <!--    新增插件-->
 </template>
 <script>
 
 import ConfigPlugParam from '@/views/appInfoManagement/plugManagement/components/configPlugParam.vue'
+import ConfigUserParam from '@/views/appInfoManagement/plugManagement/components/configUserParam.vue'
 
 export default {
-  components: { ConfigPlugParam },
+  components: { ConfigUserParam, ConfigPlugParam },
   props: {
     addPlugDialogVisible: {
       type: Boolean,
@@ -143,9 +146,9 @@ export default {
         operation: ''
       },
       rules: {
-        // name: [{ required: true, message: '插件名称不能为空', trigger: 'blur' }],
-        // usage: [{ required: true, message: '插件用途不能为空', trigger: 'blur' }],
-        // description: [{ required: true, message: '插件描述不能为空', trigger: 'blur' }]
+        name: [{ required: true, message: '插件名称不能为空', trigger: 'blur' }],
+        usage: [{ required: true, message: '插件用途不能为空', trigger: 'blur' }],
+        description: [{ required: true, message: '插件描述不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -164,6 +167,10 @@ export default {
     },
     configPlugParamDialog() {
       this.configPlugParamDialogVisible = true
+      // this.$emit('update:addPlugDialogVisible', false)
+    },
+    configUserParamDialog() {
+      this.configUserParamDialogVisible = true
       // this.$emit('update:addPlugDialogVisible', false)
     }
 
