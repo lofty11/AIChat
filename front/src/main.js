@@ -1,4 +1,8 @@
 import Vue from 'vue'
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
@@ -26,14 +30,13 @@ import '@/permission' // permission control
 if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
-
 }
 
 // set ElementUI lang to EN.
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
-
+Vue.use(VueQuillEditor)
 Vue.config.productionTip = false
 
 new Vue({

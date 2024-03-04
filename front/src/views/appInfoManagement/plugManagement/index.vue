@@ -54,7 +54,7 @@
     <!--    创建插件-->
 
     <!--    编辑、创建、配置函数-->
-    <add-func :add-func-dialog-visible.sync="addFuncDialogVisible" @updateFuncTable="getFuncList" />
+    <add-func ref="addFunc" :add-func-dialog-visible.sync="addFuncDialogVisible" @updateFuncTable="getFuncList" />
     <update-func ref="updateFunc" :update-func-dialog-visible.sync="updateFuncDialogVisible" :current-id="currentId" />
     <config-func ref="configFunc" :config-func-dialog-visible.sync="configFuncDialogVisible" />
     <!--    编辑、创建、配置函数-->
@@ -88,9 +88,7 @@ export default {
         id: 1,
         name: 'test1',
         enName: 'test1',
-        typeId: 1,
         type: 'http请求',
-        apiId: 1,
         api: 'SerpApi',
         description: 'test1'
       },
@@ -98,9 +96,7 @@ export default {
         id: 2,
         name: 'test2',
         enName: 'test2',
-        typeId: 2,
         type: 'http请求2',
-        apiId: 2,
         api: 'SerpApi2',
         description: 'test2'
       }
@@ -121,9 +117,6 @@ export default {
       this.addFuncDialogVisible = true
     },
     updateFuncDialog(data) {
-      // console.log(data)
-      this.currentId = data.id
-      console.log(this.currentId)
       this.updateFuncDialogVisible = true
       this.$nextTick(() => {
         this.$refs.updateFunc.getFuncDetail(data)
