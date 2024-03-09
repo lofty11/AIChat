@@ -100,7 +100,6 @@
 import AddPlug from '@/views/appInfoManagement/plugManagement/components/addPlug.vue'
 import AddFunc from '@/views/appInfoManagement/plugManagement/components/addFunc.vue'
 import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/updateFunc.vue'
-import { getFuncList, delFunc, delPlug } from '@/api/plug'
 import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
 import UpdatePlug from '@/views/appInfoManagement/plugManagement/components/updatePlug.vue'
 import ConfigPlug from '@/views/appInfoManagement/plugManagement/components/configPlug.vue'
@@ -151,40 +150,40 @@ export default {
     openAddPlugDialog() {
       this.addPlugDialogVisible = true // 打开对话框
     },
-    getFunc() {
-      return this.funcInfo
-    },
-    async getFuncList() {
-      this.funcTable = await getFuncList()
-    },
+    // getFunc() {
+    //   return this.funcInfo
+    // },
+    // async getFuncList() {
+    //   this.funcTable = await getFuncList()
+    // },
     addFuncDialog() {
       this.addFuncDialogVisible = true
     },
     updateFuncDialog(data) {
       this.updateFuncDialogVisible = true
-      this.$nextTick(() => {
-        this.$refs.updateFunc.getFuncDetail(data)
-      })
+      // this.$nextTick(() => {
+      //   this.$refs.updateFunc.getFuncDetail(data)
+      // })
     },
     configFuncDialog(data) {
       this.configFuncDialogVisible = true
-      this.$nextTick(() => {
-        this.$refs.configFunc.getFuncDetail(data)
-      })
+      // this.$nextTick(() => {
+      //   this.$refs.configFunc.getFuncDetail(data)
+      // })
     },
     delFunc(id) {
-      this.$confirm('确定删除？').then(async() => {
-        // console.log('删除成功')
-        await delFunc(id)
-        this.$message.success('删除成功')
-      })
+      // this.$confirm('确定删除？').then(async() => {
+      //   console.log('删除成功')
+      //   await delFunc(id)
+      // })
+      this.$message.success('删除成功')
     },
     delPlug(name) {
-      this.$confirm('确定删除？').then(async() => {
-        // console.log('删除成功')
-        await delPlug(name)
-        this.$message.success('删除成功')
-      })
+      // this.$confirm('确定删除？').then(async() => {
+      //   console.log('删除成功')
+      //   await delPlug(name)
+      // })
+      this.$message.success('删除成功')
     },
     updatePlugDialog(data) {
       this.updatePlugDialogVisible = true

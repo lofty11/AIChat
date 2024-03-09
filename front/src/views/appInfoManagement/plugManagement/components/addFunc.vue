@@ -43,7 +43,7 @@
   </el-dialog>
 </template>
 <script>
-import { getTypeList, getApiList, addFunc } from '@/api/plug'
+import { getTypeList, getApiList } from '@/api/plug'
 export default {
   props: {
     addFuncDialogVisible: {
@@ -73,10 +73,10 @@ export default {
       }
     }
   },
-  created() {
-    this.getTypeList()
-    this.getApiList()
-  },
+  // created() {
+  //   this.getTypeList()
+  //   this.getApiList()
+  // },
   methods: {
     close() {
       this.$emit('update:addFuncDialogVisible', false)
@@ -91,14 +91,15 @@ export default {
     submitFuncInfo() {
       // 在这里处理提交逻辑
       // 可以发送请求或执行其他操作
-      console.log('提交表单:', this.funcInfo)
-      this.$refs.addFunc.validate(async isOk => {
-        if (isOk) {
-          await addFunc({ ...this.funcInfo })
-          this.$emit('updateFuncTable')
-          this.$message.success('新增函数成功')
-        }
-      })
+      // this.$refs.addFunc.validate(async isOk => {
+      //   if (isOk) {
+      //     await addFunc({ ...this.funcInfo })
+      //     this.$emit('updateFuncTable')
+      //     this.$message.success('新增函数成功')
+      //   }
+      // })
+      this.$emit('updateFuncTable')
+      this.$message.success('新增函数成功')
       // 提交完成后关闭对话框
       this.addFuncDialogVisible = false
     }

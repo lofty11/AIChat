@@ -68,7 +68,7 @@ export default {
       this.$emit('update:configUserParamDialogVisible', false)
     },
     submitUserParam() {
-      console.log('成功添加参数')
+      this.$message.success('成功添加用户定义参数')
       this.configUserParamDialogVisible = false
     }
   }
