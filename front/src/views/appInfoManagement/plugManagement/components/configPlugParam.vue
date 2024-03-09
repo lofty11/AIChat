@@ -45,7 +45,7 @@ export default {
       this.$emit('update:configPlugParamDialogVisible', false)
     },
     submitPlugParam() {
-      console.log('成功添加参数')
+      this.$message.success('成功添加插件配置参数')
       this.configPlugParamDialogVisible = false
     }
   }
