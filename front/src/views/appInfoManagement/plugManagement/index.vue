@@ -172,18 +172,18 @@ export default {
       // })
     },
     delFunc(id) {
-      // this.$confirm('确定删除？').then(async() => {
-      //   console.log('删除成功')
-      //   await delFunc(id)
-      // })
-      this.$message.success('删除成功')
+      this.$confirm('确定删除？').then(async() => {
+        this.$message.success('删除成功')
+        // await delFunc(id)
+      })
+      // this.$message.success('删除成功')
     },
     delPlug(name) {
-      // this.$confirm('确定删除？').then(async() => {
-      //   console.log('删除成功')
-      //   await delPlug(name)
-      // })
-      this.$message.success('删除成功')
+      this.$confirm('确定删除？').then(async() => {
+        this.$message.success('删除成功')
+        // await delPlug(name)
+      })
+      // this.$message.success('删除成功')
     },
     updatePlugDialog(data) {
       this.updatePlugDialogVisible = true
