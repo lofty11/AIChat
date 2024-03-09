@@ -25,7 +25,7 @@
             >
               <template v-slot="data">
                 <el-button type="text" size="small" @click="updatePlugDialog(data.row)">编辑</el-button>
-                <!--                <el-button type="text" size="small" @click="configPlugDialog(data.row)">配置</el-button>-->
+                <el-button type="text" size="small" @click="configPlugDialog(data.row)">配置</el-button>
                 <el-button type="text" size="small" style="color: red" @click="delPlug(data.row.name)">删除</el-button>
               </template>
             </el-table-column>
@@ -82,9 +82,10 @@
     <add-plug :add-plug-dialog-visible.sync="addPlugDialogVisible" />
     <!--    创建插件-->
 
-    <!--    编辑插件-->
+    <!--    编辑、配置插件-->
     <update-plug :update-plug-dialog-visible.sync="updatePlugDialogVisible" />
-    <!--    编辑插件-->
+    <config-plug :config-plug-dialog-visible.sync="configPlugDialogVisible" />
+    <!--    编辑、配置插件-->
 
     <!--    编辑、创建、配置函数-->
     <add-func ref="addFunc" :add-func-dialog-visible.sync="addFuncDialogVisible" @updateFuncTable="getFuncList" />
@@ -102,8 +103,9 @@ import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/upda
 import { getFuncList, delFunc, delPlug } from '@/api/plug'
 import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
 import UpdatePlug from '@/views/appInfoManagement/plugManagement/components/updatePlug.vue'
+import ConfigPlug from '@/views/appInfoManagement/plugManagement/components/configPlug.vue'
 export default {
-  components: { UpdatePlug, ConfigFunc, UpdateFunc, AddFunc, AddPlug },
+  components: { ConfigPlug, UpdatePlug, ConfigFunc, UpdateFunc, AddFunc, AddPlug },
   data() {
     return {
       currentId: null,
@@ -112,6 +114,7 @@ export default {
       addFuncDialogVisible: false,
       configFuncDialogVisible: false,
       updatePlugDialogVisible: false,
+      configPlugDialogVisible: false,
       funcInfo: {
         name: '',
         enName: '',
@@ -185,6 +188,9 @@ export default {
     },
     updatePlugDialog(data) {
       this.updatePlugDialogVisible = true
+    },
+    configPlugDialog(data) {
+      this.configPlugDialogVisible = true
     }
   }
 }

@@ -19,71 +19,6 @@
         title="此描述将作为模型识别、规划和调度插件任务的重要参考，请尽量详尽描述此插件各项细节，包括但不限于插件可用功能、应用场景等。"
         type="warning"
       />
-      <p>
-        插件参数配置：
-      </p>
-      <el-table
-        :data="plugParamTable"
-        border
-        style="width: 100%;background-color:grey"
-        empty-text="暂无数据"
-      >
-        <el-table-column
-          prop="name"
-          label="参数名"
-        />
-        <el-table-column
-          prop="value"
-          label="参数值"
-        />
-        <el-table-column
-          prop="operation"
-          label="操作"
-        /></el-table>
-      <p>
-        <el-row type="flex" align="middle" justify="center">
-          <el-button type="text" @click="configPlugParamDialog">添加参数</el-button>
-        </el-row>
-      </p>
-
-      <p>
-        用户参数定义：
-      </p>
-      <el-table
-        :data="userParamTable"
-        border
-        style="width: 100%;background-color:grey"
-        empty-text="暂无数据"
-      >
-        <el-table-column
-          prop="name"
-          label="字段名称"
-        />
-        <el-table-column
-          prop="field"
-          label="字段"
-        />
-        <el-table-column
-          prop="type"
-          label="类型"
-        />
-        <el-table-column
-          prop="necessary"
-          label="是否必填"
-        />
-        <el-table-column
-          prop="description"
-          label="描述"
-        /><el-table-column
-          prop="operation"
-          label="操作"
-        />
-      </el-table>
-      <p>
-        <el-row type="flex" align="middle" justify="center">
-          <el-button type="text" @click="configUserParamDialog">添加参数</el-button>
-        </el-row>
-      </p>
       <el-form-item label="是否可用">
         <el-switch v-model="plugInfo.necessary" />
       </el-form-item>
@@ -99,22 +34,12 @@
         </el-row>
       </el-form-item>
     </el-form>
-    <!--    添加插件参数配置-->
-    <config-plug-param ref="configPlugParam" :config-plug-param-dialog-visible.sync="configPlugParamDialogVisible" />
-    <!--    添加插件参数配置-->
-    <!--    添加用户参数配置-->
-    <config-user-param ref="configUserParam" :config-user-param-dialog-visible.sync="configUserParamDialogVisible" />
-    <!--    添加用户参数配置-->
   </el-dialog>
   <!--    新增插件-->
 </template>
 <script>
 
-import ConfigPlugParam from '@/views/appInfoManagement/plugManagement/components/configPlugParam.vue'
-import ConfigUserParam from '@/views/appInfoManagement/plugManagement/components/configUserParam.vue'
-
 export default {
-  components: { ConfigUserParam, ConfigPlugParam },
   props: {
     addPlugDialogVisible: {
       type: Boolean,
@@ -123,27 +48,12 @@ export default {
   },
   data() {
     return {
-      configPlugParamDialogVisible: false,
-      configUserParamDialogVisible: false,
       plugInfo: {
         name: '',
         usage: '',
         description: '',
         usable: false,
         public: false
-      },
-      plugParamTable: {
-        name: '',
-        value: '',
-        operation: ''
-      },
-      userParamTable: {
-        name: '',
-        field: '',
-        type: '',
-        necessary: false,
-        description: '',
-        operation: ''
       },
       rules: {
         name: [{ required: true, message: '插件名称不能为空', trigger: 'blur' }],
@@ -161,17 +71,9 @@ export default {
       // 在这里处理提交逻辑
       // 可以发送请求或执行其他操作
       console.log('提交表单:', this.plugInfo)
-
+      this.$message.success('新增插件成功')
       // 提交完成后关闭对话框
       this.addPlugDialogVisible = false
-    },
-    configPlugParamDialog() {
-      this.configPlugParamDialogVisible = true
-      // this.$emit('update:addPlugDialogVisible', false)
-    },
-    configUserParamDialog() {
-      this.configUserParamDialogVisible = true
-      // this.$emit('update:addPlugDialogVisible', false)
     }
 
   }

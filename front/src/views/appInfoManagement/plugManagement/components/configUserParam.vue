@@ -19,7 +19,7 @@
       <el-form-item prop="range" label="枚举范围">
         <el-input v-model="paramTable.range" style="width: 75%" />
       </el-form-item>
-      <el-form-item prop="necessary" label="是否必填">
+      <el-form-item prop="necessary" label="是否必填" align="left">
         <el-switch v-model="paramTable.necessary" />
       </el-form-item>
       <el-form-item prop="description" label="描述">
