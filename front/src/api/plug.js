@@ -52,3 +52,10 @@ export function delFunc(id) {
     url: `appinfo/plug/function/${id}`
   })
 }
+
+export function delPlug(name) {
+  return request({
+    method: 'delete',
+    url: 'appinfo/plug/name'
+  })
+}

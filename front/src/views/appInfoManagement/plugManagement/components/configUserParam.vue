@@ -19,7 +19,7 @@
       <el-form-item prop="range" label="枚举范围">
         <el-input v-model="paramTable.range" style="width: 75%" />
       </el-form-item>
-      <el-form-item prop="necessary" label="是否必填">
+      <el-form-item prop="necessary" label="是否必填" align="left">
         <el-switch v-model="paramTable.necessary" />
       </el-form-item>
       <el-form-item prop="description" label="描述">
@@ -68,7 +68,7 @@ export default {
       this.$emit('update:configUserParamDialogVisible', false)
     },
     submitUserParam() {
-      console.log('成功添加参数')
+      this.$message.success('成功添加用户定义参数')
       this.configUserParamDialogVisible = false
     }
   }
