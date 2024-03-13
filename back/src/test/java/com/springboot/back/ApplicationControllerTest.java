@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -32,7 +33,47 @@ public class ApplicationControllerTest {
     }
 
     @Test
-    public void findByApiNameTest(){
-        System.out.println(applicationServicePoMapper.findByApiName("服务api"));
+    public void deleteExtensionInputTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/application/{applicationId}/{fieldName}/input", 4, "搜索查询参数1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andReturn();
+        String content = mvcResult.getResponse().getContentAsString();
+        System.out.println(content);
+    }
+
+    @Test
+    public void deleteExtensionOutputTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/application/{applicationId}/{fieldName}/output", 4, "搜索结果2")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn();
+        String content = mvcResult.getResponse().getContentAsString();
+        System.out.println(content);
+    }
+
+    @Test
+    public void createApplicationServiceTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/application/application")
+                .contentType(MediaType.APPLICATION_JSON).content("{ \"apiName\": \"测试api\", \"apiCode\": \"test\", " +
+                        "\"requestUrl\": \"https://modao.cc/\", \"requestMethod\": 1}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void createExtensionInputTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/application/{applicationId}/input", 4)
+                        .contentType(MediaType.APPLICATION_JSON).content("{ \"fieldName\": \"搜索查询\", \"field\": \"test\", " +
+                                "\"type\": \"string\", \"enumerationRange\": \"枚举\", \"required\": 1, \"description\": \"描述\"}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void createExtensionOutputTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/application/{applicationId}/output", 5)
+                        .contentType(MediaType.APPLICATION_JSON).content("{ \"fieldName\": \"搜索查询\", \"field\": \"test\", " +
+                                "\"type\": \"string\", \"enumerationRange\": \"枚举\", \"required\": 1, \"description\": \"描述\"}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
     }
 }

@@ -34,9 +34,9 @@ public class ApplicationService extends SSObject implements Serializable {
     public ApplicationService(Long id, Long creatorId, Long modifierId, String modifierName, String creatorName, LocalDateTime gmtCreate, LocalDateTime gmtModified,
                  String apiName, String apiCode, String requestUrl, Integer requestMethod) {
         super(id, creatorId, creatorName, modifierId, modifierName, gmtCreate, gmtModified);
-        this.apiName=apiName;
-        this.apiCode=apiCode;
-        this.requestUrl=requestUrl;
-        this.requestMethod=requestMethod;
+        this.apiName = apiName;
+        this.apiCode = apiCode;
+        this.requestUrl = requestUrl;
+        this.requestMethod = requestMethod;
     }
 }
