@@ -22,10 +22,6 @@ export const constantRoutes = [
     component: () => import('@/views/user/index')
   },
   {
-    path: '/chat',
-    component: () => import('@/views/user/chat')
-  },
-  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',

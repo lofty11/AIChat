@@ -14,7 +14,7 @@
         collapse
       >
         <el-menu-item index="1">
-          <i class="el-icon-chat-round" />
+          <i class="el-icon-chat-dot-round" />
           <span slot="title">对话</span>
         </el-menu-item>
 

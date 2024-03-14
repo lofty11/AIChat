@@ -15,17 +15,16 @@
             <el-button type="text" icon="el-icon-plus" style="color:#fff;" @click="addItem">新建对话</el-button>
           </el-menu-item>
           <el-menu-item v-for="(item, index) in sidebarItems" :key="index" :index="String(index + 1)">
-            <i class="el-icon-chat-line-round" />
-
             <template slot="title">
-              <span v-if="editingIndex !== index">{{ item.name }}</span>
+              <span v-if="editingIndex !== index" style="width: 40%;">{{ truncateText(item.name) }}</span>
               <span v-else>
-                <el-input v-model="editedItemName" size="mini" style="width: 50%;" autofocus @keyup.enter.native="saveItem(index)" />
+                <el-input v-model="editedItemName" size="mini" style="width: 40%;" autofocus @keyup.enter.native="saveItem(index)" />
               </span>
               <span class="button-group">
                 <el-button type="text" icon="el-icon-edit" @click="editItem(index)" />
                 <el-button type="text" icon="el-icon-delete" @click="deleteItem(index)" />
               </span>
+
             </template>
 
           </el-menu-item>
@@ -36,7 +35,7 @@
       <el-container style="width:100%;height: 100%">
         <el-main width="100%" height="75%">
           <Prompt :prompt-visible="promptVisible" />
-          <Dialogue :dialog-visible="dialogVisible" :dialogue-messages="messages" />
+          <Dialog :dialog-visible="dialogVisible" :dialog-messages="messages" />
         </el-main>
         <el-footer height="25%" class="chat-input">
           <el-row type="flex" align="middle">
@@ -85,10 +84,10 @@
 
 <script>
 import Prompt from '@/views/user/prompt'
-import Dialogue from '@/views/user/dialogue'
+import Dialog from '@/views/user/dialog'
 export default {
   name: 'Chat',
-  components: { Dialogue, Prompt },
+  components: { Dialog, Prompt },
   data() {
     return {
       sidebarItems: [
@@ -122,7 +121,7 @@ export default {
         console.log(this.userMessage)
         // Simulate bot response
         setTimeout(() => {
-          this.messages.push({ sender: 'ChatGPT', text: 'This is a dummy response.', type: 'bot' })
+          this.messages.push({ sender: 'AI精灵', text: '未连接网络.', type: 'bot' })
         }, 500)
         this.userMessage = ''
       }
@@ -148,6 +147,13 @@ export default {
         this.sidebarItems[index].name = this.editedItemName
       }
       this.editingIndex = null
+    },
+    truncateText(text) {
+      const maxLength = 10 // 你可以根据需要调整最大长度
+      if (text.length > maxLength) {
+        return text.substring(0, maxLength) + '...'
+      }
+      return text
     }
   }
 }

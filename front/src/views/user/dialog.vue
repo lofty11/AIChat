@@ -1,7 +1,7 @@
 <template>
   <div v-if="dialogVisible" class="chat-messages" style="width: 100%">
     <el-timeline>
-      <el-timeline-item v-for="(message, index) in dialogueMessages" :key="index">
+      <el-timeline-item v-for="(message, index) in dialogMessages" :key="index">
         <el-card v-if="message.type === 'user'" class="user-message" :header="message.sender">
           {{ message.text }}
         </el-card>
@@ -16,13 +16,13 @@
 
 <script>
 export default {
-  name: 'Dialogue',
+  name: 'Dialog',
   props: {
     dialogVisible: {
       type: Boolean,
       default: false
     },
-    dialogueMessages: {
+    dialogMessages: {
       type: Array,
       default: () => []
     }
