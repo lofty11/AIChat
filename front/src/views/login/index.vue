@@ -42,7 +42,12 @@
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
+      <el-row type="flex" justify="center">
+        <el-radio-group v-model="radio">
+          <el-radio :label="0">用户</el-radio>
+          <el-radio :label="1">管理员</el-radio>
+        </el-radio-group>
+      </el-row>
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
         <span> password: any</span>
@@ -83,7 +88,8 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      radio: '1'
     }
   },
   watch: {
@@ -110,7 +116,11 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+            if (this.radio === '0') {
+              this.$router.push({ path: this.redirect || '/' })
+            } else {
+              this.$router.push({ path: this.redirect || '/user' })
+            }
             this.loading = false
           }).catch(() => {
             this.loading = false

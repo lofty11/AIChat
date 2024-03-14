@@ -53,10 +53,7 @@
         prop="description"
         label="描述"
       />
-      <el-table-column
-        prop="operation"
-        label="操作"
-      />
+
     </el-table>
 
     <p><strong>插件API出参定义：</strong></p>
@@ -84,10 +81,7 @@
         prop="description"
         label="描述"
       />
-      <el-table-column
-        prop="operation"
-        label="操作"
-      />
+
     </el-table>
     <span slot="footer">
       <el-button @click="cancel">取 消</el-button>

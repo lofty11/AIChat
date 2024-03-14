@@ -13,7 +13,7 @@
               <el-button type="primary" @click="search">查询</el-button>
             </el-col>
             <el-col :span="1" align="center">
-              <el-button type="primary" @click="openAPIDialog('创建应用服务API')">新增</el-button>
+              <el-button type="primary" @click="openAPIDialog('创建应用服务API',true,false)">新增</el-button>
             </el-col>
           </el-row>
         </el-header>
@@ -24,7 +24,8 @@
             <el-table-column prop="operation" label="操作">
               <template #default>
                 <el-button type="text" size="small" @click="openDetailDialog">详情</el-button>
-                <el-button type="text" size="small" @click="openAPIDialog('编辑应用服务API')">编辑</el-button>
+                <el-button type="text" size="small" @click="openAPIDialog('编辑应用服务API',true,false)">编辑</el-button>
+                <el-button type="text" size="small" @click="openAPIDialog('配置应用服务API',false,true)">配置</el-button>
                 <el-button type="text" size="small" style="color:red" @click="deleteButton">删除</el-button>
               </template>
             </el-table-column>
@@ -44,7 +45,7 @@
         </el-main>
       </el-container>
     </div>
-    <API :api-dialog-visible.sync="apiDialogVisible" :title.sync="dialogTitle" />
+    <API :api-dialog-visible.sync="apiDialogVisible" :form-visible="formVisible" :parameter-visible="parameterVisible" :title.sync="dialogTitle" />
     <Detail :detail-dialog-visible.sync="detailDialogVisible" />
   </div>
 </template>
@@ -60,6 +61,8 @@ export default {
       searchData: '',
       apiDialogVisible: false,
       detailDialogVisible: false,
+      formVisible: false,
+      parameterVisible: false,
       dialogTitle: '',
       tableData: [
         {
@@ -74,9 +77,11 @@ export default {
   },
   methods: {
     // 打开API窗口
-    openAPIDialog(title) {
+    openAPIDialog(title, formV, parameterV) {
       this.apiDialogVisible = true
       this.dialogTitle = title
+      this.parameterVisible = parameterV
+      this.formVisible = formV
     },
     // 打开详情页
     openDetailDialog() {
