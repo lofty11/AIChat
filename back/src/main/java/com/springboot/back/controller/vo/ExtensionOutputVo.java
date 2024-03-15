@@ -6,17 +6,21 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ApplicationServiceVo {
+public class ExtensionOutputVo {
 
     @NotNull
-    private String apiName;
+    String fieldName;
 
     @NotNull
-    private String apiCode;
+    String field;
 
     @NotNull
-    private String requestUrl;
+    String type;
+
+    String enumerationRange;
 
     @NotNull
-    private Integer requestMethod;
+    Integer required;
+
+    String description;
 }
