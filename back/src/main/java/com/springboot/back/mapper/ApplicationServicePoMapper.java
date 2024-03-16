@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ApplicationServicePoMapper extends JpaRepository<ApplicationServicePo, Long> {
 
-    ApplicationServicePo findByApiName(String apiName);
+    ApplicationServicePo findByApiNameAndApiCode(String apiName, String apiCode);
 }

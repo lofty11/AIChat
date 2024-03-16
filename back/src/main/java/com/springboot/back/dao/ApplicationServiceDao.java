@@ -5,12 +5,16 @@ import com.springboot.back.mapper.po.ApplicationServicePo;
 import com.springboot.back.dao.bo.ApplicationService;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
+import com.springboot.core.model.dto.UserDto;
 import com.springboot.core.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+
+import static com.springboot.core.util.Common.putGmtFields;
+import static com.springboot.core.util.Common.putUserFields;
 
 @Repository
 public class ApplicationServiceDao {
@@ -29,10 +33,9 @@ public class ApplicationServiceDao {
         this.applicationServicePoMapper=applicationServicePoMapper;
     }
 
-    private ApplicationService getBo(ApplicationServicePo po, Optional<String> redisKey) {
+    private ApplicationService getBo(ApplicationServicePo po) {
         ApplicationService bo = ApplicationService.builder().id(po.getId()).apiName(po.getApiName())
                 .apiCode(po.getApiCode()).requestUrl(po.getRequestUrl()).requestMethod(po.getRequestMethod()).build();
-        //redisKey.ifPresent(key -> redisUtil.set(key, bo, timeout));
         return bo;
     }
 
@@ -46,11 +49,9 @@ public class ApplicationServiceDao {
         if (null == id) {
             return null;
         }
-
-        String key = String.format(KEY, id);
         Optional<ApplicationServicePo> po = this.applicationServicePoMapper.findById(id);
         if(po.isPresent()) {
-            return this.getBo(po.get(), Optional.of(key));
+            return this.getBo(po.get());
         } else {
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "应用服务API", id));
         }
@@ -58,5 +59,18 @@ public class ApplicationServiceDao {
 
     public void delete(Long id) {
         this.applicationServicePoMapper.deleteById(id);
+    }
+
+    public Long insert(ApplicationService applicationService, UserDto user) throws RuntimeException{
+        ApplicationServicePo po = this.applicationServicePoMapper.findByApiNameAndApiCode(applicationService.getApiName(), applicationService.getApiCode());
+        if (null == po) {
+            ApplicationServicePo servicePo = getPo(applicationService);
+            putUserFields(servicePo, "creator", user);
+            putGmtFields(servicePo, "create");
+            this.applicationServicePoMapper.save(servicePo);
+            return servicePo.getId();
+        } else {
+            throw new BusinessException(ReturnNo.APPLICATION_EXIST, String.format(ReturnNo.APPLICATION_EXIST.getMessage(), po.getId()));
+        }
     }
 }
