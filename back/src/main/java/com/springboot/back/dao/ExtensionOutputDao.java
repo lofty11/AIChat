@@ -1,9 +1,7 @@
 package com.springboot.back.dao;
 
-import com.springboot.back.dao.bo.ExtensionInput;
 import com.springboot.back.dao.bo.ExtensionOutput;
 import com.springboot.back.mapper.ExtensionOutputPoMapper;
-import com.springboot.back.mapper.po.ExtensionInputPo;
 import com.springboot.back.mapper.po.ExtensionOutputPo;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
@@ -11,7 +9,10 @@ import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.springboot.core.util.Common.putGmtFields;
 import static com.springboot.core.util.Common.putUserFields;
@@ -24,7 +25,7 @@ public class ExtensionOutputDao {
     private ExtensionOutputPoMapper extensionOutputPoMapper;
 
     @Autowired
-    public ExtensionOutputDao (ExtensionOutputPoMapper extensionOutputPoMapper){
+    public ExtensionOutputDao (ExtensionOutputPoMapper extensionOutputPoMapper) {
         this.extensionOutputPoMapper = extensionOutputPoMapper;
     }
 
@@ -79,4 +80,22 @@ public class ExtensionOutputDao {
             throw new BusinessException(ReturnNo.OUTPUT_EXIST, String.format(ReturnNo.OUTPUT_EXIST.getMessage(), po.getId()));
         }
     }
+
+    public String save(Long id, ExtensionOutput extensionOutput, UserDto user) {
+        ExtensionOutputPo po = getPo(extensionOutput);
+        if (null != user) {
+            putGmtFields(po, "modified");
+            putUserFields(po, "modifier", user);
+        }
+        this.extensionOutputPoMapper.save(po);
+        return String.format(KEY, extensionOutput.getId());
+    }
+
+    public List<ExtensionOutput> retrieveByApplicationId(Long id) throws RuntimeException {
+        List<ExtensionOutputPo> reList = this.extensionOutputPoMapper.findByApplicationId(id);
+        if(reList.isEmpty())
+            return new ArrayList<>();
+        return reList.stream().map(this::getBo).collect(Collectors.toList());
+    }
+
 }
