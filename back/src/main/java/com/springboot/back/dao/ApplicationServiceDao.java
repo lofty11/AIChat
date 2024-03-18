@@ -4,14 +4,19 @@ import com.springboot.back.mapper.ApplicationServicePoMapper;
 import com.springboot.back.mapper.po.ApplicationServicePo;
 import com.springboot.back.dao.bo.ApplicationService;
 import com.springboot.core.exception.BusinessException;
+import com.springboot.core.model.Constants;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
 import com.springboot.core.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.springboot.core.util.Common.putGmtFields;
 import static com.springboot.core.util.Common.putUserFields;
@@ -57,11 +62,19 @@ public class ApplicationServiceDao {
         }
     }
 
+    public Long findByName(String apiName) {
+        ApplicationServicePo po = this.applicationServicePoMapper.findByApiName(apiName);
+        if (null == po) {
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), null));
+        }
+        return po.getId();
+    }
+
     public void delete(Long id) {
         this.applicationServicePoMapper.deleteById(id);
     }
 
-    public Long insert(ApplicationService applicationService, UserDto user) throws RuntimeException{
+    public Long insert(ApplicationService applicationService, UserDto user) throws RuntimeException {
         ApplicationServicePo po = this.applicationServicePoMapper.findByApiNameAndApiCode(applicationService.getApiName(), applicationService.getApiCode());
         if (null == po) {
             ApplicationServicePo servicePo = getPo(applicationService);
@@ -73,4 +86,24 @@ public class ApplicationServiceDao {
             throw new BusinessException(ReturnNo.APPLICATION_EXIST, String.format(ReturnNo.APPLICATION_EXIST.getMessage(), po.getId()));
         }
     }
+
+    public String save(Long id, ApplicationService applicationService, UserDto user) {
+        ApplicationServicePo po = getPo(applicationService);
+        po.setId(id);
+        if (null != user) {
+            putGmtFields(po, "modified");
+            putUserFields(po, "modifier", user);
+        }
+        this.applicationServicePoMapper.save(po);
+        return String.format(KEY, applicationService.getId());
+    }
+
+    public List<ApplicationService> retrieveAll(Integer page, Integer pageSize) throws RuntimeException {
+        List<ApplicationServicePo> reList = this.applicationServicePoMapper.findAll(PageRequest.of(0, Constants.MAX_RETURN))
+                .stream().toList();
+        if (reList.isEmpty())
+            return new ArrayList<>();
+        return reList.stream().map(this::getBo).collect(Collectors.toList());
+    }
+
 }

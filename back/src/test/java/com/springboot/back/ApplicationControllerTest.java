@@ -1,6 +1,7 @@
 package com.springboot.back;
 
 import com.springboot.back.mapper.ApplicationServicePoMapper;
+import com.springboot.back.mapper.ExtensionInputPoMapper;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ApplicationControllerTest {
     private MockMvc mockMvc;
 
     @Resource
-    ApplicationServicePoMapper applicationServicePoMapper;
+    ExtensionInputPoMapper extensionInputPoMapper;
 
     @Test
     public void deleteApplicationTest() throws Exception{
@@ -73,6 +74,54 @@ public class ApplicationControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/application/{applicationId}/output", 5)
                         .contentType(MediaType.APPLICATION_JSON).content("{ \"fieldName\": \"搜索查询\", \"field\": \"test\", " +
                                 "\"type\": \"string\", \"enumerationRange\": \"枚举\", \"required\": 1, \"description\": \"描述\"}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void updateApplicationServiceTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/application/{applicationId}/application", 4)
+                .contentType(MediaType.APPLICATION_JSON).content("{ \"apiName\": \"测试api\", \"apiCode\": \"test\", " +
+                        "\"requestUrl\": \"https://modao.cc/\", \"requestMethod\": 1}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void getApplicationIdTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/application/{apiName}/application", "服务api")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void updateExtensionInputTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/application/{inputId}/input", 7)
+                .contentType(MediaType.APPLICATION_JSON).content("{\"fieldName\": \"test\", \"field\": 1, \"type\": \"json\", " +
+                                "\"required\": 0}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void updateExtensionOutputTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/application/{outputId}/output", 7)
+                .contentType(MediaType.APPLICATION_JSON).content("{\"fieldName\": \"test\", \"field\": 1, \"type\": \"json\", " +
+                        "\"required\": 0}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void findByApplicationIdTest() throws Exception {
+        System.out.print(this.extensionInputPoMapper.findByApplicationId(4L));
+    }
+
+    @Test
+    public void getApplicationsTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/application/applications")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
