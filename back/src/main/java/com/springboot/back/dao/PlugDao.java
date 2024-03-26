@@ -1,6 +1,5 @@
 package com.springboot.back.dao;
 
-import com.springboot.back.dao.bo.ApplicationService;
 import com.springboot.back.dao.bo.Plug;
 import com.springboot.back.mapper.PlugPoMapper;
 import com.springboot.back.mapper.po.ApplicationServicePo;
@@ -16,9 +15,14 @@ import java.util.Optional;
 import static com.springboot.core.util.Common.putGmtFields;
 import static com.springboot.core.util.Common.putUserFields;
 
+/**
+ * @author dell
+ */
 @Repository
 public class PlugDao {
     private PlugPoMapper plugPoMapper;
+
+    private final static String KEY = "E%d";
 
     @Autowired
     public PlugDao(PlugPoMapper plugPoMapper) {
@@ -64,6 +68,25 @@ public class PlugDao {
         } else {
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "应用服务API", id));
         }
+    }
+
+    public String save(Long id, Plug plug, UserDto user) {
+        PlugPo po = getPo(plug);
+        po.setId(id);
+        if (null != user) {
+            putGmtFields(po, "modified");
+            putUserFields(po, "modifier", user);
+        }
+        this.plugPoMapper.save(po);
+        return String.format(KEY, plug.getId());
+    }
+
+    public Long findByName(String plugName) {
+        PlugPo po = this.plugPoMapper.findByName(plugName);
+        if (null == po) {
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), null));
+        }
+        return po.getId();
     }
 
 }

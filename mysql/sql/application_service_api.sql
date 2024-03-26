@@ -64,6 +64,7 @@ CREATE TABLE plug
     open INTEGER NOT NULL,
     deleted INTEGER NOT NULL
 );
+alter table plug character set utf8;
 
 DROP TABLE IF EXISTS plugpara;
 CREATE TABLE plugpara
@@ -75,6 +76,7 @@ CREATE TABLE plugpara
     plug_id bigint,
     constraint fk_plug_id1  foreign key (plug_id) references plug (id) on update cascade on delete cascade
 );
+alter table plugpara character set utf8;
 
 DROP TABLE IF EXISTS userpara;
 CREATE TABLE userpara
@@ -89,6 +91,7 @@ CREATE TABLE userpara
     plug_id bigint,
     constraint fk_plug_id2  foreign key (plug_id) references plug (id) on update cascade on delete cascade
 );
+alter table userpara character set utf8;
 
 DROP TABLE IF EXISTS function;
 CREATE TABLE function
@@ -101,7 +104,7 @@ CREATE TABLE function
     description VARCHAR(255) NOT NULL,
     deleted INTEGER NOT NULL
 );
-
+alter table function character set utf8;
 
 
 

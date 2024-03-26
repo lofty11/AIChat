@@ -23,10 +23,6 @@ public class PlugControllerTest {
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
-        /*MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/func")
-                        .contentType(MediaType.APPLICATION_JSON).content("{ \"name\": \"search\", \"eName\": \"web_search\",\"type\": \"http\",  \"api\": \"api\", \"description\": \"gong\", \"deleted\": 0}"))
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();*/
     }
 
     @Test
@@ -36,19 +32,31 @@ public class PlugControllerTest {
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
-        /*MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/plug")
-                        .contentType(MediaType.APPLICATION_JSON).content("{ \"name\": \"aaa\", \"purpose\": \"b\",\"description\": \"http\",  \"available\": 1, \"open\": 1, \"deleted\": 0}"))
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();*/
     }
 
     @Test
-    public void deleteApplicationTest() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{plugId}/plug",3)
-                        .accept(MediaType.APPLICATION_JSON))
+    public void updatePlugTest() throws Exception {
+        String s = "{\"name\":\"aaa\",\"purpose\":\"b\",\"description\":\"http\",\"available\":1,\"open\":1,\"deleted\":0}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{plugId}/plug", 4)
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
+                .andDo(MockMvcResultHandlers.print())
                 .andReturn();
-        //获取返回结果
-        String content = mvcResult.getResponse().getContentAsString();
-        System.out.println(content);
+    }
+
+    @Test
+    public void deletePlugTest() throws Exception{
+        String s = "{\"name\":\"aaa\",\"purpose\":\"b\",\"description\":\"http\",\"available\":1,\"open\":1,\"deleted\":1}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{plugId}/plug", 4)
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void getPlugIdTest() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{plugName}/plug", "c")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
     }
 }

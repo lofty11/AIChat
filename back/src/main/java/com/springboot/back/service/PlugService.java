@@ -2,8 +2,6 @@ package com.springboot.back.service;
 
 import com.springboot.back.dao.FunctionDao;
 import com.springboot.back.dao.PlugDao;
-import com.springboot.back.dao.bo.ApplicationService;
-import com.springboot.back.dao.bo.ExtensionInput;
 import com.springboot.back.dao.bo.Function;
 import com.springboot.back.dao.bo.Plug;
 import com.springboot.core.exception.BusinessException;
@@ -27,14 +25,14 @@ public class PlugService {
         this.plugDao = plugDao;
     }
 
-    @Transactional(readOnly = false)
+    @Transactional()
     public void createFunctionService(String name, String e_name, String type, String api,String description, Integer deleted, UserDto user){
         Function function = Function.builder().name(name).e_name(e_name)
                 .type(type).api(api).description(description).deleted(deleted).build();
         this.functionDao.insert(function, user);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional()
     public void createPlugService(String name, String purpose, String description, Integer available,Integer open, Integer deleted, UserDto user){
         Plug plug = Plug.builder().name(name).purpose(purpose)
                 .description(description).available(available).open(open).deleted(deleted).build();
@@ -42,11 +40,23 @@ public class PlugService {
     }
 
     @Transactional
-    public void deletePlugService(Long plugId){
-        Plug plug = this.plugDao.findById(plugId);
-        if (null == plug){
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "应用服务API", plugId));
+    public void updatePlugService(Long id, String name, String purpose, String description, Integer available,Integer open, Integer deleted, UserDto user) {
+        Plug plug = this.plugDao.findById(id);
+        if (null == plug) {
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
         }
-        this.plugDao.delete(plugId);
+        plug.setName(name);
+        plug.setPurpose(purpose);
+        plug.setDescription(description);
+        plug.setAvailable(available);
+        plug.setOpen(open);
+        plug.setDeleted(deleted);
+        this.plugDao.save(id, plug, user);
     }
+
+    @Transactional
+    public Long getPlugId(String plugName) {
+        return this.plugDao.findByName(plugName);
+    }
+
 }

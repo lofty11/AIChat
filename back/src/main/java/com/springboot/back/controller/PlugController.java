@@ -41,9 +41,30 @@ public class PlugController {
         return new ReturnObject(ReturnNo.OK);
     }
 
-    @DeleteMapping("/{plugId}/plug")
-    public ReturnObject deleteApplication(@PathVariable Long plugId){
-        this.plugService.deletePlugService(plugId);
+    @PutMapping("/{plugId}/plug")
+    public ReturnObject updatePlug(@PathVariable Long plugId,
+                                                 @Valid @RequestBody PlugVo vo,
+                                                 @LoginUser UserDto user) {
+        this.plugService.updatePlugService(plugId, vo.getName(),vo.getPurpose(), vo.getDescription(),
+                vo.getAvailable(),vo.getOpen(),vo.getDeleted(),user);
         return new ReturnObject(ReturnNo.OK);
     }
+
+    @DeleteMapping("/{plugId}/plug")
+    public ReturnObject deletePlug(@PathVariable Long plugId,
+                                   @Valid @RequestBody PlugVo vo,
+                                   @LoginUser UserDto user){
+        this.plugService.updatePlugService(plugId, vo.getName(),vo.getPurpose(), vo.getDescription(),
+                vo.getAvailable(),vo.getOpen(),1,user);
+        return new ReturnObject(ReturnNo.OK);
+    }
+
+
+    @GetMapping("/{plugName}/plug")
+    public ReturnObject getPlugId(@PathVariable String plugName){
+        Long id = this.plugService.getPlugId(plugName);
+        return new ReturnObject(ReturnNo.OK, id);
+    }
+
+
 }
