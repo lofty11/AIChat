@@ -9,7 +9,8 @@ import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.springboot.core.util.Common.putGmtFields;
 import static com.springboot.core.util.Common.putUserFields;
@@ -76,5 +77,22 @@ public class ExtensionInputDao {
         } else {
             throw new BusinessException(ReturnNo.INPUT_EXIST, String.format(ReturnNo.INPUT_EXIST.getMessage(), po.getId()));
         }
+    }
+
+    public String save(Long id, ExtensionInput extensionInput, UserDto user) {
+        ExtensionInputPo po = getPo(extensionInput);
+        if (null != user) {
+            putGmtFields(po, "modified");
+            putUserFields(po, "modifier", user);
+        }
+        this.extensionInputPoMapper.save(po);
+        return String.format(KEY, extensionInput.getId());
+    }
+
+    public List<ExtensionInput> retrieveByApplicationId(Long id) throws RuntimeException {
+        List<ExtensionInputPo> reList = this.extensionInputPoMapper.findByApplicationId(id);
+        if (reList.isEmpty())
+            return new ArrayList<>();
+        return reList.stream().map(this::getBo).collect(Collectors.toList());
     }
 }

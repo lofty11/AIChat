@@ -6,26 +6,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
-public class ApplicationServiceDto {
+public class ExtensionInputDto {
 
     private Long id;
 
-    private String apiName;
+    private String fieldName;
 
-    private String apiCode;
+    private String field;
 
-    private String requestUrl;
+    private String type;
 
-    private Integer requestMethod;
+    private String enumerationRange;
 
-    private List<ExtensionInputDto> extensionInput;
+    private Integer required;
 
-    private List<ExtensionOutputDto> extensionOutput;
+    private String description;
 }

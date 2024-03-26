@@ -1,8 +1,10 @@
 /* 创建数据库 */
-CREATE DATABASE aichat;
+SET NAMES 'utf8';
+create database aichat character set utf8;
+# CREATE DATABASE aichat;
 use aichat;
 
-
+alter database aichat character set utf8;
 /* request_method列 1表示GET 2表示POST 3表示PUT 4表示DELETE*/
 DROP TABLE IF EXISTS application_service;
 CREATE TABLE application_service
@@ -13,7 +15,7 @@ CREATE TABLE application_service
     request_url VARCHAR(255) NOT NULL,
     request_method INTEGER NOT NULL
 );
-
+alter table application_service character set utf8;
 
 /* required列 0表示否 1表示是*/
 DROP TABLE IF EXISTS extension_input;
@@ -30,6 +32,7 @@ CREATE TABLE extension_input
     constraint fk_application_id  foreign key (application_id) references application_service (application_id) on update cascade on delete cascade
 );
 
+alter table extension_input character set utf8;
 
 DROP TABLE IF EXISTS extension_output;
 CREATE TABLE extension_output
@@ -44,6 +47,7 @@ CREATE TABLE extension_output
     application_id bigint,
     constraint fk_application_id2  foreign key (application_id) references application_service (application_id) on update cascade on delete cascade
 );
+alter table extension_output character set utf8;
 
 
 
