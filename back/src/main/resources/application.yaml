@@ -3,13 +3,17 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/plug?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/aichat?serverTimezone=Asia/Shanghai
     username: root
-    password: 17140488a
+    password: 123456
   jpa:
     show-sql: true
     properties:
       hibernate:
-        naming:
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         format_sql: true
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      password: 123456
+      database: 0
