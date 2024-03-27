@@ -50,6 +50,64 @@ CREATE TABLE extension_output
 alter table extension_output character set utf8;
 
 
+
+/*Plug数据库中的表*/
+
+DROP TABLE IF EXISTS plug;
+CREATE TABLE plug
+(
+    id bigint AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    purpose VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    available INTEGER NOT NULL,
+    open INTEGER NOT NULL,
+    deleted INTEGER NOT NULL
+);
+alter table plug character set utf8;
+
+DROP TABLE IF EXISTS plugpara;
+CREATE TABLE plugpara
+(
+    id bigint AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    value VARCHAR(255) NOT NULL,
+    deleted INTEGER NOT NULL,
+    plug_id bigint,
+    constraint fk_plug_id1  foreign key (plug_id) references plug (id) on update cascade on delete cascade
+);
+alter table plugpara character set utf8;
+
+DROP TABLE IF EXISTS userpara;
+CREATE TABLE userpara
+(
+    id bigint AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    field VARCHAR(255) NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    necessary INTEGER NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    deleted INTEGER NOT NULL,
+    plug_id bigint,
+    constraint fk_plug_id2  foreign key (plug_id) references plug (id) on update cascade on delete cascade
+);
+alter table userpara character set utf8;
+
+DROP TABLE IF EXISTS function;
+CREATE TABLE function
+(
+    id bigint AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    e_name VARCHAR(255) NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    api VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    deleted INTEGER NOT NULL
+);
+alter table function character set utf8;
+
+
+
 INSERT INTO application_service VALUES (NULL, '服务api', 'Serapi', 'https://modao.cc/', 1);
 INSERT INTO extension_input VALUES (NULL, '搜索查询参数1', 'q', 'string', NULL, 1, '定义', 1);
 INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'q', 'string', NULL, 1, '定义', 1);
