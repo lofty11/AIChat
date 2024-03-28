@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <el-aside class="left-aside">
-
       <el-form>
         <el-form-item>
           <el-button class="aside-button" @click="openAddPlugDialog">
@@ -9,28 +8,26 @@
           </el-button>
         </el-form-item>
 
-        <el-form-item align="center">
-          <el-table
-            :data="plugTable"
-            border
-            style="width: 95%"
+        <el-table
+          :data="plugTable"
+          border
+          style="width: 95%; margin-left: 10px"
+        >
+          <el-table-column
+            prop="name"
+            label="插件名称"
+          />
+          <el-table-column
+            fixed="right"
+            label="操作"
           >
-            <el-table-column
-              prop="name"
-              label="插件名称"
-            />
-            <el-table-column
-              fixed="right"
-              label="操作"
-            >
-              <template v-slot="data">
-                <el-button type="text" size="small" @click="updatePlugDialog(data.row)">编辑</el-button>
-                <el-button type="text" size="small" @click="configPlugDialog(data.row)">配置</el-button>
-                <el-button type="text" size="small" style="color: red" @click="delPlug(data.row.name)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-form-item>
+            <template v-slot="data">
+              <el-button type="text" size="small" @click="updatePlugDialog(data.row)">编辑</el-button>
+              <el-button type="text" size="small" @click="configPlugDialog(data.row)">配置</el-button>
+              <el-button type="text" size="small" style="color: red" @click="delPlug(data.row.name)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
 
       </el-form>
     </el-aside>
