@@ -2,8 +2,12 @@ package com.springboot.back.service;
 
 import com.springboot.back.dao.FunctionDao;
 import com.springboot.back.dao.PlugDao;
+import com.springboot.back.dao.PlugParaDao;
+import com.springboot.back.dao.UserParaDao;
 import com.springboot.back.dao.bo.Function;
 import com.springboot.back.dao.bo.Plug;
+import com.springboot.back.dao.bo.PlugPara;
+import com.springboot.back.dao.bo.UserPara;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
@@ -18,16 +22,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlugService {
     private final FunctionDao functionDao;
     private final PlugDao plugDao;
+    private final PlugParaDao plugParaDao;
+    private final UserParaDao userParaDao;
+
 
     @Autowired
-    public PlugService(FunctionDao functionDao,PlugDao plugDao){
+    public PlugService(FunctionDao functionDao, PlugDao plugDao, PlugParaDao plugParaDao, UserParaDao userParaDao){
         this.functionDao = functionDao;
         this.plugDao = plugDao;
+        this.plugParaDao = plugParaDao;
+        this.userParaDao = userParaDao;
     }
 
     @Transactional()
-    public void createFunctionService(String name, String e_name, String type, String api,String description, Integer deleted, UserDto user){
-        Function function = Function.builder().name(name).e_name(e_name)
+    public void createFunctionService(String name, String ename, String type, String api,String description, Integer deleted, UserDto user){
+        Function function = Function.builder().name(name).ename(ename)
                 .type(type).api(api).description(description).deleted(deleted).build();
         this.functionDao.insert(function, user);
     }
@@ -37,6 +46,18 @@ public class PlugService {
         Plug plug = Plug.builder().name(name).purpose(purpose)
                 .description(description).available(available).open(open).deleted(deleted).build();
         this.plugDao.insert(plug, user);
+    }
+
+    @Transactional
+    public void createPlugPara(String name, Integer value, Integer deleted, Long plugId, UserDto user) {
+        PlugPara plugPara = PlugPara.builder().plug_id(plugId).name(name).value(value).deleted(deleted).build();
+        this.plugParaDao.insert(plugPara, user);
+    }
+
+    @Transactional
+    public void createUserPara(String name, String field,String type,Integer necessary,String description, Integer deleted, Long plugId, UserDto user) {
+        UserPara userPara = UserPara.builder().plug_id(plugId).name(name).field(field).type(type).necessary(necessary).description(description).deleted(deleted).build();
+        this.userParaDao.insert(userPara, user);
     }
 
     @Transactional
@@ -52,6 +73,47 @@ public class PlugService {
         plug.setOpen(open);
         plug.setDeleted(deleted);
         this.plugDao.save(id, plug, user);
+    }
+    @Transactional
+    public void updateFuncService(Long id, String name, String ename, String type,String api,String description,  Integer deleted, UserDto user) {
+        Function function = this.functionDao.findById(id);
+        if (null == function) {
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
+        }
+        function.setName(name);
+        function.setEname(ename);
+        function.setType(type);
+        function.setApi(api);
+        function.setDescription(description);
+        function.setDeleted(deleted);
+        this.functionDao.save(id, function, user);
+    }
+
+    @Transactional
+    public void updatePlugParaService(Long id, String name,  Integer value, Integer deleted, UserDto user) {
+        PlugPara plugPara = this.plugParaDao.findById(id);
+        if (null == plugPara) {
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
+        }
+        plugPara.setName(name);
+        plugPara.setValue(value);
+        plugPara.setDeleted(deleted);
+        this.plugParaDao.save(id, plugPara, user);
+    }
+
+    @Transactional
+    public void updateUserParaService(Long id, String name, String field,String type,Integer necessary,String description, Integer deleted, UserDto user) {
+        UserPara userPara = this.userParaDao.findById(id);
+        if (null == userPara) {
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
+        }
+        userPara.setName(name);
+        userPara.setField(field);
+        userPara.setType(type);
+        userPara.setNecessary(necessary);
+        userPara.setDescription(description);
+        userPara.setDeleted(deleted);
+        this.userParaDao.save(id, userPara, user);
     }
 
     @Transactional

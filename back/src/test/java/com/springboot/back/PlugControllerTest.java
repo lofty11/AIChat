@@ -18,7 +18,7 @@ public class PlugControllerTest {
 
     @Test
     public void createFunctionTest() throws Exception {
-        String s = "{\"name\":\"search\",\"e_name\":\"web_search\",\"type\":\"http\",\"api\":\"api\",\"description\":\"gong\",\"deleted\":0}";
+        String s = "{\"name\":\"search2\",\"ename\":\"web_search\",\"type\":\"http\",\"api\":\"api\",\"description\":\"gong\",\"deleted\":0}";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/func")
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
@@ -27,8 +27,24 @@ public class PlugControllerTest {
 
     @Test
     public void createPlugTest() throws Exception {
-        String s = "{\"name\":\"aaa\",\"purpose\":\"b\",\"description\":\"http\",\"available\":1,\"open\":1,\"deleted\":0}";
+        String s = "{\"name\":\"aa\",\"purpose\":\"b\",\"description\":\"http\",\"available\":1,\"open\":1,\"deleted\":0}";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/plug")
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+    @Test
+    public void createPlugParaTest() throws Exception {
+        String s = "{\"name\":\"aaa\",\"value\":1,\"deleted\":0}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/plugpara",4)
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+    @Test
+    public void createUserParaTest() throws Exception {
+        String s = "{\"name\":\"a\",\"field\":\"b\",\"type\":\"c\",\"necessary\":1,\"description\":\"d\",\"deleted\":0}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/userpara",4)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();

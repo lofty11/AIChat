@@ -2,7 +2,6 @@ package com.springboot.back.dao;
 
 import com.springboot.back.dao.bo.Plug;
 import com.springboot.back.mapper.PlugPoMapper;
-import com.springboot.back.mapper.po.ApplicationServicePo;
 import com.springboot.back.mapper.po.PlugPo;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
@@ -39,10 +38,6 @@ public class PlugDao {
         PlugPo po = PlugPo.builder().id(bo.getId()).name(bo.getName()).purpose(bo.getPurpose()).description(bo.getDescription())
                 .available(bo.getAvailable()).open(bo.getOpen()).deleted(bo.getDeleted()).build();
         return po;
-    }
-
-    public void delete(Long id) {
-        this.plugPoMapper.deleteById(id);
     }
 
     public Long insert(Plug plug, UserDto user) throws RuntimeException{
