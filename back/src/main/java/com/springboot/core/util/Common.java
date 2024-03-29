@@ -201,7 +201,7 @@ public class Common {
             try {
                 Method nameSetter = aClass.getMethod(String.format("set%sName", upperCaseField), String.class);
                 logger.debug("putUserFields: obj = {}, field = {}",obj, upperCaseField);
-                nameSetter.invoke(obj, user.getName());
+                nameSetter.invoke(obj, user.getUserName());
             }catch (IllegalAccessException ex) {
                 logger.info("putUserFields: obj = {}, e = {}", obj, ex);
             } catch (InvocationTargetException e) {

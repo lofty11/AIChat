@@ -106,10 +106,21 @@ CREATE TABLE function
 );
 alter table function character set utf8;
 
-
+DROP TABLE IF EXISTS user;
+CREATE TABLE user (
+                      user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                      user_level INT,
+                      user_name VARCHAR(255),
+                      user_password VARCHAR(255)
+                          user_tel VARCHAR(20);
+);
+alter table user character set utf8;
 
 INSERT INTO application_service VALUES (NULL, '服务api', 'Serapi', 'https://modao.cc/', 1);
 INSERT INTO extension_input VALUES (NULL, '搜索查询参数1', 'q', 'string', NULL, 1, '定义', 1);
 INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'q', 'string', NULL, 1, '定义', 1);
 INSERT INTO extension_output VALUES (NULL, '搜索结果1', 'q', 'json', NULL, 0, NULL, 1);
 INSERT INTO extension_output VALUES (NULL, '搜索结果2', 'q', 'json', NULL, 0, NULL, 1);
+
+INSERT INTO user VALUES (NULL,0, 'admin', '123456', '10000');
+INSERT INTO user VALUES (NULL,1,'zmr','100000','181000000');
