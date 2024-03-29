@@ -112,7 +112,7 @@ CREATE TABLE user (
                       user_level INT NOT NULL,
                       user_name VARCHAR(255) NOT NULL,
                       user_password VARCHAR(255) NOT NULL,
-                          user_tel VARCHAR(20)
+                      user_tel VARCHAR(20)
 );
 alter table user character set utf8;
 
