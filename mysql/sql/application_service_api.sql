@@ -109,10 +109,10 @@ alter table function character set utf8;
 DROP TABLE IF EXISTS user;
 CREATE TABLE user (
                       user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                      user_level INT,
-                      user_name VARCHAR(255),
-                      user_password VARCHAR(255)
-                          user_tel VARCHAR(20);
+                      user_level INT NOT NULL,
+                      user_name VARCHAR(255) NOT NULL,
+                      user_password VARCHAR(255) NOT NULL,
+                          user_tel VARCHAR(20)
 );
 alter table user character set utf8;
 
