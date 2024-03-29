@@ -9,21 +9,38 @@
       <div v-if="formVisible">
         <el-form ref="form" label-position="left" :model="form" :rules="rules" label-width="90px" size="small">
           <el-form-item prop="name" label="API名称">
-            <el-input v-model="form.name" placeholder="请输入API名称" />
+            <el-input v-model="form.apiName" placeholder="请输入API名称" />
           </el-form-item>
           <el-form-item prop="code" label="API code">
-            <el-input v-model="form.code" placeholder="请输入API code" />
+            <el-input v-model="form.apiCode" placeholder="请输入API code" />
           </el-form-item>
           <el-form-item prop="URL" label="请求URL">
-            <el-input v-model="form.URL" placeholder="请输入请求URL" />
+            <el-input v-model="form.requestUrl" placeholder="请输入请求URL" />
           </el-form-item>
           <el-form-item prop="format" label="请求方式">
-            <el-select v-model="form.format" placeholder="请选择请求方式" />
+            <el-select v-model="form.requestMethod" placeholder="请选择请求方式">
+              <el-option
+                label="GET"
+                :value="1"
+              />
+              <el-option
+                label="POST"
+                :value="2"
+              />
+              <el-option
+                label="PUT"
+                :value="3"
+              />
+              <el-option
+                label="DELETE"
+                :value="4"
+              />
+            </el-select>
           </el-form-item>
-          <sel-form-item>
+          <el-form-item>
             <el-button @click="cancel">取 消</el-button>
             <el-button type="primary" @click="confirm">确 定</el-button>
-          </sel-form-item>
+          </el-form-item>
         </el-form>
       </div>
       <div v-if="parameterVisible">
@@ -112,6 +129,7 @@
 
 <script>
 import Parameter from '@/views/appInfoManagement/appServiceAPI/components/parameter'
+import { createAPI } from '@/api/api'
 
 export default {
   name: 'API',
@@ -140,23 +158,23 @@ export default {
       dialogTitle: '',
       emptyText: '暂无数据',
       form: {
-        name: '',
-        code: '',
-        URL: '',
-        format: ''
+        apiName: '',
+        apiCode: '',
+        requestUrl: '',
+        requestMethod: ''
       },
       rules: {
-        name: [
+        apiName: [
           { required: true, message: '请输入API名称', trigger: 'blur' }
 
         ],
-        code: [
+        apiCode: [
           { required: true, message: '请输入API code', trigger: 'blur' }
         ],
-        URL: [
+        requestUrl: [
           { required: true, message: '请输入请求URL', trigger: 'blur' }
         ],
-        format: [
+        requestMethod: [
           { required: true, message: '请选择请求方式', trigger: 'change' }
         ]
       },
@@ -199,6 +217,8 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.$message.success('提交成功！')
+          createAPI(this.form)
+
           this.$refs.form.resetFields()
           this.$emit('update:apiDialogVisible', false)
         } else {

@@ -21,13 +21,14 @@ public class UserDto implements Serializable {
     /**
      * 用户名
      */
-    private String name;
-    /**
-     * 部门id
-     */
-    private Long departId;
+    private String userName;
+
     /**
      * 用户级别
      */
     private Integer userLevel;
+    /**
+     * 电话
+     */
+    private String userTel;
 }
