@@ -6,27 +6,30 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author dell
+ */
 @Entity
-@Table(name = "functions")
+@Table(name = "plugpara")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FunctionPo {
+public class PlugParaPo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "plug_id")
+    private Long plugId;
+
     @Column(name = "name")
     private String name;
-    @Column(name = "ename")
-    private String ename;
-    @Column(name = "type")
-    private String type;
-    @Column(name = "api")
-    private String api;
-    @Column(name = "description")
-    private String description;
+
+    @Column(name = "value")
+    private Integer value;
+
     @Column(name = "deleted")
     private Integer deleted;
 }

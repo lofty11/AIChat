@@ -1,6 +1,5 @@
 package com.springboot.back.controller.vo;
 
-
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,24 +9,23 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class FunctionVo {
+public class UserParaVo {
+    @NotNull
+    private String name;
 
     @NotNull
-    String name;
+    private String field;
 
     @NotNull
-    String ename;
+    private String type;
 
     @NotNull
-    String type;
+    private Integer necessary;
 
     @NotNull
-    String api;
+    private String description;
+
 
     @NotNull
-    String description;
-
-    @NotNull
-    Integer deleted;
-
+    private Integer deleted;
 }

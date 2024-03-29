@@ -93,18 +93,18 @@ CREATE TABLE userpara
 );
 alter table userpara character set utf8;
 
-DROP TABLE IF EXISTS function;
-CREATE TABLE function
+DROP TABLE IF EXISTS functions;
+CREATE TABLE functions
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    e_name VARCHAR(255) NOT NULL,
+    ename VARCHAR(255) NOT NULL,
     type VARCHAR(255) NOT NULL,
     api VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     deleted INTEGER NOT NULL
 );
-alter table function character set utf8;
+alter table functions character set utf8;
 
 DROP TABLE IF EXISTS user;
 CREATE TABLE user (
