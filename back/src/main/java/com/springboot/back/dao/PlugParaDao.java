@@ -1,7 +1,9 @@
 package com.springboot.back.dao;
 
+import com.springboot.back.dao.bo.ExtensionInput;
 import com.springboot.back.dao.bo.PlugPara;
 import com.springboot.back.mapper.PlugParaPoMapper;
+import com.springboot.back.mapper.po.ExtensionInputPo;
 import com.springboot.back.mapper.po.PlugParaPo;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
@@ -9,7 +11,10 @@ import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.springboot.core.util.Common.putGmtFields;
 import static com.springboot.core.util.Common.putUserFields;
@@ -72,5 +77,13 @@ public class PlugParaDao {
         }
         this.plugParaPoMapper.save(po);
         return String.format(KEY, plugPara.getId());
+    }
+
+    public List<PlugPara> retrieveByPlugId(Long id) throws RuntimeException {
+        List<PlugParaPo> reList = this.plugParaPoMapper.findByPlugId(id);
+        if (reList.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return reList.stream().map(this::getBo).collect(Collectors.toList());
     }
 }

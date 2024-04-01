@@ -4,16 +4,19 @@ import com.springboot.back.dao.FunctionDao;
 import com.springboot.back.dao.PlugDao;
 import com.springboot.back.dao.PlugParaDao;
 import com.springboot.back.dao.UserParaDao;
-import com.springboot.back.dao.bo.Function;
-import com.springboot.back.dao.bo.Plug;
-import com.springboot.back.dao.bo.PlugPara;
-import com.springboot.back.dao.bo.UserPara;
+import com.springboot.back.dao.bo.*;
+import com.springboot.back.service.dto.*;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
+import com.springboot.core.model.dto.PageDto;
 import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author dell
@@ -119,6 +122,42 @@ public class PlugService {
     @Transactional
     public Long getPlugId(String plugName) {
         return this.plugDao.findByName(plugName);
+    }
+
+    @Transactional
+    public PageDto<PlugDto> retrievePlugs(Integer page, Integer pageSize) {
+        List<Plug> plugs = this.plugDao.retrieveAll(page, pageSize);
+        List<PlugDto> ret = new ArrayList<>();
+        for(Plug plug: plugs) {
+            List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
+            List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> {
+                return PlugParaDto.builder().id(obj.getId()).name(obj.getName()).value(obj.getValue()).deleted(obj.getDeleted()).build();
+            }).collect(Collectors.toList());
+            List<UserPara> userParas = this.userParaDao.retrieveByPlugId(plug.getId());
+            List<UserParaDto> userParaDtos = userParas.stream().map(obj -> {
+                return UserParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
+                        type(obj.getType()).necessary(obj.getNecessary()).description(obj.getDescription()).
+                        deleted(obj.getDeleted()).build();
+            }).collect(Collectors.toList());
+            PlugDto plugDto = getPlugDto(plug, plugParaDtos, userParaDtos);
+            ret.add(plugDto);
+        }
+        return new PageDto<>(ret, page, pageSize);
+    }
+
+    private static PlugDto getPlugDto(Plug plug, List<PlugParaDto> plugParaDtos,
+                                                                  List<UserParaDto> userParaDtos) {
+        PlugDto plugDto = new PlugDto();
+        plugDto.setId(plug.getId());
+        plugDto.setName(plug.getName());
+        plugDto.setPurpose(plug.getPurpose());
+        plugDto.setDescription(plug.getDescription());
+        plugDto.setAvailable(plug.getAvailable());
+        plugDto.setOpen(plug.getOpen());
+        plugDto.setDeleted(plug.getDeleted());
+        plugDto.setPlugParas(plugParaDtos);
+        plugDto.setUserParas(userParaDtos);
+        return plugDto;
     }
 
 }
