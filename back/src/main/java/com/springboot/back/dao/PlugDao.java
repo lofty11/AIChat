@@ -1,15 +1,22 @@
 package com.springboot.back.dao;
 
+import com.springboot.back.dao.bo.ApplicationService;
 import com.springboot.back.dao.bo.Plug;
 import com.springboot.back.mapper.PlugPoMapper;
+import com.springboot.back.mapper.po.ApplicationServicePo;
 import com.springboot.back.mapper.po.PlugPo;
 import com.springboot.core.exception.BusinessException;
+import com.springboot.core.model.Constants;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.springboot.core.util.Common.putGmtFields;
 import static com.springboot.core.util.Common.putUserFields;
@@ -82,6 +89,14 @@ public class PlugDao {
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), null));
         }
         return po.getId();
+    }
+
+    public List<Plug> retrieveAll(Integer page, Integer pageSize) throws RuntimeException {
+        List<PlugPo> reList = this.plugPoMapper.findAll(PageRequest.of(0, Constants.MAX_RETURN))
+                .stream().toList();
+        if (reList.isEmpty())
+            return new ArrayList<>();
+        return reList.stream().map(this::getBo).collect(Collectors.toList());
     }
 
 }

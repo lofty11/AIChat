@@ -15,34 +15,41 @@ import java.time.LocalDateTime;
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Function extends SSObject implements Serializable {
+public class UserPara extends SSObject implements Serializable {
+    @Getter
+    @Setter
+    private Long plug_id;
+
     @Getter
     @Setter
     private String name;
+
     @Getter
     @Setter
-    private String ename;
+    private String field;
     @Getter
     @Setter
     private String type;
     @Getter
     @Setter
-    private String api;
+    private Integer necessary;
     @Getter
     @Setter
     private String description;
+
     @Getter
     @Setter
     private Integer deleted;
 
     @Builder
-    public Function(Long id, Long creatorId, Long modifierId, String modifierName, String creatorName, LocalDateTime gmtCreate, LocalDateTime gmtModified,
-                    String name, String ename, String type, String api, String description, Integer deleted) {
+    public UserPara(Long id, Long creatorId, Long modifierId, String modifierName, String creatorName, LocalDateTime gmtCreate, LocalDateTime gmtModified,
+            Long plug_id, String name, String field, String type, Integer necessary, String description, Integer deleted) {
         super(id, creatorId, creatorName, modifierId, modifierName, gmtCreate, gmtModified);
+        this.plug_id = plug_id;
         this.name = name;
-        this.ename = ename;
+        this.field = field;
         this.type = type;
-        this.api = api;
+        this.necessary = necessary;
         this.description = description;
         this.deleted = deleted;
     }

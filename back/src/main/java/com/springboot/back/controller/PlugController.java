@@ -6,9 +6,12 @@ import com.springboot.back.controller.vo.PlugParaVo;
 import com.springboot.back.controller.vo.PlugVo;
 import com.springboot.back.controller.vo.UserParaVo;
 import com.springboot.back.service.PlugService;
+import com.springboot.back.service.dto.ApplicationServiceDto;
+import com.springboot.back.service.dto.PlugDto;
 import com.springboot.core.aop.LoginUser;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.ReturnObject;
+import com.springboot.core.model.dto.PageDto;
 import com.springboot.core.model.dto.UserDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,5 +151,13 @@ public class PlugController {
     public ReturnObject getPlugId(@PathVariable String plugName){
         Long id = this.plugService.getPlugId(plugName);
         return new ReturnObject(ReturnNo.OK, id);
+    }
+
+    /*获取插件列表*/
+    @GetMapping("/applications")
+    public ReturnObject getPlugs(@RequestParam(required = false, defaultValue = "1") Integer page,
+                                        @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+        PageDto<PlugDto> ret = this.plugService.retrievePlugs(page, pageSize);
+        return new ReturnObject(ReturnNo.OK, ret);
     }
 }

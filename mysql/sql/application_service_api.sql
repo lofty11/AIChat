@@ -122,5 +122,13 @@ INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'q', 'string', 
 INSERT INTO extension_output VALUES (NULL, '搜索结果1', 'q', 'json', NULL, 0, NULL, 1);
 INSERT INTO extension_output VALUES (NULL, '搜索结果2', 'q', 'json', NULL, 0, NULL, 1);
 
+INSERT INTO `functions` VALUES (NULL, 'search', 'web_search', 'http', 'api', 'gong', 0);
+INSERT INTO `functions` VALUES (NULL, 'search1', 'web_search', 'http', 'api', 'gong', 0);
+INSERT INTO `functions` VALUES (NULL, 'search2', 'web_search', 'http', 'api', 'gong', 0);
+INSERT INTO `plug` VALUES (NULL, 'c', 'b', 'http', 1, 1, 0);
+INSERT INTO `plug` VALUES (NULL, 'aaa', 'b', 'http', 1, 1, 1);
+INSERT INTO `plugpara` VALUES (NULL, 4, 'aaa', 1, 0);
+INSERT INTO `userpara` VALUES (NULL, 4, 'a', 'b', 'c', 1, 'e', 0);
+
 INSERT INTO user VALUES (NULL,0, 'admin', '123456', '10000');
 INSERT INTO user VALUES (NULL,1,'zmr','100000','181000000');
