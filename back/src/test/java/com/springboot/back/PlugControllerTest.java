@@ -36,7 +36,7 @@ public class PlugControllerTest {
     @Test
     public void createPlugParaTest() throws Exception {
         String s = "{\"name\":\"aaa\",\"value\":1,\"deleted\":0}";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/plugpara",4)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/plugpara",2)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
@@ -44,7 +44,7 @@ public class PlugControllerTest {
     @Test
     public void createUserParaTest() throws Exception {
         String s = "{\"name\":\"a\",\"field\":\"b\",\"type\":\"c\",\"necessary\":1,\"description\":\"d\",\"deleted\":0}";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/userpara",4)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/userpara",2)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
@@ -53,7 +53,7 @@ public class PlugControllerTest {
     @Test
     public void updatePlugTest() throws Exception {
         String s = "{\"name\":\"aaa\",\"purpose\":\"b\",\"description\":\"http\",\"available\":1,\"open\":1,\"deleted\":0}";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{plugId}/plug", 4)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{plugId}/plug", 2)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
@@ -62,7 +62,7 @@ public class PlugControllerTest {
     @Test
     public void deletePlugTest() throws Exception{
         String s = "{\"name\":\"aaa\",\"purpose\":\"b\",\"description\":\"http\",\"available\":1,\"open\":1,\"deleted\":1}";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{plugId}/plug", 4)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{plugId}/plug", 2)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
