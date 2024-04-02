@@ -125,11 +125,11 @@ CREATE TABLE type_union
 alter table type_union character set utf8;
 
 
-INSERT INTO `functions` VALUES (NULL, 'search', 'web_search', 'http', 'api', 'gong', 0);
-INSERT INTO `functions` VALUES (NULL, 'search1', 'web_search', 'http', 'api', 'gong', 0);
-INSERT INTO `functions` VALUES (NULL, 'search2', 'web_search', 'http', 'api', 'gong', 0);
-INSERT INTO `plug` VALUES (NULL, 'c', 'b', 'http', 1, 1, 0);
-INSERT INTO `plug` VALUES (NULL, 'aaa', 'b', 'http', 1, 1, 1);
+INSERT INTO `functions` VALUES (NULL, 'search', 'web_search', 'http', 'api', '联网搜索工具1', 0);
+INSERT INTO `functions` VALUES (NULL, 'search1', 'web_search', 'http', 'api', '联网搜索工具2', 0);
+INSERT INTO `functions` VALUES (NULL, 'search2', 'web_search', 'http', 'api', '联网搜索工具3', 0);
+INSERT INTO `plug` VALUES (NULL, 'plug_test', 'web_search', 'http请求', 1, 1, 0);
+INSERT INTO `plug` VALUES (NULL, 'plug_test2', 'b', 'http', 1, 1, 1);
 INSERT INTO `plugpara` VALUES (NULL,'aaa', 1, 0,1);
 INSERT INTO `plugpara` VALUES (NULL,'bbb', 1, 0,1);
 INSERT INTO `userpara` VALUES (NULL, 'search', 'b', 'c', 1, 'e', 0, 1);

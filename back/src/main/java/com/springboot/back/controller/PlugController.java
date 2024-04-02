@@ -6,7 +6,6 @@ import com.springboot.back.controller.vo.PlugParaVo;
 import com.springboot.back.controller.vo.PlugVo;
 import com.springboot.back.controller.vo.UserParaVo;
 import com.springboot.back.service.PlugService;
-import com.springboot.back.service.dto.ApplicationServiceDto;
 import com.springboot.back.service.dto.PlugDto;
 import com.springboot.core.aop.LoginUser;
 import com.springboot.core.model.ReturnNo;
@@ -36,7 +35,7 @@ public class PlugController {
     public ReturnObject createFunction(@Valid @RequestBody FunctionVo vo,
                                        @LoginUser UserDto user){
         this.plugService.createFunctionService(vo.getName(),vo.getEname(),vo.getType(),vo.getApi()
-                , vo.getDescription(), vo.getDeleted(),user);
+                , vo.getDescription(), 0,user);
         return new ReturnObject(ReturnNo.OK);
     }
 
@@ -45,7 +44,7 @@ public class PlugController {
     public ReturnObject createPlug(@Valid @RequestBody PlugVo vo,
                                        @LoginUser UserDto user){
         this.plugService.createPlugService(vo.getName(),vo.getPurpose(), vo.getDescription(),
-                vo.getAvailable(),vo.getOpen(),vo.getDeleted(),user);
+                vo.getAvailable(),vo.getOpen(),0,user);
         return new ReturnObject(ReturnNo.OK);
     }
 
@@ -54,7 +53,7 @@ public class PlugController {
     public ReturnObject createPlugPara(@PathVariable Long plugId,
                                              @Valid @RequestBody PlugParaVo vo,
                                              @LoginUser UserDto user) {
-        this.plugService.createPlugPara(vo.getName(), vo.getValue(),vo.getDeleted(), plugId, user);
+        this.plugService.createPlugPara(vo.getName(), vo.getValue(),0, plugId, user);
         return new ReturnObject(ReturnNo.CREATED);
     }
 
@@ -63,7 +62,7 @@ public class PlugController {
     public ReturnObject createUserPara(@PathVariable Long plugId,
                                        @Valid @RequestBody UserParaVo vo,
                                        @LoginUser UserDto user) {
-        this.plugService.createUserPara(vo.getName(),vo.getField(),vo.getType(),vo.getNecessary(),vo.getDescription(),vo.getDeleted(), plugId, user);
+        this.plugService.createUserPara(vo.getName(),vo.getField(),vo.getType(),vo.getNecessary(),vo.getDescription(),0, plugId, user);
         return new ReturnObject(ReturnNo.CREATED);
     }
 
@@ -73,7 +72,7 @@ public class PlugController {
                                                  @Valid @RequestBody PlugVo vo,
                                                  @LoginUser UserDto user) {
         this.plugService.updatePlugService(plugId, vo.getName(),vo.getPurpose(), vo.getDescription(),
-                vo.getAvailable(),vo.getOpen(),vo.getDeleted(),user);
+                vo.getAvailable(),vo.getOpen(),0,user);
         return new ReturnObject(ReturnNo.OK);
     }
 
@@ -83,7 +82,7 @@ public class PlugController {
                                    @Valid @RequestBody FunctionVo vo,
                                    @LoginUser UserDto user) {
         this.plugService.updateFuncService(funcId, vo.getName(),vo.getEname(),vo.getType()
-                ,vo.getApi(),vo.getDescription(),vo.getDeleted(),user);
+                ,vo.getApi(),vo.getDescription(),0,user);
         return new ReturnObject(ReturnNo.OK);
     }
 
@@ -92,7 +91,7 @@ public class PlugController {
     public ReturnObject updatePlugPara(@PathVariable Long plugId,
                                    @Valid @RequestBody PlugParaVo vo,
                                    @LoginUser UserDto user) {
-        this.plugService.updatePlugParaService(plugId, vo.getName(),vo.getValue(),vo.getDeleted(),user);
+        this.plugService.updatePlugParaService(plugId, vo.getName(),vo.getValue(),0,user);
         return new ReturnObject(ReturnNo.OK);
     }
 
@@ -102,7 +101,7 @@ public class PlugController {
                                        @Valid @RequestBody UserParaVo vo,
                                        @LoginUser UserDto user) {
         this.plugService.updateUserParaService(plugId, vo.getName(),vo.getField(),vo.getType(),
-                vo.getNecessary(),vo.getDescription(),vo.getDeleted(),user);
+                vo.getNecessary(),vo.getDescription(),0,user);
         return new ReturnObject(ReturnNo.OK);
     }
 
