@@ -41,10 +41,9 @@ public class PlugController {
 
     /*创建插件*/
     @PostMapping("/plug")
-    public ReturnObject createPlug(@Valid @RequestBody PlugVo vo,
-                                       @LoginUser UserDto user){
+    public ReturnObject createPlug(@Valid @RequestBody PlugVo vo){
         this.plugService.createPlugService(vo.getName(),vo.getPurpose(), vo.getDescription(),
-                vo.getAvailable(),vo.getOpen(),0,user);
+                vo.getAvailable(),vo.getOpen(),0);
         return new ReturnObject(ReturnNo.OK);
     }
 

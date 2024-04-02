@@ -6,7 +6,6 @@ import com.springboot.back.mapper.po.PlugPo;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.Constants;
 import com.springboot.core.model.ReturnNo;
-import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -42,7 +41,7 @@ public class PlugDao {
         return po;
     }
 
-    public Long insert(Plug plug, UserDto user) throws RuntimeException{
+    public Long insert(Plug plug) throws RuntimeException{
         PlugPo po = this.plugPoMapper.findByName(plug.getName());
         if (null == po) {
             PlugPo plugPo = getPo(plug);
@@ -67,7 +66,7 @@ public class PlugDao {
         }
     }
 
-    public String save(Long id, Plug plug, UserDto user) {
+    public String save(Long id, Plug plug) {
         PlugPo po = getPo(plug);
         po.setId(id);
         /*if (null != user) {

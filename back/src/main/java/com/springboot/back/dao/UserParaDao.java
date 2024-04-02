@@ -1,9 +1,7 @@
 package com.springboot.back.dao;
 
-import com.springboot.back.dao.bo.PlugPara;
 import com.springboot.back.dao.bo.UserPara;
 import com.springboot.back.mapper.UserParaPoMapper;
-import com.springboot.back.mapper.po.PlugParaPo;
 import com.springboot.back.mapper.po.UserParaPo;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
@@ -15,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.springboot.core.util.Common.putGmtFields;
-import static com.springboot.core.util.Common.putUserFields;
 
 @Repository
 public class UserParaDao {
@@ -45,8 +40,8 @@ public class UserParaDao {
         UserParaPo po = this.userParaPoMapper.findByName(userPara.getName());
         if (null == po) {
             UserParaPo userParaPo = getPo(userPara);
-            putUserFields(userParaPo, "creator", user);
-            putGmtFields(userParaPo, "create");
+            /*putUserFields(userParaPo, "creator", user);
+            putGmtFields(userParaPo, "create");*/
             this.userParaPoMapper.save(userParaPo);
             return userParaPo.getId();
         } else {
@@ -69,10 +64,10 @@ public class UserParaDao {
     public String save(Long id, UserPara userPara, UserDto user) {
         UserParaPo po = getPo(userPara);
         po.setId(id);
-        if (null != user) {
+        /*if (null != user) {
             putGmtFields(po, "modified");
             putUserFields(po, "modifier", user);
-        }
+        }*/
         this.userParaPoMapper.save(po);
         return String.format(KEY, userPara.getId());
     }
