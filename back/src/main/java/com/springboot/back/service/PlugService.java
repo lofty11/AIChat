@@ -4,8 +4,13 @@ import com.springboot.back.dao.FunctionDao;
 import com.springboot.back.dao.PlugDao;
 import com.springboot.back.dao.PlugParaDao;
 import com.springboot.back.dao.UserParaDao;
-import com.springboot.back.dao.bo.*;
-import com.springboot.back.service.dto.*;
+import com.springboot.back.dao.bo.Function;
+import com.springboot.back.dao.bo.Plug;
+import com.springboot.back.dao.bo.PlugPara;
+import com.springboot.back.dao.bo.UserPara;
+import com.springboot.back.service.dto.PlugDto;
+import com.springboot.back.service.dto.PlugParaDto;
+import com.springboot.back.service.dto.UserParaDto;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.PageDto;
@@ -45,10 +50,10 @@ public class PlugService {
     }
 
     @Transactional()
-    public void createPlugService(String name, String purpose, String description, Integer available,Integer open, Integer deleted, UserDto user){
+    public void createPlugService(String name, String purpose, String description, Integer available,Integer open, Integer deleted){
         Plug plug = Plug.builder().name(name).purpose(purpose)
                 .description(description).available(available).open(open).deleted(deleted).build();
-        this.plugDao.insert(plug, user);
+        this.plugDao.insert(plug);
     }
 
     @Transactional
@@ -75,7 +80,7 @@ public class PlugService {
         plug.setAvailable(available);
         plug.setOpen(open);
         plug.setDeleted(deleted);
-        this.plugDao.save(id, plug, user);
+        this.plugDao.save(id, plug);
     }
     @Transactional
     public void updateFuncService(Long id, String name, String ename, String type,String api,String description,  Integer deleted, UserDto user) {
