@@ -3,9 +3,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/aichat?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/plug?serverTimezone=Asia/Shanghai
     username: root
-    password: 123456
+    password: 17140488a
   jpa:
     show-sql: true
     properties:

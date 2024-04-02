@@ -1,9 +1,7 @@
 package com.springboot.back.dao;
 
-import com.springboot.back.dao.bo.ApplicationService;
 import com.springboot.back.dao.bo.Plug;
 import com.springboot.back.mapper.PlugPoMapper;
-import com.springboot.back.mapper.po.ApplicationServicePo;
 import com.springboot.back.mapper.po.PlugPo;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.Constants;
@@ -17,9 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.springboot.core.util.Common.putGmtFields;
-import static com.springboot.core.util.Common.putUserFields;
 
 /**
  * @author dell
@@ -51,8 +46,8 @@ public class PlugDao {
         PlugPo po = this.plugPoMapper.findByName(plug.getName());
         if (null == po) {
             PlugPo plugPo = getPo(plug);
-            putUserFields(plugPo, "creator", user);
-            putGmtFields(plugPo, "create");
+            /*putUserFields(plugPo, "creator", user);
+            putGmtFields(plugPo, "create");*/
             this.plugPoMapper.save(plugPo);
             return plugPo.getId();
         } else {
@@ -75,10 +70,10 @@ public class PlugDao {
     public String save(Long id, Plug plug, UserDto user) {
         PlugPo po = getPo(plug);
         po.setId(id);
-        if (null != user) {
+        /*if (null != user) {
             putGmtFields(po, "modified");
             putUserFields(po, "modifier", user);
-        }
+        }*/
         this.plugPoMapper.save(po);
         return String.format(KEY, plug.getId());
     }
@@ -94,8 +89,9 @@ public class PlugDao {
     public List<Plug> retrieveAll(Integer page, Integer pageSize) throws RuntimeException {
         List<PlugPo> reList = this.plugPoMapper.findAll(PageRequest.of(0, Constants.MAX_RETURN))
                 .stream().toList();
-        if (reList.isEmpty())
+        if (reList.isEmpty()) {
             return new ArrayList<>();
+        }
         return reList.stream().map(this::getBo).collect(Collectors.toList());
     }
 

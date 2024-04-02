@@ -27,7 +27,4 @@ public class FunctionVo {
     @NotNull
     String description;
 
-    @NotNull
-    Integer deleted;
-
 }

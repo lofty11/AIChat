@@ -26,6 +26,4 @@ public class PlugVo {
     @NotNull
     private Integer open;
 
-    @NotNull
-    private Integer deleted;
 }
