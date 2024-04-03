@@ -11,9 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import static com.springboot.core.util.Common.putGmtFields;
-import static com.springboot.core.util.Common.putUserFields;
-
 /**
  * @author dell
  */
@@ -44,8 +41,8 @@ public class FunctionDao {
         FunctionPo po = this.functionPoMapper.findByName(function.getName());
         if (null == po) {
             FunctionPo functionPo = getPo(function);
-            putUserFields(functionPo, "creator", user);
-            putGmtFields(functionPo, "create");
+            /*putUserFields(functionPo, "creator", user);
+            putGmtFields(functionPo, "create");*/
             this.functionPoMapper.save(functionPo);
             return functionPo.getId();
         } else {
@@ -68,10 +65,10 @@ public class FunctionDao {
     public String save(Long id, Function function, UserDto user) {
         FunctionPo po = getPo(function);
         po.setId(id);
-        if (null != user) {
+        /*if (null != user) {
             putGmtFields(po, "modified");
             putUserFields(po, "modifier", user);
-        }
+        }*/
         this.functionPoMapper.save(po);
         return String.format(KEY, function.getId());
     }

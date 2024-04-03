@@ -27,7 +27,7 @@ public class PlugControllerTest {
 
     @Test
     public void createPlugTest() throws Exception {
-        String s = "{\"name\":\"aa\",\"purpose\":\"b\",\"description\":\"http\",\"available\":1,\"open\":1,\"deleted\":0}";
+        String s = "{\"name\":\"plug2\",\"purpose\":\"b\",\"description\":\"http\",\"available\":1,\"open\":1,\"deleted\":0}";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/plug")
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())

@@ -16,8 +16,4 @@ public class PlugParaVo {
 
     @NotNull
     private Integer value;
-
-
-    @NotNull
-    private Integer deleted;
 }

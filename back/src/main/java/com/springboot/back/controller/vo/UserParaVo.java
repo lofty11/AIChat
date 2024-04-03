@@ -24,8 +24,4 @@ public class UserParaVo {
 
     @NotNull
     private String description;
-
-
-    @NotNull
-    private Integer deleted;
 }
