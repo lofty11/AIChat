@@ -35,7 +35,7 @@ public class ApplicationControllerTest {
 
     @Test
     public void deleteExtensionInputTest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/application/{applicationId}/{fieldName}/input", 4, "搜索查询参数1")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/application/{inputId}/input", 7)
                 .accept(MediaType.APPLICATION_JSON))
                 .andReturn();
         String content = mvcResult.getResponse().getContentAsString();
@@ -44,7 +44,7 @@ public class ApplicationControllerTest {
 
     @Test
     public void deleteExtensionOutputTest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/application/{applicationId}/{fieldName}/output", 4, "搜索结果2")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/application/{outputId}/output", 7)
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn();
         String content = mvcResult.getResponse().getContentAsString();
@@ -121,6 +121,30 @@ public class ApplicationControllerTest {
     @Test
     public void getApplicationsTest() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/application/applications")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void getApplicationTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/application/{id}/applicationService", 1)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void getInputTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/application/{id}/input", 1)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void getOutputTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/application/{id}/output", 1)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
