@@ -99,15 +99,15 @@ export default {
       default: false
     },
     list: {
-      type: {},
-      default: {
-        apiName: '',
-        apiCode: '',
-        requestUrl: '',
-        requestMethod: 0,
-        extensionInput: [],
-        extensionOutput: []
-      }
+      type: Array
+      // default: {
+      //   apiName: '',
+      //   apiCode: '',
+      //   requestUrl: '',
+      //   requestMethod: 0,
+      //   extensionInput: [],
+      //   extensionOutput: []
+      // }
     }
   },
   data() {
