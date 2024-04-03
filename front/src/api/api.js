@@ -7,4 +7,18 @@ export function createAPI(data) {
     data
   })
 }
+export function getAllAPI() {
+  return request({
+    url: '/application/applications',
+    method: 'get'
+  })
+}
+
+export function getApiById(apiId) {
+  return request({
+    url: '/application/{apiId}/applications',
+    method: 'get',
+    params: { apiId }
+  })
+}
 

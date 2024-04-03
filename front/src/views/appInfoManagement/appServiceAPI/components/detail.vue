@@ -6,35 +6,35 @@
     top="5vh"
     :before-close="handleClose"
   >
-    <el-form ref="form" label-position="left" :model="form" label-width="90px" size="small">
+    <el-form ref="form" label-position="left" :model="list" label-width="90px" size="small">
       <el-row type="flex" justify="center" align="middle">
-        <el-form-item prop="name" label="API名称：">
-          {{ form.name }}
+        <el-form-item prop="apiName" label="API名称：">
+          {{ list.apiName }}
         </el-form-item>
       </el-row>
       <el-row type="flex" justify="center" align="middle">
-        <el-form-item prop="code" label="API code：">
-          {{ form.code }}
+        <el-form-item prop="apiCode" label="API code：">
+          {{ list.apiCode }}
         </el-form-item>
       </el-row>
       <el-row type="flex" justify="center" align="middle">
-        <el-form-item prop="URL" label="请求URL：">
-          {{ form.URL }}
+        <el-form-item prop="requestUrl" label="请求URL：">
+          {{ list.requestUrl }}
         </el-form-item>
       </el-row>
       <el-row type="flex" justify="center" align="middle">
-        <el-form-item prop="format" label="请求方式：">
-          {{ form.format }}
+        <el-form-item prop="requestMethod" label="请求方式：">
+          {{ RequestMethodDisplay(list.requestMethod) }}
         </el-form-item>
       </el-row>
     </el-form>
     <p><strong>插件API入参定义：</strong></p>
     <el-table
-      :data="inputParameterTableData"
+      :data="list.extensionInput"
       style="width: 100%"
     >
       <el-table-column
-        prop="name"
+        prop="fieldName"
         label="字段名称"
       />
       <el-table-column
@@ -58,11 +58,11 @@
 
     <p><strong>插件API出参定义：</strong></p>
     <el-table
-      :data="outputParameterTableData"
+      :data="list.extensionOutput"
       style="width: 100%"
     >
       <el-table-column
-        prop="name"
+        prop="fieldName"
         label="字段名称"
       />
       <el-table-column
@@ -97,38 +97,21 @@ export default {
     detailDialogVisible: {
       type: Boolean,
       default: false
+    },
+    list: {
+      type: {},
+      default: {
+        apiName: '',
+        apiCode: '',
+        requestUrl: '',
+        requestMethod: 0,
+        extensionInput: [],
+        extensionOutput: []
+      }
     }
   },
   data() {
     return {
-      form: {
-        name: 'SerpAPI',
-        code: 'SerpAPI',
-        URL: '/server/web-search',
-        format: 'POST'
-      },
-      inputParameterTableData: [
-        {
-          name: '',
-          code: '',
-          field: '',
-          type: '',
-          required: '',
-          description: '',
-          operation: ''
-        }
-      ],
-      outputParameterTableData: [
-        {
-          name: ' ',
-          code: ' ',
-          field: ' ',
-          type: ' ',
-          required: ' ',
-          description: ' ',
-          operation: ' '
-        }
-      ]
     }
   },
   methods: {
@@ -140,6 +123,19 @@ export default {
     },
     confirm() {
       this.$emit('update:detailDialogVisible', false)
+    },
+    RequestMethodDisplay(requestMethod) {
+      // 根据 requestMethod 的值返回相应的文字
+      if (requestMethod === 0) {
+        return 'GET'
+      } else if (requestMethod === 1) {
+        return 'POST'
+      } else if (requestMethod === 2) {
+        return 'PUT'
+      } else if (requestMethod === 3) {
+        return 'DELETE'
+      }
+      // 其他情况的处理
     }
   }
 }
