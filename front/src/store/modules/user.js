@@ -4,11 +4,12 @@ import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
+    id: '',
     token: getToken(),
-    name: '',
+    userName: '',
     avatar: '',
-    tel: '',
-    level: ''
+    userTel: '',
+    userLevel: ''
   }
 }
 
@@ -18,20 +19,23 @@ const mutations = {
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
   },
+  SET_ID: (state, id) => {
+    state.id = id
+  },
   SET_TOKEN: (state, token) => {
     state.token = token
   },
   SET_NAME: (state, name) => {
-    state.name = name
+    state.userName = name
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
   SET_TEL: (state, tel) => {
-    state.tel = tel
+    state.userTel = tel
   },
   SET_LEVEL: (state, level) => {
-    state.level = level
+    state.userLevel = level
   }
 }
 
@@ -40,7 +44,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { name, password, userLevel } = userInfo
     return new Promise((resolve, reject) => {
-      login({name: name.trim(), password: password.trim(), userLevel: parseInt(userLevel)}).then(response => {
+      login({ name: name.trim(), password: password.trim(), userLevel: parseInt(userLevel) }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
@@ -60,7 +64,7 @@ const actions = {
         if (!data) {
           return reject('Verification failed, please Login again.')
         }
-
+        commit('SET_ID', data.id)
         commit('SET_NAME', data.userName)
         commit('SET_TEL', data.userTel)
         commit('SET_LEVEL', data.userLevel)

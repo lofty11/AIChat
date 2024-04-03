@@ -16,9 +16,8 @@ export function getAllAPI() {
 
 export function getApiById(apiId) {
   return request({
-    url: '/application/{apiId}/applications',
-    method: 'get',
-    params: { apiId }
+    url: '/application/${apiId}/applications',
+    method: 'get'
   })
 }
 

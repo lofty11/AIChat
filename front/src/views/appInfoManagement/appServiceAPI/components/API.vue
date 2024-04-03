@@ -209,7 +209,7 @@ export default {
   watch: {
     // 监听 apiData 数据的变化
     id(newValue, oldValue) {
-      if (newValue === '0') {
+      if (newValue === 0) {
         this.form = {
           apiName: '',
           apiCode: '',
