@@ -37,13 +37,7 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/application': {
-        target: 'http://localhost:8088/'
-      },
-      '/user': {
-        target: 'http://localhost:8088/'
-      },
-      '/plug': {
+      '': {
         target: 'http://localhost:8088/'
       }
     }
