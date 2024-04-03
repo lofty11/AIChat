@@ -42,6 +42,9 @@ module.exports = {
       },
       '/user': {
         target: 'http://localhost:8088/'
+      },
+      '/plug': {
+        target: 'http://localhost:8088/'
       }
     }
     // before: require('./mock/mock-server.js')
