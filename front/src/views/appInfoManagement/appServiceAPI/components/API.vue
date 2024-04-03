@@ -8,16 +8,16 @@
     >
       <div v-if="formVisible">
         <el-form ref="form" label-position="left" :model="form" :rules="rules" label-width="90px" size="small">
-          <el-form-item prop="name" label="API名称">
+          <el-form-item prop="apiName" label="API名称">
             <el-input v-model="form.apiName" placeholder="请输入API名称" />
           </el-form-item>
-          <el-form-item prop="code" label="API code">
+          <el-form-item prop="apiCode" label="API code">
             <el-input v-model="form.apiCode" placeholder="请输入API code" />
           </el-form-item>
-          <el-form-item prop="URL" label="请求URL">
+          <el-form-item prop="requestUrl" label="请求URL">
             <el-input v-model="form.requestUrl" placeholder="请输入请求URL" />
           </el-form-item>
-          <el-form-item prop="format" label="请求方式">
+          <el-form-item prop="requestMethod" label="请求方式">
             <el-select v-model="form.requestMethod" placeholder="请选择请求方式">
               <el-option
                 label="GET"
@@ -129,7 +129,7 @@
 
 <script>
 import Parameter from '@/views/appInfoManagement/appServiceAPI/components/parameter'
-import { createAPI } from '@/api/api'
+import { createAPI, getApiById } from '@/api/api'
 
 export default {
   name: 'API',
@@ -150,6 +150,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    id: {
+      type: String,
+      default: '0'
     }
   },
   data() {
@@ -175,7 +179,7 @@ export default {
           { required: true, message: '请输入请求URL', trigger: 'blur' }
         ],
         requestMethod: [
-          { required: true, message: '请选择请求方式', trigger: 'change' }
+          { required: true, message: '请选择请求方式', trigger: 'blur' }
         ]
       },
       inputParameterTableData: [
@@ -202,6 +206,24 @@ export default {
       ]
     }
   },
+  watch: {
+    // 监听 apiData 数据的变化
+    id(newValue, oldValue) {
+      if (newValue === '0') {
+        this.form = {
+          apiName: '',
+          apiCode: '',
+          requestUrl: '',
+          requestMethod: ''
+        }
+      } else {
+        getApiById(newValue).then(response => {
+          this.form = response.data.list
+        })
+      }
+    }
+
+  },
   methods: {
     handleClose() {
       if (this.$refs.form !== undefined) {
@@ -210,16 +232,19 @@ export default {
       this.$emit('update:apiDialogVisible', false)
     },
     cancel() {
-      this.$refs.form.resetFields()
+      if (this.$refs.form !== undefined) {
+        this.$refs.form.resetFields()
+      }
       this.$emit('update:apiDialogVisible', false)
     },
     confirm() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.$message.success('提交成功！')
-          createAPI(this.form)
-
-          this.$refs.form.resetFields()
+          console.log(this.form)
+          createAPI(this.form).then((response) => {
+            if (response.errno === 1) { this.$message.success('提交成功！') }
+            this.$refs.form.resetFields()
+          })
           this.$emit('update:apiDialogVisible', false)
         } else {
           this.$message.error('请将表单填写完整！')
