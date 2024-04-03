@@ -5,6 +5,8 @@ import com.springboot.back.controller.vo.ExtensionInputVo;
 import com.springboot.back.controller.vo.ExtensionOutputVo;
 import com.springboot.back.service.ApplicationApiService;
 import com.springboot.back.service.dto.ApplicationServiceDto;
+import com.springboot.back.service.dto.ExtensionInputDto;
+import com.springboot.back.service.dto.ExtensionOutputDto;
 import com.springboot.core.aop.LoginUser;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.ReturnObject;
@@ -31,15 +33,15 @@ public class AdminApplicationController {
         return new ReturnObject(ReturnNo.OK);
     }
 
-    @DeleteMapping("/{applicationId}/{fieldName}/input")
-    public ReturnObject deleteExtensionInput(@PathVariable Long applicationId, @PathVariable String fieldName) {
-        this.applicationApiService.deleteExtensionInput(applicationId, fieldName);
+    @DeleteMapping("/{inputId}/input")
+    public ReturnObject deleteExtensionInput(@PathVariable Long inputId) {
+        this.applicationApiService.deleteExtensionInput(inputId);
         return new ReturnObject(ReturnNo.OK);
     }
 
-    @DeleteMapping("/{applicationId}/{fieldName}/output")
-    public ReturnObject deleteExtensionOutput(@PathVariable Long applicationId, @PathVariable String fieldName) {
-        this.applicationApiService.deleteExtensionOutput(applicationId, fieldName);
+    @DeleteMapping("/{outputId}/output")
+    public ReturnObject deleteExtensionOutput(@PathVariable Long outputId) {
+        this.applicationApiService.deleteExtensionOutput(outputId);
         return new ReturnObject(ReturnNo.OK);
     }
 
@@ -109,4 +111,21 @@ public class AdminApplicationController {
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
+    @GetMapping("/{id}/applicationService")
+    public ReturnObject getApplication(@PathVariable Long id) {
+        ApplicationServiceDto ret = this.applicationApiService.retrieveApplication(id);
+        return new ReturnObject(ReturnNo.OK, ret);
+    }
+
+    @GetMapping("/{id}/input")
+    public ReturnObject getInput(@PathVariable Long id) {
+        ExtensionInputDto ret = this.applicationApiService.retrieveInput(id);
+        return new ReturnObject(ReturnNo.OK, ret);
+    }
+
+    @GetMapping("/{id}/output")
+    public ReturnObject getOutput(@PathVariable Long id) {
+        ExtensionOutputDto ret = this.applicationApiService.retrieveOutput(id);
+        return new ReturnObject(ReturnNo.OK, ret);
+    }
 }

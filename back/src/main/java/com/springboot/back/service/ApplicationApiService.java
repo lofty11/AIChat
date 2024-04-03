@@ -47,21 +47,21 @@ public class ApplicationApiService {
     }
 
     @Transactional
-    public void deleteExtensionInput(Long applicationId, String fieldName) {
-        ExtensionInput extensionInput = this.extensionInputDao.findByApplicationIdAndFieldName(applicationId, fieldName);
+    public void deleteExtensionInput(Long inputId) {
+        ExtensionInput extensionInput = this.extensionInputDao.findById(inputId);
         if(null == extensionInput) {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件入参", fieldName));
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件入参", inputId));
         }
-        this.extensionInputDao.delete(extensionInput.getId());
+        this.extensionInputDao.delete(inputId);
     }
 
     @Transactional
-    public void deleteExtensionOutput(Long applicationId, String fieldName) {
-        ExtensionOutput extensionOutput = this.extensionOutputDao.findByApplicationIdAndFieldName(applicationId, fieldName);
+    public void deleteExtensionOutput(Long outputId) {
+        ExtensionOutput extensionOutput = this.extensionOutputDao.findById(outputId);
         if(null == extensionOutput) {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件出参", fieldName));
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件出参", outputId));
         }
-        this.extensionOutputDao.delete(extensionOutput.getId());
+        this.extensionOutputDao.delete(outputId);
     }
 
     @Transactional
@@ -173,4 +173,42 @@ public class ApplicationApiService {
         return applicationServiceDto;
     }
 
+    @Transactional
+    public ApplicationServiceDto retrieveApplication(Long applicationId) {
+        ApplicationService applicationService = this.applicationServiceDao.findById(applicationId);
+        List<ExtensionInput> extensionInputs = this.extensionInputDao.retrieveByApplicationId(applicationId);
+        List<ExtensionInputDto> inputDtos = extensionInputs.stream().map(obj -> {
+            return ExtensionInputDto.builder().id(obj.getId()).fieldName(obj.getFieldName())
+                    .field(obj.getField()).type(obj.getType()).enumerationRange(obj.getEnumerationRange()).required(obj.getRequired())
+                    .description(obj.getDescription()).build();
+        }).collect(Collectors.toList());
+        List<ExtensionOutput> extensionOutputs = this.extensionOutputDao.retrieveByApplicationId(applicationId);
+        List<ExtensionOutputDto> outputDtos = extensionOutputs.stream().map(obj -> {
+            return ExtensionOutputDto.builder().id(obj.getId()).fieldName(obj.getFieldName()).field(obj.getField())
+                    .type(obj.getType()).enumerationRange(obj.getEnumerationRange()).required(obj.getRequired())
+                    .description(obj.getDescription()).build();
+        }).collect(Collectors.toList());
+        ApplicationServiceDto ret = ApplicationServiceDto.builder().id(applicationService.getId()).apiName(applicationService.getApiName())
+                .apiCode(applicationService.getApiCode()).requestMethod(applicationService.getRequestMethod()).requestUrl(applicationService.getRequestUrl())
+                .extensionInput(inputDtos).extensionOutput(outputDtos).build();
+        return ret;
+    }
+
+    @Transactional
+    public ExtensionInputDto retrieveInput(Long id) {
+        ExtensionInput extensionInput = this.extensionInputDao.findById(id);
+        ExtensionInputDto ret = ExtensionInputDto.builder().id(id).field(extensionInput.getField()).fieldName(extensionInput.getFieldName())
+                .type(extensionInput.getType()).enumerationRange(extensionInput.getEnumerationRange()).required(extensionInput.getRequired())
+                .description(extensionInput.getDescription()).build();
+        return ret;
+    }
+
+    @Transactional
+    public ExtensionOutputDto retrieveOutput(Long id) {
+        ExtensionOutput extensionOutput = this.extensionOutputDao.findById(id);
+        ExtensionOutputDto ret = ExtensionOutputDto.builder().id(id).field(extensionOutput.getField()).fieldName(extensionOutput.getFieldName())
+                .type(extensionOutput.getType()).enumerationRange(extensionOutput.getEnumerationRange()).required(extensionOutput.getRequired())
+                .description(extensionOutput.getDescription()).build();
+        return ret;
+    }
 }
