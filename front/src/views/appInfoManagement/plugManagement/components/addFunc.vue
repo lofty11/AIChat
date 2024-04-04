@@ -5,8 +5,8 @@
       <el-form-item prop="name" label="函数名称">
         <el-input v-model="funcInfo.name" style="width: 75%" placeholder="请输入函数名称" />
       </el-form-item>
-      <el-form-item prop="enName" label="函数名称（英）">
-        <el-input v-model="funcInfo.enName" style="width: 75%" placeholder="请输入函数名称" />
+      <el-form-item prop="eName" label="函数名称（英）">
+        <el-input v-model="funcInfo.eName" style="width: 75%" placeholder="请输入函数名称" />
       </el-form-item>
       <el-form-item prop="typeId" label="函数类型">
         <el-select v-model="funcInfo.typeId" style="width: 75%" placeholder="请选择函数类型">
@@ -35,7 +35,7 @@
         <el-row>
           <el-col span="10">
             <el-button type="primary" @click="close">关闭</el-button>
-            <el-button type="primary" @click="submitFuncInfo">确认</el-button>
+            <el-button type="primary" @click="confirm">确认</el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -43,7 +43,7 @@
   </el-dialog>
 </template>
 <script>
-import { getTypeList, getApiList } from '@/api/plug'
+import { createFunc, getApiList, getTypeList } from '@/api/plug'
 export default {
   props: {
     addFuncDialogVisible: {
@@ -57,16 +57,22 @@ export default {
       typeList: [{ id: 1, type: '类型1' }, { id: 2, type: '类型2' }, { id: 3, type: '类型3' }],
       apiList: [{ id: 1, api: '服务API 1' }, { id: 2, api: '服务API 2' }, { id: 3, api: '服务API 3' }],
       funcInfo: {
-        id: '',
         name: '',
-        enName: '',
+        eName: '',
         typeId: '',
         apiId: '',
         description: ''
       },
+      form: {
+        name: '',
+        ename: '',
+        type: '',
+        api: '',
+        description: ''
+      },
       rules: {
         name: [{ required: true, message: '函数名称不能为空', trigger: 'blur' }],
-        enName: [{ required: true, message: '函数英文名称不能为空', trigger: 'blur' }],
+        eName: [{ required: true, message: '函数英文名称不能为空', trigger: 'blur' }],
         typeId: [{ required: true, message: '函数类型不能为空', trigger: 'blur' }],
         apiId: [{ required: true, message: '服务API不能为空', trigger: 'blur' }],
         description: [{ required: true, message: '函数描述不能为空', trigger: 'blur' }]
@@ -87,21 +93,27 @@ export default {
     async getApiList() {
       this.apiList = await getApiList()
     },
-
-    submitFuncInfo() {
-      // 在这里处理提交逻辑
-      // 可以发送请求或执行其他操作
-      // this.$refs.addFunc.validate(async isOk => {
-      //   if (isOk) {
-      //     await addFunc({ ...this.funcInfo })
-      //     this.$emit('updateFuncTable')
-      //     this.$message.success('新增函数成功')
-      //   }
-      // })
-      this.$emit('updateFuncTable')
-      this.$message.success('新增函数成功')
-      // 提交完成后关闭对话框
-      this.addFuncDialogVisible = false
+    trans() {
+      this.form.name = this.funcInfo.name
+      this.form.ename = this.funcInfo.eName
+      this.form.description = this.funcInfo.description
+      this.form.type = this.typeList[this.funcInfo.typeId].type
+      this.form.api = this.apiList[this.funcInfo.apiId].api
+    },
+    confirm() {
+      this.$refs.addFunc.validate((valid) => {
+        if (valid) {
+          this.$message.success('提交成功！')
+          this.trans()
+          console.log(this.form)
+          createFunc(this.form)
+          this.$refs.addFunc.resetFields()
+          this.$emit('update:addFuncDialogVisible', false)
+        } else {
+          this.$message.error('请将表单填写完整！')
+          return false
+        }
+      })
     }
   }
 }

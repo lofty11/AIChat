@@ -1,9 +1,18 @@
 import request from '@/utils/request'
 // api待定，等待后端写好接口文档
+
+export function createPlug(data) {
+  return request({
+    url: '/plug/plug',
+    method: 'post',
+    data
+  })
+}
+
 export function getFuncList() {
   return request(
     {
-      url: '/appinfo/plug/functions'
+      url: '/plug/plug/functions'
     }
   )
 }
@@ -24,10 +33,10 @@ export function getApiList() {
   )
 }
 
-export function addFunc(data) {
+export function createFunc(data) {
   return request({
     method: 'post',
-    url: '/appinfo/plug/function',
+    url: '/plug/func',
     data
   })
 }
