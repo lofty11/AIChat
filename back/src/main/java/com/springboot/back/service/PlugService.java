@@ -8,6 +8,7 @@ import com.springboot.back.dao.bo.Function;
 import com.springboot.back.dao.bo.Plug;
 import com.springboot.back.dao.bo.PlugPara;
 import com.springboot.back.dao.bo.UserPara;
+import com.springboot.back.service.dto.FunctionDto;
 import com.springboot.back.service.dto.PlugDto;
 import com.springboot.back.service.dto.PlugParaDto;
 import com.springboot.back.service.dto.UserParaDto;
@@ -50,10 +51,10 @@ public class PlugService {
     }
 
     @Transactional()
-    public void createPlugService(String name, String purpose, String description, Integer available,Integer open, Integer deleted){
+    public void createPlugService(String name, String purpose, String description, Integer available,Integer open, Integer deleted, UserDto user){
         Plug plug = Plug.builder().name(name).purpose(purpose)
                 .description(description).available(available).open(open).deleted(deleted).build();
-        this.plugDao.insert(plug);
+        this.plugDao.insert(plug,user);
     }
 
     @Transactional
@@ -80,7 +81,7 @@ public class PlugService {
         plug.setAvailable(available);
         plug.setOpen(open);
         plug.setDeleted(deleted);
-        this.plugDao.save(id, plug);
+        this.plugDao.save(id, plug,user);
     }
     @Transactional
     public void updateFuncService(Long id, String name, String ename, String type,String api,String description,  Integer deleted, UserDto user) {
@@ -131,21 +132,18 @@ public class PlugService {
 
     @Transactional
     public PageDto<PlugDto> retrievePlugs(Integer page, Integer pageSize) {
-        List<Plug> plugs = this.plugDao.retrieveAll(page, pageSize);
+        List<Plug> plugs = this.plugDao.retrieveAll();
         List<PlugDto> ret = new ArrayList<>();
         for(Plug plug: plugs) {
-            List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
-            List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> {
-                return PlugParaDto.builder().id(obj.getId()).name(obj.getName()).value(obj.getValue()).deleted(obj.getDeleted()).build();
-            }).collect(Collectors.toList());
-            List<UserPara> userParas = this.userParaDao.retrieveByPlugId(plug.getId());
-            List<UserParaDto> userParaDtos = userParas.stream().map(obj -> {
-                return UserParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
-                        type(obj.getType()).necessary(obj.getNecessary()).description(obj.getDescription()).
-                        deleted(obj.getDeleted()).build();
-            }).collect(Collectors.toList());
-            PlugDto plugDto = getPlugDto(plug, plugParaDtos, userParaDtos);
-            ret.add(plugDto);
+            if(plug.getDeleted() == 0){
+                List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
+                List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> PlugParaDto.builder().id(obj.getId()).name(obj.getName()).value(obj.getValue()).build()).collect(Collectors.toList());
+                List<UserPara> userParas = this.userParaDao.retrieveByPlugId(plug.getId());
+                List<UserParaDto> userParaDtos = userParas.stream().map(obj -> UserParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
+                        type(obj.getType()).necessary(obj.getNecessary()).description(obj.getDescription()).build()).collect(Collectors.toList());
+                PlugDto plugDto = getPlugDto(plug, plugParaDtos, userParaDtos);
+                ret.add(plugDto);
+            }
         }
         return new PageDto<>(ret, page, pageSize);
     }
@@ -159,10 +157,33 @@ public class PlugService {
         plugDto.setDescription(plug.getDescription());
         plugDto.setAvailable(plug.getAvailable());
         plugDto.setOpen(plug.getOpen());
-        plugDto.setDeleted(plug.getDeleted());
         plugDto.setPlugParas(plugParaDtos);
         plugDto.setUserParas(userParaDtos);
         return plugDto;
+    }
+
+    @Transactional
+    public PageDto<FunctionDto> retrieveFunctions(Integer page, Integer pageSize) {
+        List<Function> functions = this.functionDao.retrieveAll();
+        List<FunctionDto> ret = new ArrayList<>();
+        for(Function function: functions) {
+            if(function.getDeleted() == 0){
+                FunctionDto functionDto = getFunctionDto(function);
+                ret.add(functionDto);
+            }
+        }
+        return new PageDto<>(ret, page, pageSize);
+    }
+
+    private static FunctionDto getFunctionDto(Function function) {
+        FunctionDto functionDto = new FunctionDto();
+        functionDto.setId(function.getId());
+        functionDto.setName(function.getName());
+        functionDto.setEname(function.getEname());
+        functionDto.setType(function.getType());
+        functionDto.setApi(function.getApi());
+        functionDto.setDescription(function.getDescription());
+        return functionDto;
     }
 
 }

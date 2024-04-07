@@ -6,6 +6,7 @@ import com.springboot.back.mapper.po.PlugPo;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.Constants;
 import com.springboot.core.model.ReturnNo;
+import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.springboot.core.util.Common.putGmtFields;
+import static com.springboot.core.util.Common.putUserFields;
 
 /**
  * @author dell
@@ -30,23 +34,21 @@ public class PlugDao {
     }
 
     private Plug getBo(PlugPo po) {
-        Plug bo = Plug.builder().id(po.getId()).name(po.getName()).purpose(po.getPurpose()).description(po.getDescription())
+        return Plug.builder().id(po.getId()).name(po.getName()).purpose(po.getPurpose()).description(po.getDescription())
                 .available(po.getAvailable()).open(po.getOpen()).deleted(po.getDeleted()).build();
-        return bo;
     }
 
     private PlugPo getPo(Plug bo) {
-        PlugPo po = PlugPo.builder().id(bo.getId()).name(bo.getName()).purpose(bo.getPurpose()).description(bo.getDescription())
+        return PlugPo.builder().id(bo.getId()).name(bo.getName()).purpose(bo.getPurpose()).description(bo.getDescription())
                 .available(bo.getAvailable()).open(bo.getOpen()).deleted(bo.getDeleted()).build();
-        return po;
     }
 
-    public Long insert(Plug plug) throws RuntimeException{
+    public Long insert(Plug plug, UserDto user) throws RuntimeException{
         PlugPo po = this.plugPoMapper.findByName(plug.getName());
         if (null == po) {
             PlugPo plugPo = getPo(plug);
-            /*putUserFields(plugPo, "creator", user);
-            putGmtFields(plugPo, "create");*/
+            putUserFields(plugPo, "creator", user);
+            putGmtFields(plugPo, "create");
             this.plugPoMapper.save(plugPo);
             return plugPo.getId();
         } else {
@@ -66,13 +68,13 @@ public class PlugDao {
         }
     }
 
-    public String save(Long id, Plug plug) {
+    public String save(Long id, Plug plug, UserDto user) {
         PlugPo po = getPo(plug);
         po.setId(id);
-        /*if (null != user) {
+        if (null != user) {
             putGmtFields(po, "modified");
             putUserFields(po, "modifier", user);
-        }*/
+        }
         this.plugPoMapper.save(po);
         return String.format(KEY, plug.getId());
     }
@@ -80,12 +82,12 @@ public class PlugDao {
     public Long findByName(String plugName) {
         PlugPo po = this.plugPoMapper.findByName(plugName);
         if (null == po) {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), null));
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), (Object) null));
         }
         return po.getId();
     }
 
-    public List<Plug> retrieveAll(Integer page, Integer pageSize) throws RuntimeException {
+    public List<Plug> retrieveAll() throws RuntimeException {
         List<PlugPo> reList = this.plugPoMapper.findAll(PageRequest.of(0, Constants.MAX_RETURN))
                 .stream().toList();
         if (reList.isEmpty()) {
@@ -93,5 +95,6 @@ public class PlugDao {
         }
         return reList.stream().map(this::getBo).collect(Collectors.toList());
     }
+
 
 }

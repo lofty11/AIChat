@@ -18,5 +18,4 @@ public class PlugParaDto {
 
     private Integer value;
 
-    private Integer deleted;
 }
