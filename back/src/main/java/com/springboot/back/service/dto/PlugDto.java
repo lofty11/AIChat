@@ -24,7 +24,6 @@ public class PlugDto {
 
     private Integer available;
     private Integer open;
-    private Integer deleted;
 
     private List<PlugParaDto> plugParas;
 

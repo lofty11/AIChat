@@ -4,12 +4,20 @@ import com.springboot.back.dao.bo.Function;
 import com.springboot.back.mapper.FunctionPoMapper;
 import com.springboot.back.mapper.po.FunctionPo;
 import com.springboot.core.exception.BusinessException;
+import com.springboot.core.model.Constants;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.springboot.core.util.Common.putGmtFields;
+import static com.springboot.core.util.Common.putUserFields;
 
 /**
  * @author dell
@@ -26,15 +34,13 @@ public class FunctionDao {
     }
 
     private Function getBo(FunctionPo po) {
-        Function bo = Function.builder().id(po.getId()).name(po.getName()).ename(po.getEname()).type(po.getType()).api(po.getApi())
+        return Function.builder().id(po.getId()).name(po.getName()).ename(po.getEname()).type(po.getType()).api(po.getApi())
                 .description(po.getDescription()).deleted(po.getDeleted()).build();
-        return bo;
     }
 
     private FunctionPo getPo(Function bo) {
-        FunctionPo po = FunctionPo.builder().id(bo.getId()).name(bo.getName()).ename(bo.getEname()).type(bo.getType()).api(bo.getApi())
+        return FunctionPo.builder().id(bo.getId()).name(bo.getName()).ename(bo.getEname()).type(bo.getType()).api(bo.getApi())
                 .description(bo.getDescription()).deleted(bo.getDeleted()).build();
-        return po;
     }
 
     public Long insert(Function function, UserDto user) throws RuntimeException{
@@ -65,10 +71,10 @@ public class FunctionDao {
     public String save(Long id, Function function, UserDto user) {
         FunctionPo po = getPo(function);
         po.setId(id);
-        /*if (null != user) {
+        if (null != user) {
             putGmtFields(po, "modified");
             putUserFields(po, "modifier", user);
-        }*/
+        }
         this.functionPoMapper.save(po);
         return String.format(KEY, function.getId());
     }
@@ -76,8 +82,16 @@ public class FunctionDao {
     public Long findByName(String plugName) {
         FunctionPo po = this.functionPoMapper.findByName(plugName);
         if (null == po) {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), null));
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), (Object) null));
         }
         return po.getId();
+    }
+    public List<Function> retrieveAll() throws RuntimeException {
+        List<FunctionPo> reList = this.functionPoMapper.findAll(PageRequest.of(0, Constants.MAX_RETURN))
+                .stream().toList();
+        if (reList.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return reList.stream().map(this::getBo).collect(Collectors.toList());
     }
 }

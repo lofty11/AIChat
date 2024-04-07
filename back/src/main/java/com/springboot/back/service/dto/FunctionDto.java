@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
-public class PlugParaDto {
+public class FunctionDto {
     private Long id;
-
     private String name;
+    private String ename;
+    private String type;
+    private String api;
+    private String description;
 
-    private Integer value;
 
 }

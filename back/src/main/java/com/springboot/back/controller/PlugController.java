@@ -6,6 +6,7 @@ import com.springboot.back.controller.vo.PlugParaVo;
 import com.springboot.back.controller.vo.PlugVo;
 import com.springboot.back.controller.vo.UserParaVo;
 import com.springboot.back.service.PlugService;
+import com.springboot.back.service.dto.FunctionDto;
 import com.springboot.back.service.dto.PlugDto;
 import com.springboot.core.aop.LoginUser;
 import com.springboot.core.model.ReturnNo;
@@ -41,9 +42,10 @@ public class PlugController {
 
     /*创建插件*/
     @PostMapping("/plug")
-    public ReturnObject createPlug(@Valid @RequestBody PlugVo vo){
+    public ReturnObject createPlug(@Valid @RequestBody PlugVo vo,
+                                   @LoginUser UserDto user){
         this.plugService.createPlugService(vo.getName(),vo.getPurpose(), vo.getDescription(),
-                vo.getAvailable(),vo.getOpen(),0);
+                vo.getAvailable(),vo.getOpen(),0,user);
         return new ReturnObject(ReturnNo.OK);
     }
 
@@ -152,10 +154,18 @@ public class PlugController {
     }
 
     /*获取插件列表*/
-    @GetMapping("/applications")
+    @GetMapping("/plugs")
     public ReturnObject getPlugs(@RequestParam(required = false, defaultValue = "1") Integer page,
                                         @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         PageDto<PlugDto> ret = this.plugService.retrievePlugs(page, pageSize);
+        return new ReturnObject(ReturnNo.OK, ret);
+    }
+
+    /*获取函数列表*/
+    @GetMapping("/functions")
+    public ReturnObject getFunctions(@RequestParam(required = false, defaultValue = "1") Integer page,
+                                 @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+        PageDto<FunctionDto> ret = this.plugService.retrieveFunctions(page, pageSize);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 }

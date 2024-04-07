@@ -23,6 +23,4 @@ public class UserParaDto {
     private String description;
 
     private Integer necessary;
-
-    private Integer deleted;
 }
