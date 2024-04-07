@@ -2,6 +2,7 @@ package com.springboot.back.controller;
 
 import com.springboot.back.controller.vo.UserVo;
 import com.springboot.back.service.UserService;
+import com.springboot.core.aop.LoginUser;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.ReturnObject;
 import com.springboot.core.model.UserToken;
@@ -35,11 +36,12 @@ public class UserController {
     public ReturnObject getUserInfo(@RequestParam String token){
         UserToken userToken=JwtUtil.verifyTokenAndGetClaims(token);
         UserDto dto=this.userService.getUserInfo(userToken.getUserId());
-        logger.error(String.valueOf(dto));
+        //logger.error(String.valueOf(dto));
         return new ReturnObject(dto);
     }
     @GetMapping("/logout")
-    public ReturnObject logout(@RequestParam String token){
+    public ReturnObject logout(@RequestParam String token ,@LoginUser UserDto user){
+        //logger.error(String.valueOf(user));
         JwtUtil.addToBlacklist(token);
         return new ReturnObject(ReturnNo.OK);
     }
