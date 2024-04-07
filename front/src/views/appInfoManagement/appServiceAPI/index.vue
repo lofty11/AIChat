@@ -84,6 +84,7 @@ export default {
   watch: {
     apiDialogVisible(newValue) {
       if (newValue === false && this.isSearch === false) {
+      //  console.log(this.isSearch)
         getAllAPI().then((response) => {
           this.tableData = response.data.list
           this.pageSize = response.data.pageSize
@@ -129,21 +130,28 @@ export default {
     // 搜索
     search() {
       // console.log(document.getElementById('search').value)
-      getApiByName(this.searchData).then(response => {
-        if (response.errno === 0) {
-          getApiById(response.data).then(resp => {
-            this.tableData = []
-            this.tableData.push(resp.data)
-            console.log(this.tableData)
-            this.isSearch = true
-          })
-        } else {
-          this.$message({
-            type: 'info',
-            message: '未查询到相关API'
-          })
-        }
-      })
+      if (this.searchData === '') {
+        this.$message({
+          type: 'error',
+          message: '请输入查询信息！'
+        })
+      } else {
+        getApiByName(this.searchData).then(response => {
+          if (response.errno === 0) {
+            getApiById(response.data).then(resp => {
+              this.tableData = []
+              this.tableData.push(resp.data)
+              console.log(this.tableData)
+              this.isSearch = true
+            })
+          } else {
+            this.$message({
+              type: 'info',
+              message: '未查询到相关API'
+            })
+          }
+        })
+      }
     },
     // 每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
