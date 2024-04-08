@@ -256,14 +256,14 @@ export default {
           if (this.id === '0') {
             createAPI(this.form).then((response) => {
               if (response.errno === 1) { this.$message.success('提交成功！') }
+              this.$emit('update:apiDialogVisible', false)
             })
           } else {
             modifyApiById(this.id, this.form).then((response) => {
               if (response.errno === 0) { this.$message.success('修改成功！') }
+              this.$emit('update:apiDialogVisible', false)
             })
           }
-          console.log('API')
-          this.$emit('update:apiDialogVisible', false)
         } else {
           this.$message.error('请将表单填写完整！')
           return false
