@@ -42,6 +42,9 @@ public class PlugDao {
         return PlugPo.builder().id(bo.getId()).name(bo.getName()).purpose(bo.getPurpose()).description(bo.getDescription())
                 .available(bo.getAvailable()).open(bo.getOpen()).deleted(bo.getDeleted()).build();
     }
+    public void delete(Long id) {
+        this.plugPoMapper.deleteById(id);
+    }
 
     public Long insert(Plug plug, UserDto user) throws RuntimeException{
         PlugPo po = this.plugPoMapper.findByName(plug.getName());

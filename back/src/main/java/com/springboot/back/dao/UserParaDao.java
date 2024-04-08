@@ -14,6 +14,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.springboot.core.util.Common.putGmtFields;
+import static com.springboot.core.util.Common.putUserFields;
+
+/**
+ * @author dell
+ */
 @Repository
 public class UserParaDao {
     private UserParaPoMapper userParaPoMapper;
@@ -35,13 +41,16 @@ public class UserParaDao {
                 .type(bo.getType()).necessary(bo.getNecessary()).description(bo.getDescription()).deleted(bo.getDeleted()).build();
         return po;
     }
+    public void delete(Long id) {
+        this.userParaPoMapper.deleteById(id);
+    }
 
     public Long insert(UserPara userPara, UserDto user) throws RuntimeException{
         UserParaPo po = this.userParaPoMapper.findByName(userPara.getName());
         if (null == po) {
             UserParaPo userParaPo = getPo(userPara);
-            /*putUserFields(userParaPo, "creator", user);
-            putGmtFields(userParaPo, "create");*/
+            putUserFields(userParaPo, "creator", user);
+            putGmtFields(userParaPo, "create");
             this.userParaPoMapper.save(userParaPo);
             return userParaPo.getId();
         } else {
@@ -64,10 +73,10 @@ public class UserParaDao {
     public String save(Long id, UserPara userPara, UserDto user) {
         UserParaPo po = getPo(userPara);
         po.setId(id);
-        /*if (null != user) {
+        if (null != user) {
             putGmtFields(po, "modified");
             putUserFields(po, "modifier", user);
-        }*/
+        }
         this.userParaPoMapper.save(po);
         return String.format(KEY, userPara.getId());
     }

@@ -42,6 +42,9 @@ public class FunctionDao {
         return FunctionPo.builder().id(bo.getId()).name(bo.getName()).ename(bo.getEname()).type(bo.getType()).api(bo.getApi())
                 .description(bo.getDescription()).deleted(bo.getDeleted()).build();
     }
+    public void delete(Long id) {
+        this.functionPoMapper.deleteById(id);
+    }
 
     public Long insert(Function function, UserDto user) throws RuntimeException{
         FunctionPo po = this.functionPoMapper.findByName(function.getName());

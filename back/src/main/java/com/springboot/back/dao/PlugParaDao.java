@@ -37,6 +37,9 @@ public class PlugParaDao {
                 .value(bo.getValue()).deleted(bo.getDeleted()).build();
         return po;
     }
+    public void delete(Long id) {
+        this.plugParaPoMapper.deleteById(id);
+    }
 
     public Long insert(PlugPara plugPara, UserDto user) throws RuntimeException{
         PlugParaPo po = this.plugParaPoMapper.findByName(plugPara.getName());
