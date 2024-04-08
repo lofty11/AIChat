@@ -159,14 +159,14 @@ public class PlugController {
         return new ReturnObject(ReturnNo.OK, ret);
     }
     /*根据id获取插件参数*/
-    @GetMapping("/{id}/plug")
+    @GetMapping("/{id}/plugpara")
     public ReturnObject getplugPara(@PathVariable Long id) {
         PlugParaDto ret = this.plugService.retrievePlugPara(id);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
     /*根据id获取用户参数*/
-    @GetMapping("/{id}/plug")
+    @GetMapping("/{id}/userpara")
     public ReturnObject getuserPara(@PathVariable Long id) {
         UserParaDto ret = this.plugService.retrieveUserPara(id);
         return new ReturnObject(ReturnNo.OK, ret);
