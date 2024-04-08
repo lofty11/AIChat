@@ -126,8 +126,57 @@ public class PlugService {
     }
 
     @Transactional
+    public void deleteFunction(Long funcId) {
+        Function function = this.functionDao.findById(funcId);
+        if (null == function){
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "函数", funcId));
+        }
+        this.functionDao.delete(funcId);
+    }
+
+    @Transactional
+    public void deletePlug(Long plugId) {
+        Plug plug = this.plugDao.findById(plugId);
+        if (null == plug){
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件", plugId));
+        }
+        this.plugDao.delete(plugId);
+    }
+    @Transactional
+    public void deletePlugPara(Long id) {
+        PlugPara plugPara = this.plugParaDao.findById(id);
+        if (null == plugPara){
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件参数", id));
+        }
+        this.plugParaDao.delete(id);
+    }
+    @Transactional
+    public void deleteUserPara(Long id) {
+        UserPara userPara = this.userParaDao.findById(id);
+        if (null == userPara){
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "用户参数", id));
+        }
+        this.userParaDao.delete(id);
+    }
+
+    @Transactional
     public Long getPlugId(String plugName) {
         return this.plugDao.findByName(plugName);
+    }
+
+    @Transactional
+    public PlugDto retrievePlug(Long plugId) {
+        Plug plug = this.plugDao.findById(plugId);
+        List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
+        List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> PlugParaDto.builder().id(obj.getId()).name(obj.getName()).value(obj.getValue()).build()).collect(Collectors.toList());
+        List<UserPara> userParas = this.userParaDao.retrieveByPlugId(plug.getId());
+        List<UserParaDto> userParaDtos = userParas.stream().map(obj -> UserParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
+                type(obj.getType()).necessary(obj.getNecessary()).description(obj.getDescription()).build()).collect(Collectors.toList());
+
+        PlugDto ret = PlugDto.builder().id(plug.getId()).name(plug.getName()).purpose(plug.getPurpose()).
+                description(plug.getDescription()).available(plug.getAvailable()).open(plug.getOpen())
+                .plugParas(plugParaDtos).userParas(userParaDtos).build();
+        return ret;
     }
 
     @Transactional

@@ -109,39 +109,28 @@ public class PlugController {
 
     /*删除插件*/
     @DeleteMapping("/{plugId}/plug")
-    public ReturnObject deletePlug(@PathVariable Long plugId,
-                                   @Valid @RequestBody PlugVo vo,
-                                   @LoginUser UserDto user){
-        this.plugService.updatePlugService(plugId, vo.getName(),vo.getPurpose(), vo.getDescription(),
-                vo.getAvailable(),vo.getOpen(),1,user);
+    public ReturnObject deletePlug(@PathVariable Long plugId){
+        this.plugService.deletePlug(plugId);
         return new ReturnObject(ReturnNo.OK);
     }
-    /*编辑函数*/
+    /*删除函数*/
     @DeleteMapping("/{funcId}/func")
-    public ReturnObject deleteFunc(@PathVariable Long funcId,
-                                   @Valid @RequestBody FunctionVo vo,
-                                   @LoginUser UserDto user) {
-        this.plugService.updateFuncService(funcId, vo.getName(),vo.getEname(),vo.getType()
-                ,vo.getApi(),vo.getDescription(),1,user);
+    public ReturnObject deleteFunc(@PathVariable Long funcId) {
+        this.plugService.deleteFunction(funcId);
         return new ReturnObject(ReturnNo.OK);
     }
 
     /*删除插件参数*/
-    @DeleteMapping("/{plugId}/plugpara")
-    public ReturnObject deletePlugPara(@PathVariable Long plugId,
-                                   @Valid @RequestBody PlugParaVo vo,
-                                   @LoginUser UserDto user){
-        this.plugService.updatePlugParaService(plugId, vo.getName(),vo.getValue(),1,user);
+    @DeleteMapping("/{id}/plugpara")
+    public ReturnObject deletePlugPara(@PathVariable Long id){
+        this.plugService.deletePlugPara(id);
         return new ReturnObject(ReturnNo.OK);
     }
 
     /*删除用户参数*/
-    @DeleteMapping("/{plugId}/userpara")
-    public ReturnObject deleteUserPara(@PathVariable Long plugId,
-                                       @Valid @RequestBody UserParaVo vo,
-                                       @LoginUser UserDto user){
-        this.plugService.updateUserParaService(plugId, vo.getName(),vo.getField(),vo.getType(),
-                vo.getNecessary(),vo.getDescription(),1,user);
+    @DeleteMapping("/{id}/userpara")
+    public ReturnObject deleteUserPara(@PathVariable Long id){
+        this.plugService.deleteUserPara(id);
         return new ReturnObject(ReturnNo.OK);
     }
 
@@ -158,6 +147,13 @@ public class PlugController {
     public ReturnObject getPlugs(@RequestParam(required = false, defaultValue = "1") Integer page,
                                         @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         PageDto<PlugDto> ret = this.plugService.retrievePlugs(page, pageSize);
+        return new ReturnObject(ReturnNo.OK, ret);
+    }
+
+    /*根据id获取插件*/
+    @GetMapping("/{id}/plug")
+    public ReturnObject getplug(@PathVariable Long id) {
+        PlugDto ret = this.plugService.retrievePlug(id);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
