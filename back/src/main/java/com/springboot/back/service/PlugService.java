@@ -178,6 +178,21 @@ public class PlugService {
                 .plugParas(plugParaDtos).userParas(userParaDtos).build();
         return ret;
     }
+    @Transactional
+    public PlugParaDto retrievePlugPara(Long id) {
+        PlugPara plugPara = this.plugParaDao.findById(id);
+        PlugParaDto ret = PlugParaDto.builder().id(plugPara.getId()).name(plugPara.getName()).
+                value(plugPara.getValue()).build();
+        return ret;
+    }
+    @Transactional
+    public UserParaDto retrieveUserPara(Long id) {
+        UserPara userPara = this.userParaDao.findById(id);
+        UserParaDto ret = UserParaDto.builder().id(userPara.getId()).name(userPara.getName()).
+                field(userPara.getField()).type(userPara.getType()).description(userPara.getDescription())
+                .necessary(userPara.getNecessary()).build();
+        return ret;
+    }
 
     @Transactional
     public PageDto<PlugDto> retrievePlugs(Integer page, Integer pageSize) {
@@ -216,10 +231,8 @@ public class PlugService {
         List<Function> functions = this.functionDao.retrieveAll();
         List<FunctionDto> ret = new ArrayList<>();
         for(Function function: functions) {
-            if(function.getDeleted() == 0){
-                FunctionDto functionDto = getFunctionDto(function);
-                ret.add(functionDto);
-            }
+            FunctionDto functionDto = getFunctionDto(function);
+            ret.add(functionDto);
         }
         return new PageDto<>(ret, page, pageSize);
     }
