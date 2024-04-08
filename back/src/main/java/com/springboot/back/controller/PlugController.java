@@ -8,6 +8,8 @@ import com.springboot.back.controller.vo.UserParaVo;
 import com.springboot.back.service.PlugService;
 import com.springboot.back.service.dto.FunctionDto;
 import com.springboot.back.service.dto.PlugDto;
+import com.springboot.back.service.dto.PlugParaDto;
+import com.springboot.back.service.dto.UserParaDto;
 import com.springboot.core.aop.LoginUser;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.ReturnObject;
@@ -151,9 +153,22 @@ public class PlugController {
     }
 
     /*根据id获取插件*/
+    @GetMapping("/{plugId}/plug")
+    public ReturnObject getplug(@PathVariable Long plugId) {
+        PlugDto ret = this.plugService.retrievePlug(plugId);
+        return new ReturnObject(ReturnNo.OK, ret);
+    }
+    /*根据id获取插件参数*/
     @GetMapping("/{id}/plug")
-    public ReturnObject getplug(@PathVariable Long id) {
-        PlugDto ret = this.plugService.retrievePlug(id);
+    public ReturnObject getplugPara(@PathVariable Long id) {
+        PlugParaDto ret = this.plugService.retrievePlugPara(id);
+        return new ReturnObject(ReturnNo.OK, ret);
+    }
+
+    /*根据id获取用户参数*/
+    @GetMapping("/{id}/plug")
+    public ReturnObject getuserPara(@PathVariable Long id) {
+        UserParaDto ret = this.plugService.retrieveUserPara(id);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
