@@ -124,6 +124,21 @@ CREATE TABLE type_union
 );
 alter table type_union character set utf8;
 
+DROP TABLE IF EXISTS func_type;
+CREATE TABLE func_type
+(
+    id  bigint AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(255) NOT NULL
+);
+alter table func_type character set utf8;
+
+DROP TABLE IF EXISTS service_api;
+CREATE TABLE service_api
+(
+    id  bigint AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(255) NOT NULL
+);
+alter table service_api character set utf8;
 
 INSERT INTO `functions` VALUES (NULL, 'search', 'web_search', 'http', 'api', '联网搜索工具1', 0);
 INSERT INTO `functions` VALUES (NULL, 'search1', 'web_search', 'http', 'api', '联网搜索工具2', 0);
@@ -182,3 +197,6 @@ INSERT INTO type_union VALUES(NULL, 'string');
 INSERT INTO type_union VALUES(NULL, 'array');
 INSERT INTO type_union VALUES(NULL, 'json');
 INSERT INTO type_union VALUES(NULL, 'integer');
+
+INSERT INTO func_type VALUES(NULL, 'http请求');
+INSERT INTO service_api VALUES(NULL, 'SerpApi');

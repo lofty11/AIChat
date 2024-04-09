@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author dell
+ */
 @Entity
 @Table(name = "functions")
 @Data
@@ -22,9 +25,9 @@ public class FunctionPo {
     @Column(name = "ename")
     private String ename;
     @Column(name = "type")
-    private String type;
+    private Integer type;
     @Column(name = "api")
-    private String api;
+    private Integer api;
     @Column(name = "description")
     private String description;
     @Column(name = "deleted")

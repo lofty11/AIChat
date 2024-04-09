@@ -44,7 +44,7 @@ public class PlugService {
     }
 
     @Transactional()
-    public void createFunctionService(String name, String ename, String type, String api,String description, Integer deleted, UserDto user){
+    public void createFunctionService(String name, String ename, Integer type, Integer api,String description, Integer deleted, UserDto user){
         Function function = Function.builder().name(name).ename(ename)
                 .type(type).api(api).description(description).deleted(deleted).build();
         this.functionDao.insert(function, user);
@@ -84,7 +84,7 @@ public class PlugService {
         this.plugDao.save(id, plug,user);
     }
     @Transactional
-    public void updateFuncService(Long id, String name, String ename, String type,String api,String description,  Integer deleted, UserDto user) {
+    public void updateFuncService(Long id, String name, String ename, Integer type,Integer api,String description,  Integer deleted, UserDto user) {
         Function function = this.functionDao.findById(id);
         if (null == function) {
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));

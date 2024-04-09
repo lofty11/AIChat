@@ -50,8 +50,8 @@ public class FunctionDao {
         FunctionPo po = this.functionPoMapper.findByName(function.getName());
         if (null == po) {
             FunctionPo functionPo = getPo(function);
-            /*putUserFields(functionPo, "creator", user);
-            putGmtFields(functionPo, "create");*/
+            putUserFields(functionPo, "creator", user);
+            putGmtFields(functionPo, "create");
             this.functionPoMapper.save(functionPo);
             return functionPo.getId();
         } else {

@@ -19,10 +19,10 @@ public class FunctionVo {
     String ename;
 
     @NotNull
-    String type;
+    Integer type;
 
     @NotNull
-    String api;
+    Integer api;
 
     @NotNull
     String description;
