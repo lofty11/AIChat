@@ -138,7 +138,7 @@ public class PlugController {
 
 
     /*根据插件名称获取ID*/
-    @GetMapping("/{plugName}/plug")
+    @GetMapping("/{plugName}/plugId")
     public ReturnObject getPlugId(@PathVariable String plugName){
         Long id = this.plugService.getPlugId(plugName);
         return new ReturnObject(ReturnNo.OK, id);

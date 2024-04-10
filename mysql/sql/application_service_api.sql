@@ -99,8 +99,8 @@ CREATE TABLE functions
     id bigint AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     ename VARCHAR(255) NOT NULL,
-    type VARCHAR(255) NOT NULL,
-    api VARCHAR(255) NOT NULL,
+    type INTEGER NOT NULL,
+    api INTEGER NOT NULL,
     description VARCHAR(255) NOT NULL,
     deleted INTEGER NOT NULL
 );
@@ -199,4 +199,8 @@ INSERT INTO type_union VALUES(NULL, 'json');
 INSERT INTO type_union VALUES(NULL, 'integer');
 
 INSERT INTO func_type VALUES(NULL, 'http请求');
+INSERT INTO func_type VALUES(NULL, 'http请求2');
+INSERT INTO func_type VALUES(NULL, 'http请求2');
 INSERT INTO service_api VALUES(NULL, 'SerpApi');
+INSERT INTO service_api VALUES(NULL, 'SerpApi2');
+INSERT INTO service_api VALUES(NULL, 'SerpApi3');
