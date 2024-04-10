@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author dell
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,8 +18,8 @@ public class FunctionDto {
     private Long id;
     private String name;
     private String ename;
-    private String type;
-    private String api;
+    private Integer type;
+    private Integer api;
     private String description;
 
 

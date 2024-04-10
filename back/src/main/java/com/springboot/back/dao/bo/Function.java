@@ -24,10 +24,10 @@ public class Function extends SSObject implements Serializable {
     private String ename;
     @Getter
     @Setter
-    private String type;
+    private Integer type;
     @Getter
     @Setter
-    private String api;
+    private Integer api;
     @Getter
     @Setter
     private String description;
@@ -37,7 +37,7 @@ public class Function extends SSObject implements Serializable {
 
     @Builder
     public Function(Long id, Long creatorId, Long modifierId, String modifierName, String creatorName, LocalDateTime gmtCreate, LocalDateTime gmtModified,
-                    String name, String ename, String type, String api, String description, Integer deleted) {
+                    String name, String ename, Integer type, Integer api, String description, Integer deleted) {
         super(id, creatorId, creatorName, modifierId, modifierName, gmtCreate, gmtModified);
         this.name = name;
         this.ename = ename;
