@@ -136,14 +136,6 @@ public class PlugController {
         return new ReturnObject(ReturnNo.OK);
     }
 
-
-    /*根据插件名称获取ID*/
-    @GetMapping("/{plugName}/plugId")
-    public ReturnObject getPlugId(@PathVariable String plugName){
-        Long id = this.plugService.getPlugId(plugName);
-        return new ReturnObject(ReturnNo.OK, id);
-    }
-
     /*获取插件列表*/
     @GetMapping("/plugs")
     public ReturnObject getPlugs(@RequestParam(required = false, defaultValue = "1") Integer page,

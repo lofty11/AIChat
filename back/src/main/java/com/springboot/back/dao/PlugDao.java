@@ -82,14 +82,6 @@ public class PlugDao {
         return String.format(KEY, plug.getId());
     }
 
-    public Long findByName(String plugName) {
-        PlugPo po = this.plugPoMapper.findByName(plugName);
-        if (null == po) {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), (Object) null));
-        }
-        return po.getId();
-    }
-
     public List<Plug> retrieveAll() throws RuntimeException {
         List<PlugPo> reList = this.plugPoMapper.findAll(PageRequest.of(0, Constants.MAX_RETURN))
                 .stream().toList();

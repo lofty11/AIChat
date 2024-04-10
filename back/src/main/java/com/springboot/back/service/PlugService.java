@@ -160,11 +160,6 @@ public class PlugService {
     }
 
     @Transactional
-    public Long getPlugId(String plugName) {
-        return this.plugDao.findByName(plugName);
-    }
-
-    @Transactional
     public PlugDto retrievePlug(Long plugId) {
         Plug plug = this.plugDao.findById(plugId);
         List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
