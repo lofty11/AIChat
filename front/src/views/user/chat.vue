@@ -16,7 +16,7 @@
           </el-menu-item>
           <el-menu-item v-for="(item, index) in sidebarItems" :key="index" :index="String(index + 1)">
             <template slot="title">
-              <span v-if="editingIndex !== index" style="width: 40%;">{{ truncateText(item.name) }}</span>
+              <span v-if="editingIndex !== index" style="width: 40%;">{{ truncateText(item.chatName) }}</span>
               <span v-else>
                 <el-input v-model="editedItemName" size="mini" style="width: 40%;" autofocus @keyup.enter.native="saveItem(index)" />
               </span>
@@ -85,14 +85,15 @@
 <script>
 import Prompt from '@/views/user/prompt'
 import Dialog from '@/views/user/dialog'
+import { createChat, getAllChats } from '@/api/chat'
 export default {
   name: 'Chat',
   components: { Dialog, Prompt },
   data() {
     return {
       sidebarItems: [
-        { name: 'Chat' },
-        { name: 'Settings' }
+        { chatName: 'Chat' },
+        { chatName: 'Settings' }
       ],
       editingIndex: null,
       activeIndex: '1',
@@ -108,6 +109,13 @@ export default {
     userMessage(newValue) {
       this.send = newValue.trim() === ''
     }
+  },
+  created() {
+    getAllChats().then(response => {
+      if (response.errno === 0) {
+        this.sidebarItems = response.data.list
+      }
+    })
   },
   methods: {
     sendMessage() {
@@ -136,10 +144,14 @@ export default {
       this.editingIndex = null
     },
     addItem() {
-      this.sidebarItems.unshift({ name: '新对话' })
-      this.promptVisible = false
-      this.dialogVisible = true
-      this.messages = []
+      createChat({ chatName: '新对话', userId: this.$store.state.user.id }).then(response => {
+        if (response.errno === 1) {
+          this.sidebarItems.unshift(response.data)
+          this.promptVisible = false
+          this.dialogVisible = true
+          this.messages = []
+        }
+      })
       // You can implement adding logic here if needed
     },
     saveItem(index) {
@@ -149,7 +161,7 @@ export default {
       this.editingIndex = null
     },
     truncateText(text) {
-      const maxLength = 10 // 你可以根据需要调整最大长度
+      const maxLength = 10 // 可以根据需要调整最大长度
       if (text.length > maxLength) {
         return text.substring(0, maxLength) + '...'
       }

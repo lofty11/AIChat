@@ -7,7 +7,7 @@ import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.Constants;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
-import com.springboot.core.util.RedisUtil;
+//import com.springboot.core.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +31,7 @@ public class ApplicationServiceDao {
 
     private ApplicationServicePoMapper applicationServicePoMapper;
 
-    private RedisUtil redisUtil;
+   // private RedisUtil redisUtil;
 
     @Autowired
     public ApplicationServiceDao(ApplicationServicePoMapper applicationServicePoMapper) {

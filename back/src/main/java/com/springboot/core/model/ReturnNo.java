@@ -18,7 +18,7 @@ public enum ReturnNo {
     CREATED(1, "创建成功"),
     STATENOTALLOW(7,"%s对象（id=%d）%s状态禁止此操作"),
     RESOURCE_FALSIFY(11, "信息签名不正确"),
-
+    IDENTIFYNOTMATTCH(21,"%s对象（id=%d)身份不匹配"),
     //状态码 404
     RESOURCE_ID_NOTEXIST(4,"%s对象(id=%d)不存在"),
 

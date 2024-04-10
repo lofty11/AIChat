@@ -28,7 +28,7 @@
           <p><strong>{{ userInfo.name }}</strong></p>
           <div><p>电话：{{ userInfo.tel }}</p></div>
           <div style="text-align: center; margin: 0">
-            <el-button type="info" size="mini" @click="visible = false">退出登录</el-button>
+            <el-button type="info" size="mini" @click="logout">退出登录</el-button>
           </div>
           <img slot="reference" src="@/icons/png/userLogo.png" alt="Logo" class="logo">
         </el-popover>
@@ -44,16 +44,23 @@
 
 <script>
 import Chat from '@/views/user/chat'
+import { logout } from '@/api/user'
 export default {
   name: 'User',
   components: { Chat },
   data() {
     return {
       userInfo: {
-        name: '李天文',
-        tel: '15200000000'
+        name: this.$store.state.user.userName,
+        tel: this.$store.state.user.userTel
       },
       visible: false
+    }
+  },
+  methods: {
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }
