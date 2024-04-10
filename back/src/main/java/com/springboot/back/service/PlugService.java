@@ -194,15 +194,13 @@ public class PlugService {
         List<Plug> plugs = this.plugDao.retrieveAll();
         List<PlugDto> ret = new ArrayList<>();
         for(Plug plug: plugs) {
-            if(plug.getDeleted() == 0){
-                List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
-                List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> PlugParaDto.builder().id(obj.getId()).name(obj.getName()).value(obj.getValue()).build()).collect(Collectors.toList());
-                List<UserPara> userParas = this.userParaDao.retrieveByPlugId(plug.getId());
-                List<UserParaDto> userParaDtos = userParas.stream().map(obj -> UserParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
-                        type(obj.getType()).necessary(obj.getNecessary()).description(obj.getDescription()).build()).collect(Collectors.toList());
-                PlugDto plugDto = getPlugDto(plug, plugParaDtos, userParaDtos);
-                ret.add(plugDto);
-            }
+            List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
+            List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> PlugParaDto.builder().id(obj.getId()).name(obj.getName()).value(obj.getValue()).build()).collect(Collectors.toList());
+            List<UserPara> userParas = this.userParaDao.retrieveByPlugId(plug.getId());
+            List<UserParaDto> userParaDtos = userParas.stream().map(obj -> UserParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
+                    type(obj.getType()).necessary(obj.getNecessary()).description(obj.getDescription()).build()).collect(Collectors.toList());
+            PlugDto plugDto = getPlugDto(plug, plugParaDtos, userParaDtos);
+            ret.add(plugDto);
         }
         return new PageDto<>(ret, page, pageSize);
     }
