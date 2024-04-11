@@ -145,7 +145,7 @@ public class PlugController {
     }
 
     /*根据id获取插件*/
-    @GetMapping("/{plugId}/pluglkp")
+    @GetMapping("/{plugId}/pluginfo")
     public ReturnObject getplug(@PathVariable Long plugId) {
         PlugDto ret = this.plugService.retrievePlug(plugId);
         return new ReturnObject(ReturnNo.OK, ret);
@@ -169,6 +169,12 @@ public class PlugController {
     public ReturnObject getFunctions(@RequestParam(required = false, defaultValue = "1") Integer page,
                                  @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         PageDto<FunctionDto> ret = this.plugService.retrieveFunctions(page, pageSize);
+        return new ReturnObject(ReturnNo.OK, ret);
+    }
+
+    @GetMapping("/{funcId}/funcinfo")
+    public ReturnObject getFunction(@PathVariable Long funcId) {
+        FunctionDto ret = this.plugService.retrieveFunction(funcId);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 

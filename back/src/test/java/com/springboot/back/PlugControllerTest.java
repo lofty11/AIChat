@@ -75,4 +75,11 @@ public class PlugControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
+    @Test
+    public void getFunctionTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{funcName}/funcinfo", "search")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
 }

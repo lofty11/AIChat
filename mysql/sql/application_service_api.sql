@@ -140,8 +140,8 @@ CREATE TABLE service_api
 );
 alter table service_api character set utf8;
 
-INSERT INTO `functions` VALUES (NULL, 'search', 'web_search', 0, 1, '联网搜索工具1', 0);
-INSERT INTO `functions` VALUES (NULL, 'search1', 'web_search', 0, 1, '联网搜索工具2', 0);
+INSERT INTO `functions` VALUES (NULL, 'search', 'web_search', 1, 1, '联网搜索工具1', 0);
+INSERT INTO `functions` VALUES (NULL, 'search1', 'web_search', 1, 1, '联网搜索工具2', 0);
 INSERT INTO `functions` VALUES (NULL, 'search2', 'web_search', 1, 2, '联网搜索工具3', 0);
 INSERT INTO `plug` VALUES (NULL, 'plug_test', 'web_search', 'http请求', 1, 1, 0);
 INSERT INTO `plug` VALUES (NULL, 'plug_test2', 'b', 'http', 1, 1, 1);

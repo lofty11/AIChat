@@ -19,7 +19,9 @@ public class FunctionDto {
     private String name;
     private String ename;
     private Integer type;
+    private String typeName;
     private Integer api;
+    private String apiName;
     private String description;
 
 

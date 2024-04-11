@@ -1,13 +1,7 @@
 package com.springboot.back.service;
 
-import com.springboot.back.dao.FunctionDao;
-import com.springboot.back.dao.PlugDao;
-import com.springboot.back.dao.PlugParaDao;
-import com.springboot.back.dao.UserParaDao;
-import com.springboot.back.dao.bo.Function;
-import com.springboot.back.dao.bo.Plug;
-import com.springboot.back.dao.bo.PlugPara;
-import com.springboot.back.dao.bo.UserPara;
+import com.springboot.back.dao.*;
+import com.springboot.back.dao.bo.*;
 import com.springboot.back.service.dto.FunctionDto;
 import com.springboot.back.service.dto.PlugDto;
 import com.springboot.back.service.dto.PlugParaDto;
@@ -24,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 /**
  * @author dell
  */
@@ -33,14 +28,19 @@ public class PlugService {
     private final PlugDao plugDao;
     private final PlugParaDao plugParaDao;
     private final UserParaDao userParaDao;
+    private final FunctionTypeDao functionTypeDao;
+    private final ServiceApiDao serviceApiDao;
 
 
     @Autowired
-    public PlugService(FunctionDao functionDao, PlugDao plugDao, PlugParaDao plugParaDao, UserParaDao userParaDao){
+    public PlugService(FunctionDao functionDao, PlugDao plugDao, PlugParaDao plugParaDao, UserParaDao userParaDao,
+                       FunctionTypeDao functionTypeDao,ServiceApiDao serviceApiDao){
         this.functionDao = functionDao;
         this.plugDao = plugDao;
         this.plugParaDao = plugParaDao;
         this.userParaDao = userParaDao;
+        this.functionTypeDao = functionTypeDao;
+        this.serviceApiDao = serviceApiDao;
     }
 
     @Transactional()
@@ -230,15 +230,30 @@ public class PlugService {
         return new PageDto<>(ret, page, pageSize);
     }
 
-    private static FunctionDto getFunctionDto(Function function) {
+    private  FunctionDto getFunctionDto(Function function) {
+        FunctionType functionType = this.functionTypeDao.findById(function.getType().longValue());
+        ServiceApi serviceApi = this.serviceApiDao.findById(function.getApi().longValue());
         FunctionDto functionDto = new FunctionDto();
         functionDto.setId(function.getId());
         functionDto.setName(function.getName());
         functionDto.setEname(function.getEname());
         functionDto.setType(function.getType());
+        functionDto.setTypeName(functionType.getType());
         functionDto.setApi(function.getApi());
+        functionDto.setApiName(serviceApi.getType());
         functionDto.setDescription(function.getDescription());
         return functionDto;
+    }
+
+    @Transactional
+    public FunctionDto retrieveFunction(Long funcId) {
+        Function function = this.functionDao.findById(funcId);
+        FunctionType functionType = this.functionTypeDao.findById(function.getType().longValue());
+        ServiceApi serviceApi = this.serviceApiDao.findById(function.getApi().longValue());
+        FunctionDto ret = FunctionDto.builder().id(function.getId()).name(function.getName()).
+                ename(function.getEname()).type(function.getType()).typeName(functionType.getType())
+                .api(function.getApi()).apiName(serviceApi.getType()).description(function.getDescription()).build();
+        return ret;
     }
 
 }
