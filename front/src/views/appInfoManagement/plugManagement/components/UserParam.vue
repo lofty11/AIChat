@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible="configUserParamDialogVisible" title="添加用户参数" append-to-body @close="close">
+  <el-dialog :visible="userParamDialogVisible" title="添加用户参数" append-to-body @close="close">
     <el-form ref="configUserParam" :model="paramTable" :rules="rules" align="right">
       <!-- 表单内容 -->
       <el-form-item prop="name" label="字段名称">
@@ -39,7 +39,7 @@
 <script>
 export default {
   props: {
-    configUserParamDialogVisible: {
+    userParamDialogVisible: {
       type: Boolean,
       default: false
     }
@@ -65,11 +65,11 @@ export default {
   },
   methods: {
     close() {
-      this.$emit('update:configUserParamDialogVisible', false)
+      this.$emit('update:userParamDialogVisible', false)
     },
     submitUserParam() {
       this.$message.success('成功添加用户定义参数')
-      this.configUserParamDialogVisible = false
+      this.userParamDialogVisible = false
     }
   }
 }

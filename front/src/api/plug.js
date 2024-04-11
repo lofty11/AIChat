@@ -83,10 +83,52 @@ export function modifyFuncById(funcId, data) {
   })
 }
 
-export function delFunc(id) {
+export function delFuncById(id) {
   return request({
     method: 'delete',
-    url: `appinfo/plug/function/${id}`
+    url: `/plug/${id}/func`
   })
 }
 
+export function getPlugParaById(id) {
+  return request({
+    method: 'get',
+    url: `/plug/${id}/plugpara`
+  })
+}
+
+export function delPlugParaById(id) {
+  return request({
+    method: 'delete',
+    url: `/plug/${id}/plugpara`
+  })
+}
+
+export function createPlugPara(plugId, data) {
+  return request({
+    method: 'post',
+    url: `/plug/${plugId}/plugpara`,
+    data
+  })
+}
+
+export function modifyPlugParaById(plugId, data) {
+  return request({
+    method: 'put',
+    url: `/plug/${plugId}/plugpara`,
+    data
+  })
+}
+
+export function createUserPara(plugId, data) {
+  return request({
+    method: 'post',
+    url: `/plug/${plugId}/userpara`
+  })
+}
+export function delUserParaById(id) {
+  return request({
+    method: 'delete',
+    url: `/plug/${id}/userpara`
+  })
+}

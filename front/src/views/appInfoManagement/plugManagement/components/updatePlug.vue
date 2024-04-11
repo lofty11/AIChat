@@ -7,7 +7,7 @@
           <el-input v-model="plugForm.name" style="width:80%" />
         </el-form-item>
 
-        <el-form-item prop="usage" label="插件用途">
+        <el-form-item prop="purpose" label="插件用途">
           <el-input v-model="plugForm.purpose" style="width:80%" />
         </el-form-item>
 
@@ -37,9 +37,6 @@
           </el-row>
         </el-form-item>
       </el-form>
-      <el-button @click="test">
-        测试
-      </el-button>
     </el-dialog>
     <Parameter :plug-id.sync="plugId" />
   </div>
@@ -100,7 +97,6 @@ export default {
         // console.log('plugId changed')
         // console.log(newValue)
         getPlugById(newValue).then(response => {
-          // console.log(response.data)
           this.plugForm = response.data
           this.$set(this.plugForm, 'open', Boolean(response.data.open))
           this.$set(this.plugForm, 'available', Boolean(response.data.available))
@@ -109,9 +105,6 @@ export default {
     }
   },
   methods: {
-    test() {
-      console.log(this.plugId)
-    },
     trans() {
       this.form.name = this.plugForm.name
       this.form.purpose = this.plugForm.purpose

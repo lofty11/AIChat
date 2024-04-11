@@ -22,14 +22,12 @@
           >
             <template v-slot="data">
               <el-button type="text" size="small" @click="updatePlugDialog(data.row.id)">编辑</el-button>
-              <el-button type="text" size="small" @click="configPlugDialog(data.row)">配置</el-button>
+              <el-button type="text" size="small" @click="configPlugDialog(data.row.id)">配置</el-button>
               <el-button type="text" size="small" style="color: red" @click="delPlug(data.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-form-item>
-          <el-button @click="test">测试</el-button>
-        </el-form-item>
+
       </el-form>
 
     </el-aside>
@@ -69,7 +67,7 @@
           >
             <template v-slot="data">
               <el-button type="text" size="small" @click="updateFuncDialog(data.row.id)">编辑</el-button>
-              <el-button type="text" size="small" @click="configFuncDialog(data.row)">配置</el-button>
+              <el-button type="text" size="small" @click="configFuncDialog(data.row.id)">配置</el-button>
               <el-button type="text" size="small" style="color: red" @click="delFunc(data.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -97,7 +95,7 @@
 
     <!--    编辑、配置插件-->
     <update-plug ref="updatePlug" :plug-id.sync="plugId" :update-plug-dialog-visible.sync="updatePlugDialogVisible" />
-    <config-plug :config-plug-dialog-visible.sync="configPlugDialogVisible" />
+    <config-plug :plug-id.sync="plugId" :config-plug-dialog-visible.sync="configPlugDialogVisible" />
     <!--    编辑、配置插件-->
 
     <!--    编辑、创建、配置函数-->
@@ -116,7 +114,7 @@ import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/upda
 import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
 import UpdatePlug from '@/views/appInfoManagement/plugManagement/components/updatePlug.vue'
 import ConfigPlug from '@/views/appInfoManagement/plugManagement/components/configPlug.vue'
-import { delPlugById, getAllFunc, getAllPlug } from '@/api/plug'
+import { delFuncById, delPlugById, getAllFunc, getAllPlug } from '@/api/plug'
 
 export default {
   components: { ConfigPlug, UpdatePlug, ConfigFunc, UpdateFunc, AddFunc, AddPlug },
@@ -156,14 +154,6 @@ export default {
           type: 'http请求',
           api: 'SerpApi',
           description: 'test1'
-        },
-        {
-          id: 2,
-          name: 'test2',
-          enName: 'test2',
-          type: 'http请求2',
-          api: 'SerpApi2',
-          description: 'test2'
         }
         ],
       plugTable: [{
@@ -180,7 +170,6 @@ export default {
       console.error('获取插件失败:', error)
     })
     getAllFunc().then((response) => {
-      console.log('函数获取')
       this.funcTable = response.data.list
       this.pageSize = response.data.pageSize
     }).catch((error) => {
@@ -188,8 +177,6 @@ export default {
     })
   },
   methods: {
-    test() {
-    },
     addPlugDialog() {
       this.addPlugDialogVisible = true // 打开对话框
     },
@@ -213,27 +200,31 @@ export default {
       // })
     },
     delFunc(id) {
-      this.$confirm('确定删除？').then(async() => {
-        this.$message.success('删除成功')
-        // await delFunc(id)
-      })
-      // this.$message.success('删除成功')
-    },
-    delPlug(id) {
-      this.$confirm('确定删除？').then(async() => {
-        delPlugById(id).then(response => {
-          console.log(response)
+      this.$confirm('确定删除该函数？').then(() => {
+        delFuncById(id).then(response => {
+          if (response.errno === 0) {
+            this.$message.success('删除函数成功！')
+          }
         })
       })
-      // this.$message.success('删除成功')
+    },
+    delPlug(id) {
+      this.$confirm('确定删除该插件？').then(() => {
+        delPlugById(id).then(response => {
+          if (response.errno === 0) {
+            this.$message.success('删除插件成功！')
+          }
+        })
+      })
     },
     updatePlugDialog(id) {
       this.updatePlugDialogVisible = true
       this.plugId = id
       // console.log(this.plugId)
     },
-    configPlugDialog(data) {
+    configPlugDialog(id) {
       this.configPlugDialogVisible = true
+      this.plugId = id
     },
     // 每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
