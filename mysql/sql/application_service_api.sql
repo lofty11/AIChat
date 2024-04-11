@@ -13,7 +13,13 @@ CREATE TABLE application_service
     api_name VARCHAR(255) NOT NULL,
     api_code VARCHAR(255) NOT NULL,
     request_url VARCHAR(255) NOT NULL,
-    request_method INTEGER NOT NULL
+    request_method INTEGER NOT NULL,
+    creator_id  bigint DEFAULT NULL,
+    creator_name varchar(128) DEFAULT NULL,
+    modifier_id  bigint DEFAULT NULL,
+    modifier_name  varchar(128) DEFAULT NULL,
+    gmt_create  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    gmt_modified  datetime DEFAULT NULL
 );
 alter table application_service character set utf8;
 
@@ -29,6 +35,12 @@ CREATE TABLE extension_input
     required INTEGER NOT NULL,
     description VARCHAR(255),
     application_id bigint,
+    creator_id  bigint DEFAULT NULL,
+    creator_name varchar(128) DEFAULT NULL,
+    modifier_id  bigint DEFAULT NULL,
+    modifier_name  varchar(128) DEFAULT NULL,
+    gmt_create  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    gmt_modified  datetime DEFAULT NULL,
     constraint fk_application_id  foreign key (application_id) references application_service (application_id) on update cascade on delete cascade
 );
 
@@ -45,6 +57,12 @@ CREATE TABLE extension_output
     required INTEGER NOT NULL,
     description VARCHAR(255),
     application_id bigint,
+    creator_id  bigint DEFAULT NULL,
+    creator_name varchar(128) DEFAULT NULL,
+    modifier_id  bigint DEFAULT NULL,
+    modifier_name  varchar(128) DEFAULT NULL,
+    gmt_create  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    gmt_modified  datetime DEFAULT NULL,
     constraint fk_application_id2  foreign key (application_id) references application_service (application_id) on update cascade on delete cascade
 );
 alter table extension_output character set utf8;
