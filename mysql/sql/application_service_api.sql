@@ -158,6 +158,35 @@ CREATE TABLE service_api
 );
 alter table service_api character set utf8;
 
+DROP TABLE IF EXISTS `chat`;
+CREATE TABLE chat (
+                      id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                      user_id BIGINT NOT NULL,
+                      chat_name VARCHAR(255) DEFAULT NULL,
+                      creator_id  bigint DEFAULT NULL,
+                      creator_name varchar(128) DEFAULT NULL,
+                      modifier_id  bigint DEFAULT NULL,
+                      modifier_name  varchar(128) DEFAULT NULL,
+                      gmt_create  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                      gmt_modified  datetime DEFAULT NULL
+);
+alter table chat character set utf8;
+
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE message (
+                         id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                         chat_id BIGINT NOT NULL,
+                         content TEXT,
+                         type TINYINT,
+                         creator_id  bigint DEFAULT NULL,
+                         creator_name varchar(128) DEFAULT NULL,
+                         modifier_id  bigint DEFAULT NULL,
+                         modifier_name  varchar(128) DEFAULT NULL,
+                         gmt_create  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         gmt_modified  datetime DEFAULT NULL
+);
+alter table message  character set utf8;
+
 INSERT INTO `functions` VALUES (NULL, 'search', 'web_search', 1, 1, '联网搜索工具1', 0);
 INSERT INTO `functions` VALUES (NULL, 'search1', 'web_search', 1, 1, '联网搜索工具2', 0);
 INSERT INTO `functions` VALUES (NULL, 'search2', 'web_search', 1, 2, '联网搜索工具3', 0);

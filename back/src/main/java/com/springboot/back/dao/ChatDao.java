@@ -1,6 +1,8 @@
 package com.springboot.back.dao;
 
+import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.Constants;
+import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
 import com.springboot.core.util.Common;
 import com.springboot.back.dao.bo.Chat;
@@ -15,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -52,14 +56,23 @@ public class ChatDao {
     }
 
     public Boolean updateChatName(UserDto user, Chat bo)throws RuntimeException{
-        ChatPo po = Common.cloneObj(bo,ChatPo.class);
-        Common.putUserFields(po,"modifier",user);
-        Common.putGmtFields(po,"modified");
-        return !chatPoMapper.save(po).getId().equals(Constants.IDNOTEXIST);
+        Optional<ChatPo> ret = chatPoMapper.findById(bo.getId());
+        ret.ifPresent(po->{
+            if(!po.getUserId().equals(user.getId()) )throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST);
+            po.setChatName(bo.getChatName());
+            Common.putUserFields(po,"modifier",user);
+            Common.putGmtFields(po,"modified");
+            logger.debug("updateChatName : po = {}", po);
+            chatPoMapper.save(po);
+        });
+        return true;
     }
     public  Boolean findById(UserDto user,Long chatId)throws RuntimeException{
-
-        return chatPoMapper.findById(chatId).get().getUserId().equals(user.getId());
+        Optional<ChatPo> ret = chatPoMapper.findById(chatId);
+        if(ret.isPresent()){
+            return ret.get().getUserId().equals(user.getId());
+        }
+        return false;
     }
 
 

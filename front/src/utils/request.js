@@ -47,7 +47,7 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (res.errno !== 0 && res.errno !== 1) {
       Message({
-        message: res.message || 'Error',
+        message: res.message || '出错了！',
         type: 'error',
         duration: 5 * 1000
       })
@@ -56,6 +56,17 @@ service.interceptors.response.use(
       if (res.errno === 12 || res.errno === 13) {
         // to re-login
         MessageBox.confirm('用户名不存在或者密码错误', '错误', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          store.dispatch('user/resetToken').then(() => {
+            location.reload()
+          })
+        })
+      }
+      if (res.errno === 21) {
+        MessageBox.confirm('用户身份不匹配', '错误', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'

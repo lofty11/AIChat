@@ -36,7 +36,7 @@ export function createMessage(data) {
 
 export function getAllMessages(chatId) {
   return request({
-    url: '/chat/messages' + chatId,
+    url: '/chat/messages/' + chatId,
     method: 'get'
   })
 }
