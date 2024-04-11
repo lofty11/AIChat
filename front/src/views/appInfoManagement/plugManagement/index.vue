@@ -3,14 +3,13 @@
     <el-aside class="left-aside">
       <el-form>
         <el-form-item>
-          <el-button class="aside-button" @click="openAddPlugDialog">
+          <el-button class="aside-button" @click="addPlugDialog">
             创建插件
           </el-button>
         </el-form-item>
 
         <el-table
           :data="plugTable"
-          border
           style="width: 95%; margin-left: 10px"
         >
           <el-table-column
@@ -22,14 +21,17 @@
             label="操作"
           >
             <template v-slot="data">
-              <el-button type="text" size="small" @click="updatePlugDialog(data.row)">编辑</el-button>
+              <el-button type="text" size="small" @click="updatePlugDialog(data.row.id)">编辑</el-button>
               <el-button type="text" size="small" @click="configPlugDialog(data.row)">配置</el-button>
-              <el-button type="text" size="small" style="color: red" @click="delPlug(data.row.name)">删除</el-button>
+              <el-button type="text" size="small" style="color: red" @click="delPlug(data.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
-
+        <el-form-item>
+          <el-button @click="test">测试</el-button>
+        </el-form-item>
       </el-form>
+
     </el-aside>
 
     <div class="divider" />
@@ -45,48 +47,62 @@
         <el-form-item>
           <el-button type="primary" @click="addFuncDialog">新建函数</el-button>
         </el-form-item>
-      </el-form>
-      <el-table
-        :data="funcTable"
-        border
-        style="width: 100%"
-      >
-        <el-table-column
-          prop="name"
-          label="函数名称"
-        />
-        <el-table-column
-          prop="type"
-          label="函数类型"
-        />
-        <el-table-column
-          prop="api"
-          label="服务Api"
-        />
-        <el-table-column
-          fixed="right"
-          label="操作"
+        <el-table
+          :data="funcTable.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+          style="width: 100%"
         >
-          <template v-slot="data">
-            <el-button type="text" size="small" @click="updateFuncDialog(data.row)">编辑</el-button>
-            <el-button type="text" size="small" @click="configFuncDialog(data.row)">配置</el-button>
-            <el-button type="text" size="small" style="color: red" @click="delFunc(data.row.id)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+          <el-table-column
+            prop="name"
+            label="函数名称"
+          />
+          <el-table-column
+            prop="type"
+            label="函数类型"
+          />
+          <el-table-column
+            prop="api"
+            label="服务Api"
+          />
+          <el-table-column
+            fixed="right"
+            label="操作"
+          >
+            <template v-slot="data">
+              <el-button type="text" size="small" @click="updateFuncDialog(data.row.id)">编辑</el-button>
+              <el-button type="text" size="small" @click="configFuncDialog(data.row)">配置</el-button>
+              <el-button type="text" size="small" style="color: red" @click="delFunc(data.row.id)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <el-form-item class="block" style="margin-top:15px;">
+
+          <el-pagination
+            align="right"
+            :current-page="currentPage"
+            :page-sizes="[1,5,10,20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="plugTable.length"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </el-form-item>
+      </el-form>
+
     </el-main>
     <!--    创建插件-->
     <add-plug :add-plug-dialog-visible.sync="addPlugDialogVisible" />
     <!--    创建插件-->
 
     <!--    编辑、配置插件-->
-    <update-plug :update-plug-dialog-visible.sync="updatePlugDialogVisible" />
+    <update-plug ref="updatePlug" :plug-id.sync="plugId" :update-plug-dialog-visible.sync="updatePlugDialogVisible" />
     <config-plug :config-plug-dialog-visible.sync="configPlugDialogVisible" />
     <!--    编辑、配置插件-->
 
     <!--    编辑、创建、配置函数-->
     <add-func ref="addFunc" :add-func-dialog-visible.sync="addFuncDialogVisible" @updateFuncTable="getFuncList" />
-    <update-func ref="updateFunc" :update-func-dialog-visible.sync="updateFuncDialogVisible" :current-id="currentId" />
+    <update-func ref="updateFunc" :func-id.sync="funcId" :update-func-dialog-visible.sync="updateFuncDialogVisible" :current-id="currentId" />
     <config-func ref="configFunc" :config-func-dialog-visible.sync="configFuncDialogVisible" />
     <!--    编辑、创建、配置函数-->
 
@@ -100,17 +116,31 @@ import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/upda
 import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
 import UpdatePlug from '@/views/appInfoManagement/plugManagement/components/updatePlug.vue'
 import ConfigPlug from '@/views/appInfoManagement/plugManagement/components/configPlug.vue'
+import { delPlugById, getAllFunc, getAllPlug } from '@/api/plug'
+
 export default {
   components: { ConfigPlug, UpdatePlug, ConfigFunc, UpdateFunc, AddFunc, AddPlug },
   data() {
     return {
-      currentId: null,
+      currentId: 0,
+      plugId: '0',
+      funcId: '0',
       addPlugDialogVisible: false,
       updateFuncDialogVisible: false,
       addFuncDialogVisible: false,
       configFuncDialogVisible: false,
       updatePlugDialogVisible: false,
       configPlugDialogVisible: false,
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 5, // 每页的数据条数
+      plugInfo: {
+        name: '',
+        purpose: '',
+        description: '',
+        available: false,
+        open: false
+      },
       funcInfo: {
         name: '',
         enName: '',
@@ -118,49 +148,63 @@ export default {
         apiId: '',
         description: ''
       },
-      funcTable: [{
-        id: 1,
-        name: 'test1',
-        enName: 'test1',
-        type: 'http请求',
-        api: 'SerpApi',
-        description: 'test1'
-      },
-      {
-        id: 2,
-        name: 'test2',
-        enName: 'test2',
-        type: 'http请求2',
-        api: 'SerpApi2',
-        description: 'test2'
-      }
-      ],
+      funcTable:
+        [{
+          id: 1,
+          name: 'test1',
+          enName: 'test1',
+          type: 'http请求',
+          api: 'SerpApi',
+          description: 'test1'
+        },
+        {
+          id: 2,
+          name: 'test2',
+          enName: 'test2',
+          type: 'http请求2',
+          api: 'SerpApi2',
+          description: 'test2'
+        }
+        ],
       plugTable: [{
         name: 'plug 1'
-      },
-      {
-        name: 'plug 2'
       }]
     }
   },
+  mounted() {
+    // 在组件挂载后执行异步操作
+    getAllPlug().then((response) => {
+      this.plugTable = response.data.list
+      this.pageSize = response.data.pageSize
+    }).catch((error) => {
+      console.error('获取插件失败:', error)
+    })
+    getAllFunc().then((response) => {
+      console.log('函数获取')
+      this.funcTable = response.data.list
+      this.pageSize = response.data.pageSize
+    }).catch((error) => {
+      console.error('获取函数失败:', error)
+    })
+  },
   methods: {
-    openAddPlugDialog() {
+    test() {
+    },
+    addPlugDialog() {
       this.addPlugDialogVisible = true // 打开对话框
     },
-    // getFunc() {
-    //   return this.funcInfo
-    // },
-    // async getFuncList() {
-    //   this.funcTable = await getFuncList()
-    // },
+    getFunc() {
+
+    },
     addFuncDialog() {
       this.addFuncDialogVisible = true
     },
-    updateFuncDialog(data) {
+    updateFuncDialog(id) {
       this.updateFuncDialogVisible = true
       // this.$nextTick(() => {
       //   this.$refs.updateFunc.getFuncDetail(data)
       // })
+      this.funcId = id
     },
     configFuncDialog(data) {
       this.configFuncDialogVisible = true
@@ -175,18 +219,32 @@ export default {
       })
       // this.$message.success('删除成功')
     },
-    delPlug(name) {
+    delPlug(id) {
       this.$confirm('确定删除？').then(async() => {
-        this.$message.success('删除成功')
-        // await delPlug(name)
+        delPlugById(id).then(response => {
+          console.log(response)
+        })
       })
       // this.$message.success('删除成功')
     },
-    updatePlugDialog(data) {
+    updatePlugDialog(id) {
       this.updatePlugDialogVisible = true
+      this.plugId = id
+      // console.log(this.plugId)
     },
     configPlugDialog(data) {
       this.configPlugDialogVisible = true
+    },
+    // 每页条数改变时触发 选择一页显示多少行
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`)
+      this.currentPage = 1
+      this.pageSize = val
+    },
+    // 当前页改变时触发 跳转其他页
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      this.currentPage = val
     }
   }
 }

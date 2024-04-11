@@ -8,11 +8,52 @@ export function createPlug(data) {
     data
   })
 }
-
-export function getFuncList() {
+export function getAllPlug() {
   return request(
     {
-      url: '/plug/plug/functions'
+      url: '/plug/plugs',
+      method: 'get'
+    }
+  )
+}
+
+export function getPlugById(plugId) {
+  return request(
+    {
+      url: `/plug/${plugId}/pluginfo`,
+      method: 'get'
+    }
+  )
+}
+
+export function delPlugById(plugId) {
+  return request({
+    url: `/plug/${plugId}/plug`,
+    method: 'delete'
+  })
+}
+
+export function modifyPlugById(plugId, data) {
+  return request({
+    url: `/plug/${plugId}/plug`,
+    method: 'put',
+    data
+  })
+}
+
+export function getAllFunc() {
+  return request(
+    {
+      url: '/plug/functions',
+      method: 'get'
+    }
+  )
+}
+export function getFuncById(funcId) {
+  return request(
+    {
+      url: `/plug/${funcId}/funcinfo`,
+      method: 'get'
     }
   )
 }
@@ -20,15 +61,8 @@ export function getFuncList() {
 export function getTypeList() {
   return request(
     {
-      url: '/appinfo/plug/types'
-    }
-  )
-}
-
-export function getApiList() {
-  return request(
-    {
-      url: '/appinfo/plug/apis'
+      url: '/appinfo/plug/types',
+      method: 'get'
     }
   )
 }
@@ -41,17 +75,11 @@ export function createFunc(data) {
   })
 }
 
-export function updateFunc(data) {
+export function modifyFuncById(funcId, data) {
   return request({
     method: 'put',
-    url: `appinfo/plug/function/${data.id}`,
+    url: `/plug/${funcId}/func`,
     data
-  })
-}
-
-export function getFuncDetail(id) {
-  return request({
-    url: `/appinfo/plug/function/${id}`
   })
 }
 
@@ -62,9 +90,3 @@ export function delFunc(id) {
   })
 }
 
-export function delPlug(name) {
-  return request({
-    method: 'delete',
-    url: 'appinfo/plug/name'
-  })
-}

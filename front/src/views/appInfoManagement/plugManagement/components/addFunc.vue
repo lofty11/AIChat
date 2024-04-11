@@ -43,7 +43,7 @@
   </el-dialog>
 </template>
 <script>
-import { createFunc, getApiList, getTypeList } from '@/api/plug'
+import { createFunc, getTypeList } from '@/api/plug'
 export default {
   props: {
     addFuncDialogVisible: {
@@ -90,9 +90,9 @@ export default {
     async getTypeList() {
       this.typeList = await getTypeList()
     },
-    async getApiList() {
-      this.apiList = await getApiList()
-    },
+    // async getApiList() {
+    //   this.apiList = await getApiList()
+    // },
     trans() {
       this.form.name = this.funcInfo.name
       this.form.ename = this.funcInfo.eName
