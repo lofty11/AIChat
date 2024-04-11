@@ -13,7 +13,13 @@ CREATE TABLE application_service
     api_name VARCHAR(255) NOT NULL,
     api_code VARCHAR(255) NOT NULL,
     request_url VARCHAR(255) NOT NULL,
-    request_method INTEGER NOT NULL
+    request_method INTEGER NOT NULL,
+    creator_id  bigint DEFAULT NULL,
+    creator_name varchar(128) DEFAULT NULL,
+    modifier_id  bigint DEFAULT NULL,
+    modifier_name  varchar(128) DEFAULT NULL,
+    gmt_create  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    gmt_modified  datetime DEFAULT NULL
 );
 alter table application_service character set utf8;
 
@@ -29,6 +35,12 @@ CREATE TABLE extension_input
     required INTEGER NOT NULL,
     description VARCHAR(255),
     application_id bigint,
+    creator_id  bigint DEFAULT NULL,
+    creator_name varchar(128) DEFAULT NULL,
+    modifier_id  bigint DEFAULT NULL,
+    modifier_name  varchar(128) DEFAULT NULL,
+    gmt_create  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    gmt_modified  datetime DEFAULT NULL,
     constraint fk_application_id  foreign key (application_id) references application_service (application_id) on update cascade on delete cascade
 );
 
@@ -45,6 +57,12 @@ CREATE TABLE extension_output
     required INTEGER NOT NULL,
     description VARCHAR(255),
     application_id bigint,
+    creator_id  bigint DEFAULT NULL,
+    creator_name varchar(128) DEFAULT NULL,
+    modifier_id  bigint DEFAULT NULL,
+    modifier_name  varchar(128) DEFAULT NULL,
+    gmt_create  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    gmt_modified  datetime DEFAULT NULL,
     constraint fk_application_id2  foreign key (application_id) references application_service (application_id) on update cascade on delete cascade
 );
 alter table extension_output character set utf8;
@@ -154,44 +172,44 @@ INSERT INTO user VALUES (NULL,0, 'admin', '123456', '10000');
 INSERT INTO user VALUES (NULL,1,'zmr','100000','181000000');
 
 
-INSERT INTO application_service VALUES (NULL, '服务api', 'Serapi', 'https://service/', 1);
-INSERT INTO application_service VALUES (NULL, '测试api', 'test_api', 'https://test.com/', 2);
-INSERT INTO application_service VALUES (NULL, '毕设api', 'design', 'https://design/', 3);
-INSERT INTO application_service VALUES (NULL, '墨刀api', 'modao', 'https://modao.cc/', 4);
+INSERT INTO application_service VALUES (NULL, '服务api', 'Serapi', 'https://service/', 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO application_service VALUES (NULL, '测试api', 'test_api', 'https://test.com/', 2, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO application_service VALUES (NULL, '毕设api', 'design', 'https://design/', 3, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO application_service VALUES (NULL, '墨刀api', 'modao', 'https://modao.cc/', 4, NULL, NULL, NULL, NULL, NOW(), NULL);
 
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数1', 'search1', 'string', '仅限小写字母', 1, '定义', 1);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'search2', 'array', NULL, 1, '定义', 1);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数3', 'search3', 'json', NULL, 1, '定义', 1);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数4', 'search4', 'integer', NULL, 1, '定义', 1);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数1', 'search1', 'string', NULL, 1, '定义', 2);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'search2', 'array', NULL, 1, '定义', 2);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数3', 'search3', 'json', NULL, 1, '定义', 2);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数4', 'search4', 'integer', NULL, 1, '定义', 2);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数1', 'search1', 'string', NULL, 1, '定义', 3);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'search2', 'array', NULL, 1, '定义', 3);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数3', 'search3', 'json', NULL, 1, '定义', 3);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数4', 'search4', 'integer', NULL, 1, '定义', 3);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数1', 'search1', 'string', NULL, 1, '定义', 4);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'search2', 'array', NULL, 1, '定义', 4);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数3', 'search3', 'json', NULL, 1, '定义', 4);
-INSERT INTO extension_input VALUES (NULL, '搜索查询参数4', 'search4', 'integer', NULL, 1, '定义', 4);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数1', 'search1', 'string', '仅限小写字母', 1, '定义', 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'search2', 'array', NULL, 1, '定义', 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数3', 'search3', 'json', NULL, 1, '定义', 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数4', 'search4', 'integer', NULL, 1, '定义', 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数1', 'search1', 'string', NULL, 1, '定义', 2, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'search2', 'array', NULL, 1, '定义', 2, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数3', 'search3', 'json', NULL, 1, '定义', 2, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数4', 'search4', 'integer', NULL, 1, '定义', 2, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数1', 'search1', 'string', NULL, 1, '定义', 3, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'search2', 'array', NULL, 1, '定义', 3, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数3', 'search3', 'json', NULL, 1, '定义', 3, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数4', 'search4', 'integer', NULL, 1, '定义', 3, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数1', 'search1', 'string', NULL, 1, '定义', 4, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数2', 'search2', 'array', NULL, 1, '定义', 4, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数3', 'search3', 'json', NULL, 1, '定义', 4, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '搜索查询参数4', 'search4', 'integer', NULL, 1, '定义', 4, NULL, NULL, NULL, NULL, NOW(), NULL);
 
-INSERT INTO extension_output VALUES (NULL, '搜索结果1', 'search1', 'string', NULL, 0, NULL, 1);
-INSERT INTO extension_output VALUES (NULL, '搜索结果2', 'search2', 'json', NULL, 0, NULL, 1);
-INSERT INTO extension_output VALUES (NULL, '搜索结果3', 'search3', 'array', NULL, 0, NULL, 1);
-INSERT INTO extension_output VALUES (NULL, '搜索结果4', 'search4', 'integer', NULL, 0, NULL, 1);
-INSERT INTO extension_output VALUES (NULL, '搜索结果1', 'search1', 'string', NULL, 0, NULL, 2);
-INSERT INTO extension_output VALUES (NULL, '搜索结果2', 'search2', 'json', NULL, 0, NULL, 2);
-INSERT INTO extension_output VALUES (NULL, '搜索结果3', 'search3', 'array', NULL, 0, NULL, 2);
-INSERT INTO extension_output VALUES (NULL, '搜索结果4', 'search4', 'integer', NULL, 0, NULL, 2);
-INSERT INTO extension_output VALUES (NULL, '搜索结果1', 'search1', 'string', NULL, 0, NULL, 3);
-INSERT INTO extension_output VALUES (NULL, '搜索结果2', 'search2', 'json', NULL, 0, NULL, 3);
-INSERT INTO extension_output VALUES (NULL, '搜索结果3', 'search3', 'array', NULL, 0, NULL, 3);
-INSERT INTO extension_output VALUES (NULL, '搜索结果4', 'search4', 'integer', NULL, 0, NULL, 3);
-INSERT INTO extension_output VALUES (NULL, '搜索结果1', 'search1', 'string', NULL, 0, NULL, 4);
-INSERT INTO extension_output VALUES (NULL, '搜索结果2', 'search2', 'json', NULL, 0, NULL, 4);
-INSERT INTO extension_output VALUES (NULL, '搜索结果3', 'search3', 'array', NULL, 0, NULL, 4);
-INSERT INTO extension_output VALUES (NULL, '搜索结果4', 'search4', 'integer', NULL, 0, NULL, 4);
+INSERT INTO extension_output VALUES (NULL, '搜索结果1', 'search1', 'string', NULL, 0, NULL, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果2', 'search2', 'json', NULL, 0, NULL, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果3', 'search3', 'array', NULL, 0, NULL, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果4', 'search4', 'integer', NULL, 0, NULL, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果1', 'search1', 'string', NULL, 0, NULL, 2, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果2', 'search2', 'json', NULL, 0, NULL, 2, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果3', 'search3', 'array', NULL, 0, NULL, 2, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果4', 'search4', 'integer', NULL, 0, NULL, 2, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果1', 'search1', 'string', NULL, 0, NULL, 3, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果2', 'search2', 'json', NULL, 0, NULL, 3, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果3', 'search3', 'array', NULL, 0, NULL, 3, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果4', 'search4', 'integer', NULL, 0, NULL, 3, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果1', 'search1', 'string', NULL, 0, NULL, 4, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果2', 'search2', 'json', NULL, 0, NULL, 4, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果3', 'search3', 'array', NULL, 0, NULL, 4, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '搜索结果4', 'search4', 'integer', NULL, 0, NULL, 4, NULL, NULL, NULL, NULL, NOW(), NULL);
 
 INSERT INTO type_union VALUES(NULL, 'string');
 INSERT INTO type_union VALUES(NULL, 'array');

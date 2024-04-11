@@ -7,6 +7,7 @@ import com.springboot.back.service.ApplicationApiService;
 import com.springboot.back.service.dto.ApplicationServiceDto;
 import com.springboot.back.service.dto.ExtensionInputDto;
 import com.springboot.back.service.dto.ExtensionOutputDto;
+import com.springboot.core.aop.Audit;
 import com.springboot.core.aop.LoginUser;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.ReturnObject;
@@ -46,6 +47,7 @@ public class AdminApplicationController {
     }
 
     @PostMapping("/application")
+    @Audit
     public ReturnObject createApplicationService(@Valid @RequestBody ApplicationServiceVo vo,
                                                  @LoginUser UserDto user) {
         this.applicationApiService.createApplicationService(vo.getApiName(), vo.getApiCode(), vo.getRequestUrl(),
@@ -54,6 +56,7 @@ public class AdminApplicationController {
     }
 
     @PostMapping("/{applicationId}/input")
+    @Audit
     public ReturnObject createExtensionInput(@PathVariable Long applicationId,
                                              @Valid @RequestBody ExtensionInputVo vo,
                                              @LoginUser UserDto user) {
@@ -63,6 +66,7 @@ public class AdminApplicationController {
     }
 
     @PostMapping("/{applicationId}/output")
+    @Audit
     public ReturnObject createExtensionOutput(@PathVariable Long applicationId,
                                              @Valid @RequestBody ExtensionOutputVo vo,
                                              @LoginUser UserDto user) {
@@ -72,6 +76,7 @@ public class AdminApplicationController {
     }
 
     @PutMapping("/{applicationId}/application")
+    @Audit
     public ReturnObject updateApplicationService(@PathVariable Long applicationId,
                                                  @Valid @RequestBody ApplicationServiceVo vo,
                                                  @LoginUser UserDto user) {
@@ -81,6 +86,7 @@ public class AdminApplicationController {
     }
 
     @PutMapping("/{inputId}/input")
+    @Audit
     public ReturnObject updateExtensionInput(@PathVariable Long inputId,
                                              @Valid @RequestBody ExtensionInputVo vo,
                                              @LoginUser UserDto user) {
@@ -90,6 +96,7 @@ public class AdminApplicationController {
     }
 
     @PutMapping("/{outputId}/output")
+    @Audit
     public ReturnObject updateExtensionOutput(@PathVariable Long outputId,
                                              @Valid @RequestBody ExtensionOutputVo vo,
                                              @LoginUser UserDto user) {
@@ -104,9 +111,9 @@ public class AdminApplicationController {
         return new ReturnObject(ReturnNo.OK, id);
     }
 
-    @GetMapping("/applications")
-    public ReturnObject getApplications(@RequestParam(required = false, defaultValue = "1") Integer page,
-                                        @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+    @GetMapping("/{page}/{pageSize}/applications")
+    public ReturnObject getApplications(@RequestParam(required = false, defaultValue = "1") @PathVariable Integer page,
+                                        @RequestParam(required = false, defaultValue = "10") @PathVariable Integer pageSize) {
         PageDto<ApplicationServiceDto> ret = this.applicationApiService.retrieveApplications(page, pageSize);
         return new ReturnObject(ReturnNo.OK, ret);
     }

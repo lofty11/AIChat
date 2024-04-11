@@ -38,7 +38,7 @@ public class PlugController {
     }
 
     /*创建函数*/
-    @PostMapping("/func")
+    @PostMapping("/function")
     public ReturnObject createFunction(@Valid @RequestBody FunctionVo vo,
                                        @LoginUser UserDto user){
         this.plugService.createFunctionService(vo.getName(),vo.getEname(),vo.getType(),vo.getApi()
@@ -56,8 +56,8 @@ public class PlugController {
     }
 
     /*创建插件参数*/
-    @PostMapping("/{plugId}/plugpara")
-    public ReturnObject createPlugPara(@PathVariable Long plugId,
+    @PostMapping("/{plugId}/plugParameter")
+    public ReturnObject createPlugParameter(@PathVariable Long plugId,
                                              @Valid @RequestBody PlugParaVo vo,
                                              @LoginUser UserDto user) {
         this.plugService.createPlugPara(vo.getName(), vo.getValue(),0, plugId, user);
@@ -65,8 +65,8 @@ public class PlugController {
     }
 
     /*创建用户参数*/
-    @PostMapping("/{plugId}/userpara")
-    public ReturnObject createUserPara(@PathVariable Long plugId,
+    @PostMapping("/{plugId}/userParameter")
+    public ReturnObject createUserParameter(@PathVariable Long plugId,
                                        @Valid @RequestBody UserParaVo vo,
                                        @LoginUser UserDto user) {
         this.plugService.createUserPara(vo.getName(),vo.getField(),vo.getType(),vo.getNecessary(),vo.getDescription(),0, plugId, user);
@@ -84,18 +84,18 @@ public class PlugController {
     }
 
     /*编辑函数*/
-    @PutMapping("/{funcId}/func")
-    public ReturnObject updateFunc(@PathVariable Long funcId,
+    @PutMapping("/{functionId}/function")
+    public ReturnObject updateFunction(@PathVariable Long functionId,
                                    @Valid @RequestBody FunctionVo vo,
                                    @LoginUser UserDto user) {
-        this.plugService.updateFuncService(funcId, vo.getName(),vo.getEname(),vo.getType()
+        this.plugService.updateFuncService(functionId, vo.getName(),vo.getEname(),vo.getType()
                 ,vo.getApi(),vo.getDescription(),0,user);
         return new ReturnObject(ReturnNo.OK);
     }
 
     /*编辑插件参数*/
-    @PutMapping("/{id}/plugpara")
-    public ReturnObject updatePlugPara(@PathVariable Long id,
+    @PutMapping("/{id}/plugParameter")
+    public ReturnObject updatePlugParameter(@PathVariable Long id,
                                    @Valid @RequestBody PlugParaVo vo,
                                    @LoginUser UserDto user) {
         this.plugService.updatePlugParaService(id, vo.getName(),vo.getValue(),0,user);
@@ -103,8 +103,8 @@ public class PlugController {
     }
 
     /*编辑用户参数*/
-    @PutMapping("/{id}/userpara")
-    public ReturnObject updateUserPara(@PathVariable Long id,
+    @PutMapping("/{id}/userParameter")
+    public ReturnObject updateUserParameter(@PathVariable Long id,
                                        @Valid @RequestBody UserParaVo vo,
                                        @LoginUser UserDto user) {
         this.plugService.updateUserParaService(id, vo.getName(),vo.getField(),vo.getType(),
@@ -120,21 +120,21 @@ public class PlugController {
         return new ReturnObject(ReturnNo.OK);
     }
     /*删除函数*/
-    @DeleteMapping("/{funcId}/func")
-    public ReturnObject deleteFunc(@PathVariable Long funcId) {
-        this.plugService.deleteFunction(funcId);
+    @DeleteMapping("/{functionId}/function")
+    public ReturnObject deleteFunc(@PathVariable Long functionId) {
+        this.plugService.deleteFunction(functionId);
         return new ReturnObject(ReturnNo.OK);
     }
 
     /*删除插件参数*/
-    @DeleteMapping("/{id}/plugpara")
+    @DeleteMapping("/{id}/plugParameter")
     public ReturnObject deletePlugPara(@PathVariable Long id){
         this.plugService.deletePlugPara(id);
         return new ReturnObject(ReturnNo.OK);
     }
 
     /*删除用户参数*/
-    @DeleteMapping("/{id}/userpara")
+    @DeleteMapping("/{id}/userParameter")
     public ReturnObject deleteUserPara(@PathVariable Long id){
         this.plugService.deleteUserPara(id);
         return new ReturnObject(ReturnNo.OK);
@@ -149,21 +149,21 @@ public class PlugController {
     }
 
     /*根据id获取插件*/
-    @GetMapping("/{plugId}/pluginfo")
-    public ReturnObject getplug(@PathVariable Long plugId) {
+    @GetMapping("/{plugId}/plug")
+    public ReturnObject getPlug(@PathVariable Long plugId) {
         PlugDto ret = this.plugService.retrievePlug(plugId);
         return new ReturnObject(ReturnNo.OK, ret);
     }
     /*根据id获取插件参数*/
-    @GetMapping("/{id}/plugparaById")
-    public ReturnObject getplugPara(@PathVariable Long id) {
+    @GetMapping("/{id}/plugParameter")
+    public ReturnObject getPlugParameter(@PathVariable Long id) {
         PlugParaDto ret = this.plugService.retrievePlugPara(id);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
     /*根据id获取用户参数*/
-    @GetMapping("/{id}/userparaById")
-    public ReturnObject getuserPara(@PathVariable Long id) {
+    @GetMapping("/{id}/userParameter")
+    public ReturnObject getUserParameter(@PathVariable Long id) {
         UserParaDto ret = this.plugService.retrieveUserPara(id);
         return new ReturnObject(ReturnNo.OK, ret);
     }
@@ -177,29 +177,29 @@ public class PlugController {
     }
 
     /*通过funcId获取函数*/
-    @GetMapping("/{funcId}/funcinfoById")
-    public ReturnObject getFunctionById(@PathVariable Long funcId) {
-        FunctionDto ret = this.plugService.retrieveFunction(funcId);
+    @GetMapping("/id/{functionId}/function")
+    public ReturnObject getFunctionById(@PathVariable Long functionId) {
+        FunctionDto ret = this.plugService.retrieveFunction(functionId);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
     /*通过funcName获取函数*/
-    @GetMapping("/{funcName}/funcinfoByName")
-    public ReturnObject getFunctionByName(@PathVariable String funcName) {
+    @GetMapping("/name/{functionName}/function")
+    public ReturnObject getFunctionByName(@PathVariable String functionName) {
 
-        FunctionDto ret = this.plugService.retrieveFunction(this.plugService.findFuncIdByName(funcName));
+        FunctionDto ret = this.plugService.retrieveFunction(this.plugService.findFuncIdByName(functionName));
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
     /*获取函数类型列表*/
-    @GetMapping("/funcTypes")
-    public ReturnObject getfuncTypes() {
+    @GetMapping("/functionTypes")
+    public ReturnObject getFunctionTypes() {
         List<FunctionType> ret = this.plugService.retrieveFunctionTypes();
         return new ReturnObject(ReturnNo.OK, ret);
     }
     /*获取服务API列表*/
     @GetMapping("/serviceApis")
-    public ReturnObject getserviceApis() {
+    public ReturnObject getServiceApis() {
         List<ServiceApi> ret = this.plugService.retrieveServiceApis();
         return new ReturnObject(ReturnNo.OK, ret);
     }
