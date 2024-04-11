@@ -87,4 +87,5 @@ public class PlugParaDao {
         }
         return reList.stream().map(this::getBo).collect(Collectors.toList());
     }
+
 }

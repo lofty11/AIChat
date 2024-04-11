@@ -180,6 +180,7 @@ public class PlugService {
                 value(plugPara.getValue()).build();
         return ret;
     }
+
     @Transactional
     public UserParaDto retrieveUserPara(Long id) {
         UserPara userPara = this.userParaDao.findById(id);
@@ -255,5 +256,23 @@ public class PlugService {
                 .api(function.getApi()).apiName(serviceApi.getType()).description(function.getDescription()).build();
         return ret;
     }
+
+    @Transactional
+    public Long findFuncIdByName(String name) {
+        return this.functionDao.findByName(name);
+    }
+
+    @Transactional
+    public List<FunctionType> retrieveFunctionTypes() {
+        List<FunctionType> functionTypes = this.functionTypeDao.retrieveAll();
+        return functionTypes;
+    }
+
+    @Transactional
+    public List<ServiceApi> retrieveServiceApis() {
+        List<ServiceApi> serviceApis = this.serviceApiDao.retrieveAll();
+        return serviceApis;
+    }
+
 
 }

@@ -5,6 +5,8 @@ import com.springboot.back.controller.vo.FunctionVo;
 import com.springboot.back.controller.vo.PlugParaVo;
 import com.springboot.back.controller.vo.PlugVo;
 import com.springboot.back.controller.vo.UserParaVo;
+import com.springboot.back.dao.bo.FunctionType;
+import com.springboot.back.dao.bo.ServiceApi;
 import com.springboot.back.service.PlugService;
 import com.springboot.back.service.dto.FunctionDto;
 import com.springboot.back.service.dto.PlugDto;
@@ -18,6 +20,8 @@ import com.springboot.core.model.dto.UserDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author dell
@@ -151,14 +155,14 @@ public class PlugController {
         return new ReturnObject(ReturnNo.OK, ret);
     }
     /*根据id获取插件参数*/
-    @GetMapping("/{id}/plugpara")
+    @GetMapping("/{id}/plugparaById")
     public ReturnObject getplugPara(@PathVariable Long id) {
         PlugParaDto ret = this.plugService.retrievePlugPara(id);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
     /*根据id获取用户参数*/
-    @GetMapping("/{id}/userpara")
+    @GetMapping("/{id}/userparaById")
     public ReturnObject getuserPara(@PathVariable Long id) {
         UserParaDto ret = this.plugService.retrieveUserPara(id);
         return new ReturnObject(ReturnNo.OK, ret);
@@ -172,17 +176,31 @@ public class PlugController {
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
-    @GetMapping("/{funcId}/funcinfo")
+    /*通过funcId获取函数*/
+    @GetMapping("/{funcId}/funcinfoById")
     public ReturnObject getFunctionById(@PathVariable Long funcId) {
         FunctionDto ret = this.plugService.retrieveFunction(funcId);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
-    /*获取函数类型列表*/
-    /*@GetMapping("/funcTypes")
-    public ReturnObject getfuncTypes(@RequestParam(required = false, defaultValue = "1") Integer page,
-                                     @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
-        PageDto<FunctionDto> ret = this.plugService.retrieveFunctions(page, pageSize);
+    /*通过funcName获取函数*/
+    @GetMapping("/{funcName}/funcinfoByName")
+    public ReturnObject getFunctionByName(@PathVariable String funcName) {
+
+        FunctionDto ret = this.plugService.retrieveFunction(this.plugService.findFuncIdByName(funcName));
         return new ReturnObject(ReturnNo.OK, ret);
-    }*/
+    }
+
+    /*获取函数类型列表*/
+    @GetMapping("/funcTypes")
+    public ReturnObject getfuncTypes() {
+        List<FunctionType> ret = this.plugService.retrieveFunctionTypes();
+        return new ReturnObject(ReturnNo.OK, ret);
+    }
+    /*获取服务API列表*/
+    @GetMapping("/serviceApis")
+    public ReturnObject getserviceApis() {
+        List<ServiceApi> ret = this.plugService.retrieveServiceApis();
+        return new ReturnObject(ReturnNo.OK, ret);
+    }
 }
