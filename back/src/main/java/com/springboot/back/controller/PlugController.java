@@ -94,20 +94,20 @@ public class PlugController {
     }
 
     /*编辑插件参数*/
-    @PutMapping("/{plugId}/plugpara")
-    public ReturnObject updatePlugPara(@PathVariable Long plugId,
+    @PutMapping("/{id}/plugpara")
+    public ReturnObject updatePlugPara(@PathVariable Long id,
                                    @Valid @RequestBody PlugParaVo vo,
                                    @LoginUser UserDto user) {
-        this.plugService.updatePlugParaService(plugId, vo.getName(),vo.getValue(),0,user);
+        this.plugService.updatePlugParaService(id, vo.getName(),vo.getValue(),0,user);
         return new ReturnObject(ReturnNo.OK);
     }
 
     /*编辑用户参数*/
-    @PutMapping("/{plugId}/userpara")
-    public ReturnObject updateUserPara(@PathVariable Long plugId,
+    @PutMapping("/{id}/userpara")
+    public ReturnObject updateUserPara(@PathVariable Long id,
                                        @Valid @RequestBody UserParaVo vo,
                                        @LoginUser UserDto user) {
-        this.plugService.updateUserParaService(plugId, vo.getName(),vo.getField(),vo.getType(),
+        this.plugService.updateUserParaService(id, vo.getName(),vo.getField(),vo.getType(),
                 vo.getNecessary(),vo.getDescription(),0,user);
         return new ReturnObject(ReturnNo.OK);
     }
