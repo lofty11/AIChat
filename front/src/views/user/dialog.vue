@@ -1,12 +1,12 @@
 <template>
   <div v-if="dialogVisible" class="chat-messages" style="width: 100%">
     <el-timeline>
-      <el-timeline-item v-for="(message, index) in dialogMessages" :key="index">
-        <el-card v-if="message.type === 'user'" class="user-message" :header="message.sender">
-          {{ message.text }}
+      <el-timeline-item v-for="(message, index) in messages" :key="index">
+        <el-card v-if="message.type === 0" class="user-message" header="YOU">
+          {{ message.content }}
         </el-card>
-        <el-card v-else class="bot-message" :header="message.sender">
-          {{ message.text }}
+        <el-card v-else class="bot-message" header="AI精灵">
+          {{ message.content }}
         </el-card>
       </el-timeline-item>
     </el-timeline>
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { getAllMessages } from '@/api/chat'
+
 export default {
   name: 'Dialog',
   props: {
@@ -22,13 +24,33 @@ export default {
       type: Boolean,
       default: false
     },
-    dialogMessages: {
-      type: Array,
-      default: () => []
+    dialogMessage: {
+      type: Object,
+      default: () => ({})
+    },
+    id: {
+      type: String,
+      default: '0'
     }
   },
   data() {
-    return {}
+    return {
+      messages: []
+    }
+  },
+  watch: {
+    id(newValue) {
+      if (newValue !== '0') {
+        getAllMessages(this.id).then(response => {
+          if (response.errno === 0) {
+            this.messages = response.data.list
+          }
+        })
+      }
+    },
+    dialogMessage(newValue) {
+      this.messages.push(newValue)
+    }
   }
 
 }

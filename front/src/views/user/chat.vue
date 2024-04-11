@@ -9,20 +9,20 @@
           background-color="#545c59"
           text-color="#fff"
           active-text-color="#ffd04b"
-          style="height: 100%"
+          style="height: 100%;position: fixed;"
         >
           <el-menu-item>
             <el-button type="text" icon="el-icon-plus" style="color:#fff;" @click="addItem">新建对话</el-button>
           </el-menu-item>
-          <el-menu-item v-for="(item, index) in sidebarItems" :key="index" :index="String(index + 1)">
+          <el-menu-item v-for="(item, index) in sidebarItems" :key="index" :index="String(index + 1)" @click="selectItem(item.id)">
             <template slot="title">
               <span v-if="editingIndex !== index" style="width: 40%;">{{ truncateText(item.chatName) }}</span>
               <span v-else>
-                <el-input v-model="editedItemName" size="mini" style="width: 40%;" autofocus @keyup.enter.native="saveItem(index)" />
+                <el-input v-model="editedItemName" size="mini" style="width: 40%;" autofocus @keyup.enter.native="saveItem(index,item.id)" />
               </span>
               <span class="button-group">
                 <el-button type="text" icon="el-icon-edit" @click="editItem(index)" />
-                <el-button type="text" icon="el-icon-delete" @click="deleteItem(index)" />
+                <el-button type="text" icon="el-icon-delete" @click="deleteItem(index,item.id)" />
               </span>
 
             </template>
@@ -35,7 +35,7 @@
       <el-container style="width:100%;height: 100%">
         <el-main width="100%" height="75%">
           <Prompt :prompt-visible="promptVisible" />
-          <Dialog :dialog-visible="dialogVisible" :dialog-messages="messages" />
+          <Dialog :id="chatId" :dialog-visible="dialogVisible" :dialog-message="message" />
         </el-main>
         <el-footer height="25%" class="chat-input">
           <el-row type="flex" align="middle">
@@ -85,7 +85,7 @@
 <script>
 import Prompt from '@/views/user/prompt'
 import Dialog from '@/views/user/dialog'
-import { createChat, getAllChats } from '@/api/chat'
+import { createChat, createMessage, deleteChat, getAllChats, modifyChatName } from '@/api/chat'
 export default {
   name: 'Chat',
   components: { Dialog, Prompt },
@@ -99,15 +99,22 @@ export default {
       activeIndex: '1',
       editedItemName: '',
       userMessage: '',
-      messages: [],
+      message: {},
       send: true,
       dialogVisible: false,
-      promptVisible: true
+      promptVisible: true,
+      chatId: '0'
     }
   },
   watch: {
     userMessage(newValue) {
       this.send = newValue.trim() === ''
+    },
+    chatId(newValue) {
+      if (newValue === '0') {
+        this.promptVisible = true
+        this.dialogVisible = false
+      }
     }
   },
   created() {
@@ -125,23 +132,36 @@ export default {
           this.addItem()
         }
         if (this.dialogVisible === false) { this.dialogVisible = true }
-        this.messages.push({ sender: 'You', text: this.userMessage, type: 'user' })
-        console.log(this.userMessage)
-        // Simulate bot response
-        setTimeout(() => {
-          this.messages.push({ sender: 'AI精灵', text: '未连接网络.', type: 'bot' })
-        }, 500)
+
+        createMessage({ chatId: this.chatId, content: this.userMessage, type: 0 }).then(response => {
+          if (response.errno === 1) {
+            this.message = response.data
+          }
+        })
         this.userMessage = ''
+        setTimeout(() => {
+          this.message = { content: '未连接网络.', type: 1 }
+        }, 500)
       }
+    },
+    selectItem(id) {
+      this.chatId = String(id)
+      this.promptVisible = false
+      this.dialogVisible = true
     },
     editItem(index) {
       this.editingIndex = index
-      this.editedItemName = this.sidebarItems[index].name
-      // You can implement editing logic here if needed
+      this.editedItemName = this.sidebarItems[index].chatName
     },
-    deleteItem(index) {
-      this.sidebarItems.splice(index, 1)
-      this.editingIndex = null
+    deleteItem(index, id) {
+      console.log('id' + id)
+      deleteChat(this.chatId).then(response => {
+        if (response.errno === 0) {
+          this.sidebarItems.splice(index, 1)
+          this.editingIndex = null
+          this.chatId = '0'
+        }
+      })
     },
     addItem() {
       createChat({ chatName: '新对话', userId: this.$store.state.user.id }).then(response => {
@@ -149,16 +169,26 @@ export default {
           this.sidebarItems.unshift(response.data)
           this.promptVisible = false
           this.dialogVisible = true
-          this.messages = []
+          this.messages = {}
+          this.chatId = String(response.data.id)
         }
       })
       // You can implement adding logic here if needed
     },
-    saveItem(index) {
+    saveItem(index, id) {
       if (this.editedItemName.trim() !== '') {
-        this.sidebarItems[index].name = this.editedItemName
+        modifyChatName({
+          id: id,
+          userId: this.$store.state.user.userId,
+          chatName: this.editedItemName
+        }).then(response => {
+          if (response.errno === 0) {
+            this.sidebarItems[index].chatName = this.editedItemName
+            console.log(this.sidebarItems[index].name)
+            this.editingIndex = null
+          }
+        })
       }
-      this.editingIndex = null
     },
     truncateText(text) {
       const maxLength = 10 // 可以根据需要调整最大长度

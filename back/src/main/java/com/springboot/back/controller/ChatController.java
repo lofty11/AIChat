@@ -26,22 +26,26 @@ public class ChatController {
         this.userService=userService;
     }
     @DeleteMapping("/{chatId}")
+    @Audit
     public ReturnObject deleteChat(@LoginUser UserDto user, @PathVariable Long chatId) {
         this.userService.deleteChat(user,chatId);
         return new ReturnObject(ReturnNo.OK);
     }
     @PostMapping("/chat")
+    @Audit
     public ReturnObject createChat( @LoginUser UserDto user,@Valid @RequestBody Chat bo) {
         ChatDto dto=this.userService.addChat(user,bo);
         return new ReturnObject(ReturnNo.CREATED,dto);
     }
     @PostMapping("/message")
+    @Audit
     public ReturnObject createMessage( @LoginUser UserDto user,@Valid @RequestBody Message bo) {
         MessageDto dto= this.userService.addMessage(user,bo);
         return new ReturnObject(ReturnNo.CREATED,dto);
     }
 
     @PutMapping("/chat")
+    @Audit
     public ReturnObject updateChatName(@LoginUser UserDto user,
                                                  @Valid @RequestBody Chat bo) {
         this.userService.updateChatName(user,bo);
@@ -57,6 +61,7 @@ public class ChatController {
         return new ReturnObject(this.userService.findAllChats(user,page,pageSize));
     }
     @GetMapping("/messages/{chatId}")
+    @Audit
     public ReturnObject getAllmessages(@LoginUser UserDto user,
                                        @PathVariable Long chatId,
                                     @RequestParam(required = false,defaultValue = "1")Integer page,

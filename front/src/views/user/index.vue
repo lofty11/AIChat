@@ -44,7 +44,6 @@
 
 <script>
 import Chat from '@/views/user/chat'
-import { logout } from '@/api/user'
 export default {
   name: 'User',
   components: { Chat },
@@ -60,7 +59,7 @@ export default {
   methods: {
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$router.push(`/login`)
     }
   }
 }

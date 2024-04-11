@@ -40,9 +40,10 @@ public class UserService {
         this.messageDao=messageDao;
     }
     @Transactional
-    public UserDto login(String userName, String password)
+    public UserDto login(String userName, String password,
+                         Integer level)
     {
-        User bo= this.userDao.findByUserName(userName);
+        User bo= this.userDao.findByUserName(userName,level);
         if(null==bo) throw new BusinessException(ReturnNo.AUTH_ID_NOTEXIST);
         else if (bo.getUserPassword().equals(password)) {
             UserDto dto = cloneObj(bo, UserDto.class);
