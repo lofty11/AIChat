@@ -173,7 +173,7 @@ public class PlugController {
     }
 
     @GetMapping("/{funcId}/funcinfo")
-    public ReturnObject getFunction(@PathVariable Long funcId) {
+    public ReturnObject getFunctionById(@PathVariable Long funcId) {
         FunctionDto ret = this.plugService.retrieveFunction(funcId);
         return new ReturnObject(ReturnNo.OK, ret);
     }
