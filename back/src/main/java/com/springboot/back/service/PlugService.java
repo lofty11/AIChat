@@ -246,8 +246,7 @@ public class PlugService {
     }
 
     @Transactional
-    public FunctionDto retrieveFunction(String funcName) {
-        Long funcId = this.functionDao.findByName(funcName);
+    public FunctionDto retrieveFunction(Long funcId) {
         Function function = this.functionDao.findById(funcId);
         FunctionType functionType = this.functionTypeDao.findById(function.getType().longValue());
         ServiceApi serviceApi = this.serviceApiDao.findById(function.getApi().longValue());
