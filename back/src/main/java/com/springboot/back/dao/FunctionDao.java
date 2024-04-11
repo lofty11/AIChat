@@ -82,8 +82,8 @@ public class FunctionDao {
         return String.format(KEY, function.getId());
     }
 
-    public Long findByName(String plugName) {
-        FunctionPo po = this.functionPoMapper.findByName(plugName);
+    public Long findByName(String funcName) {
+        FunctionPo po = this.functionPoMapper.findByName(funcName);
         if (null == po) {
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), (Object) null));
         }
