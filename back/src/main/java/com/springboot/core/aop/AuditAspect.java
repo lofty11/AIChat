@@ -50,7 +50,7 @@ public class AuditAspect {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         String token = request.getHeader(JwtUtil.LOGIN_TOKEN_KEY);
-        System.out.print("AOP");
+        //System.out.print("AOP");
         UserToken decryptToken = decryptToken(token);
 
 
