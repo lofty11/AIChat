@@ -71,7 +71,7 @@ CREATE TABLE plugpara
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    value VARCHAR(255) NOT NULL,
+    value INTEGER NOT NULL,
     deleted INTEGER NOT NULL,
     plug_id bigint,
     constraint fk_plug_id1  foreign key (plug_id) references plug (id) on update cascade on delete cascade

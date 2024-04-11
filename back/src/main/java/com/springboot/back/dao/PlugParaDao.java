@@ -6,6 +6,7 @@ import com.springboot.back.mapper.po.PlugParaPo;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
+import com.springboot.core.util.Common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +33,7 @@ public class PlugParaDao {
     }
 
     private PlugPara getBo(PlugParaPo po) {
-        PlugPara bo = PlugPara.builder().id(po.getId()).plug_id(po.getPlugId()).name(po.getName()).build();
+        PlugPara bo = PlugPara.builder().id(po.getId()).plug_id(po.getPlugId()).name(po.getName()).value(po.getValue()).build();
         return bo;
     }
     private PlugParaPo getPo(PlugPara bo) {
@@ -85,6 +86,10 @@ public class PlugParaDao {
         if (reList.isEmpty()) {
             return new ArrayList<>();
         }
-        return reList.stream().map(this::getBo).collect(Collectors.toList());
+        return reList.stream().map((po)-> {
+            PlugPara bo = Common.cloneObj(po, PlugPara.class);
+            return bo;
+        }).collect(Collectors.toList());
     }
+
 }

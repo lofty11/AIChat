@@ -10,6 +10,7 @@ import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.PageDto;
 import com.springboot.core.model.dto.UserDto;
+import com.springboot.core.util.Common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -163,7 +164,7 @@ public class PlugService {
     public PlugDto retrievePlug(Long plugId) {
         Plug plug = this.plugDao.findById(plugId);
         List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
-        List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> PlugParaDto.builder().id(obj.getId()).name(obj.getName()).value(obj.getValue()).build()).collect(Collectors.toList());
+        List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> {PlugParaDto dto= Common.cloneObj(obj,PlugParaDto.class);return dto;}).collect(Collectors.toList());
         List<UserPara> userParas = this.userParaDao.retrieveByPlugId(plug.getId());
         List<UserParaDto> userParaDtos = userParas.stream().map(obj -> UserParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
                 type(obj.getType()).necessary(obj.getNecessary()).description(obj.getDescription()).build()).collect(Collectors.toList());
@@ -180,6 +181,7 @@ public class PlugService {
                 value(plugPara.getValue()).build();
         return ret;
     }
+
     @Transactional
     public UserParaDto retrieveUserPara(Long id) {
         UserPara userPara = this.userParaDao.findById(id);
@@ -255,5 +257,23 @@ public class PlugService {
                 .api(function.getApi()).apiName(serviceApi.getType()).description(function.getDescription()).build();
         return ret;
     }
+
+    @Transactional
+    public Long findFuncIdByName(String name) {
+        return this.functionDao.findByName(name);
+    }
+
+    @Transactional
+    public List<FunctionType> retrieveFunctionTypes() {
+        List<FunctionType> functionTypes = this.functionTypeDao.retrieveAll();
+        return functionTypes;
+    }
+
+    @Transactional
+    public List<ServiceApi> retrieveServiceApis() {
+        List<ServiceApi> serviceApis = this.serviceApiDao.retrieveAll();
+        return serviceApis;
+    }
+
 
 }
