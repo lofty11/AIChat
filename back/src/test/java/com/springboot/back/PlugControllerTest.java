@@ -19,7 +19,7 @@ public class PlugControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private static TokenDto adminToken;
+    private static String adminToken;
 
     @BeforeAll
     public static void setup(){
@@ -127,7 +127,7 @@ public class PlugControllerTest {
     @Test
     public void updateUserParameterTest() throws Exception{
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{id}/userParameter", 2)
-                        .header("authorization", adminToken)
+                        .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"test\", \"field\": 0, \"type\": \"string\",\"necessary\": 0}"))
                 .andDo(MockMvcResultHandlers.print())
