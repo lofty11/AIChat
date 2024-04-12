@@ -45,7 +45,7 @@ public class PlugController {
                                        @LoginUser UserDto user){
         this.plugService.createFunctionService(vo.getName(),vo.getEname(),vo.getType(),vo.getApi()
                 , vo.getDescription(), 0,user);
-        return new ReturnObject(ReturnNo.OK);
+        return new ReturnObject(ReturnNo.CREATED);
     }
 
     /*创建插件*/
@@ -55,7 +55,7 @@ public class PlugController {
                                    @LoginUser UserDto user){
         this.plugService.createPlugService(vo.getName(),vo.getPurpose(), vo.getDescription(),
                 vo.getAvailable(),vo.getOpen(),0,user);
-        return new ReturnObject(ReturnNo.OK);
+        return new ReturnObject(ReturnNo.CREATED);
     }
 
     /*创建插件参数*/

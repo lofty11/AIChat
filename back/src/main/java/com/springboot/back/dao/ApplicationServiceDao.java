@@ -99,7 +99,7 @@ public class ApplicationServiceDao {
     }
 
     public List<ApplicationService> retrieveAll(Integer page, Integer pageSize) throws RuntimeException {
-        List<ApplicationServicePo> reList = this.applicationServicePoMapper.findAll(PageRequest.of(0, Constants.MAX_RETURN))
+        List<ApplicationServicePo> reList = this.applicationServicePoMapper.findAll(PageRequest.of(page-1, pageSize))
                 .stream().toList();
         if (reList.isEmpty())
             return new ArrayList<>();

@@ -194,7 +194,7 @@ public class PlugService {
 
     @Transactional
     public PageDto<PlugDto> retrievePlugs(Integer page, Integer pageSize) {
-        List<Plug> plugs = this.plugDao.retrieveAll();
+        List<Plug> plugs = this.plugDao.retrieveAll(page, pageSize);
         List<PlugDto> ret = new ArrayList<>();
         for(Plug plug: plugs) {
             List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
@@ -224,7 +224,7 @@ public class PlugService {
 
     @Transactional
     public PageDto<FunctionDto> retrieveFunctions(Integer page, Integer pageSize) {
-        List<Function> functions = this.functionDao.retrieveAll();
+        List<Function> functions = this.functionDao.retrieveAll(page, pageSize);
         List<FunctionDto> ret = new ArrayList<>();
         for(Function function: functions) {
             FunctionDto functionDto = getFunctionDto(function);

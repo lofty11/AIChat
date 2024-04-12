@@ -82,8 +82,8 @@ public class PlugDao {
         return String.format(KEY, plug.getId());
     }
 
-    public List<Plug> retrieveAll() throws RuntimeException {
-        List<PlugPo> reList = this.plugPoMapper.findAll(PageRequest.of(0, Constants.MAX_RETURN))
+    public List<Plug> retrieveAll(Integer page, Integer pageSize) throws RuntimeException {
+        List<PlugPo> reList = this.plugPoMapper.findAll(PageRequest.of(page-1, pageSize))
                 .stream().toList();
         if (reList.isEmpty()) {
             return new ArrayList<>();
