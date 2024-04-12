@@ -27,7 +27,7 @@ public class UserController {
     @PostMapping("/login")
     public ReturnObject login(@Valid @RequestBody UserVo vo){
       UserDto dto= this.userService.login(vo.getName(),vo.getPassword(),vo.getUserLevel());
-      TokenDto token=JwtUtil.createToken(dto.getId(),dto.getUserName(),dto.getUserLevel(),20000);
+      String token=JwtUtil.createToken(dto.getId(),dto.getUserName(),dto.getUserLevel(),20000);
 
       return new ReturnObject(token);
 

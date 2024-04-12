@@ -36,7 +36,7 @@ public class JwtUtil {
      * @param userId 用户id
      * @return token
      */
-    public static TokenDto createToken(Long userId, String userName, Integer userLevel, int expireTime) {
+    public static String createToken(Long userId, String userName, Integer userLevel, int expireTime) {
         logger.debug("createToken:");
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
@@ -67,7 +67,7 @@ public class JwtUtil {
                     // 签名 Signature
                     .sign(algorithm);
 
-            return new TokenDto(userName,token);
+            return token;
         } catch (JWTCreationException exception) {
             exception.printStackTrace();
         }
