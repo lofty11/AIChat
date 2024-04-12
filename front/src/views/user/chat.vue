@@ -13,6 +13,7 @@
         >
           <el-menu-item>
             <el-button type="text" icon="el-icon-plus" style="color:#fff;" @click="addItem">新建对话</el-button>
+
           </el-menu-item>
           <el-menu-item v-for="(item, index) in sidebarItems" :key="index" :index="String(index + 1)" @click="selectItem(item.id)">
             <template slot="title">
@@ -85,6 +86,7 @@
 <script>
 import Prompt from '@/views/user/prompt'
 import Dialog from '@/views/user/dialog'
+import variables from '@/styles/variables.scss'
 import { createChat, createMessage, deleteChat, getAllChats, modifyChatName } from '@/api/chat'
 export default {
   name: 'Chat',
@@ -196,6 +198,12 @@ export default {
         return text.substring(0, maxLength) + '...'
       }
       return text
+    },
+    variables() {
+      return variables
+    },
+    isCollapse() {
+      return !this.sidebar.opened
     }
   }
 }
@@ -221,4 +229,5 @@ export default {
   margin-top: 10px;
   font-size: 12px;
 }
+
 </style>
