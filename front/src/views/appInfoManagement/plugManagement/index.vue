@@ -37,10 +37,10 @@
     <el-main class="right-main">
       <el-form ref="funcInfo" inline="true" :model="funcInfo" label-width="80px">
         <el-form-item label="函数名称">
-          <el-input v-model="funcInfo.name" placeholder="请输入函数名称" />
+          <el-input v-model="searchData" placeholder="请输入函数名称" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="getFunc(funcInfo.name)">查询</el-button>
+          <el-button type="primary" @click="search(funcInfo.name)">查询</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="addFuncDialog">新建函数</el-button>
@@ -114,13 +114,14 @@ import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/upda
 import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
 import UpdatePlug from '@/views/appInfoManagement/plugManagement/components/updatePlug.vue'
 import ConfigPlug from '@/views/appInfoManagement/plugManagement/components/configPlug.vue'
-import { delFuncById, delPlugById, getAllFunc, getAllPlug } from '@/api/plug'
+import { delFuncById, delPlugById, getAllFunc, getAllPlug, getFuncByName } from '@/api/plug'
 
 export default {
   components: { ConfigPlug, UpdatePlug, ConfigFunc, UpdateFunc, AddFunc, AddPlug },
   data() {
     return {
-      currentId: 0,
+      isSearch: false,
+      searchData: '',
       plugId: '0',
       funcId: '0',
       addPlugDialogVisible: false,
@@ -161,6 +162,17 @@ export default {
       }]
     }
   },
+  watch: {
+    searchData(newValue) {
+      if (newValue === '') {
+        getAllFunc().then((response) => {
+          this.tableData = response.data.list
+          this.pageSize = response.data.pageSize
+        })
+        this.isSearch = false
+      }
+    }
+  },
   mounted() {
     // 在组件挂载后执行异步操作
     getAllPlug().then((response) => {
@@ -180,8 +192,21 @@ export default {
     addPlugDialog() {
       this.addPlugDialogVisible = true // 打开对话框
     },
-    getFunc() {
-
+    search() {
+      if (this.searchData === '') {
+        this.$message.error('请输入函数名称！')
+      } else {
+        getFuncByName(this.searchData).then(response => {
+          if (response.errno === 0) {
+            console.log(this.searchData)
+            this.funcTable = []
+            this.funcTable.push(response.data)
+            this.isSearch = true
+          } else {
+            this.$message.info('未查询到相关函数')
+          }
+        })
+      }
     },
     addFuncDialog() {
       this.addFuncDialogVisible = true

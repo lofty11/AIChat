@@ -20,18 +20,28 @@ public class UserParaPo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "plug_id")
     private Long plugId;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "field")
     private String field;
+
     @Column(name = "type")
     private String type;
+
+    @Column(name = "enumeration_range")
+    private String enumerationRange;
+
     @Column(name = "necessary")
     private Integer necessary;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "deleted")
     private Integer deleted;
 

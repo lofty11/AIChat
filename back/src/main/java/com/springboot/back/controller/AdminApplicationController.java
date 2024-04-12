@@ -111,9 +111,9 @@ public class AdminApplicationController {
         return new ReturnObject(ReturnNo.OK, id);
     }
 
-    @GetMapping("/{page}/{pageSize}/applications")
-    public ReturnObject getApplications(@RequestParam(required = false, defaultValue = "1") @PathVariable Integer page,
-                                        @RequestParam(required = false, defaultValue = "10") @PathVariable Integer pageSize) {
+    @GetMapping("/applications")
+    public ReturnObject getApplications(@RequestParam(required = false, defaultValue = "1") Integer page,
+                                        @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         PageDto<ApplicationServiceDto> ret = this.applicationApiService.retrieveApplications(page, pageSize);
         return new ReturnObject(ReturnNo.OK, ret);
     }

@@ -103,10 +103,17 @@ CREATE TABLE userpara
     name VARCHAR(255) NOT NULL,
     field VARCHAR(255) NOT NULL,
     type VARCHAR(255) NOT NULL,
+    enumeration_range VARCHAR(255),
     necessary INTEGER NOT NULL,
-    description VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
     deleted INTEGER NOT NULL,
     plug_id bigint,
+    creator_id  bigint DEFAULT NULL,
+    creator_name varchar(128) DEFAULT NULL,
+    modifier_id  bigint DEFAULT NULL,
+    modifier_name  varchar(128) DEFAULT NULL,
+    gmt_create  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    gmt_modified  datetime DEFAULT NULL,
     constraint fk_plug_id2  foreign key (plug_id) references plug (id) on update cascade on delete cascade
 );
 alter table userpara character set utf8;
@@ -194,8 +201,8 @@ INSERT INTO `plug` VALUES (NULL, 'plug_test', 'web_search', 'http请求', 1, 1, 
 INSERT INTO `plug` VALUES (NULL, 'plug_test2', 'b', 'http', 1, 1, 1);
 INSERT INTO `plugpara` VALUES (NULL,'aaa', 1, 0,1);
 INSERT INTO `plugpara` VALUES (NULL,'bbb', 1, 0,1);
-INSERT INTO `userpara` VALUES (NULL, 'search', 'b', 'c', 1, 'e', 0, 1);
-INSERT INTO `userpara` VALUES (NULL, 'search1', 'b', 'c', 1, 'e', 0, 1);
+INSERT INTO `userpara` VALUES (NULL, 'search', 'b', 'c', '多个值由逗号分开', 1, 'e', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO `userpara` VALUES (NULL, 'search1', 'b', 'c', NULL, 1, 'e', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
 
 INSERT INTO user VALUES (NULL,0, 'admin', '123456', '10000');
 INSERT INTO user VALUES (NULL,1,'zmr','100000','181000000');
