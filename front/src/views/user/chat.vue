@@ -86,7 +86,6 @@
 <script>
 import Prompt from '@/views/user/prompt'
 import Dialog from '@/views/user/dialog'
-import variables from '@/styles/variables.scss'
 import { createChat, createMessage, deleteChat, getAllChats, modifyChatName } from '@/api/chat'
 export default {
   name: 'Chat',
@@ -198,13 +197,8 @@ export default {
         return text.substring(0, maxLength) + '...'
       }
       return text
-    },
-    variables() {
-      return variables
-    },
-    isCollapse() {
-      return !this.sidebar.opened
     }
+
   }
 }
 </script>
@@ -229,5 +223,4 @@ export default {
   margin-top: 10px;
   font-size: 12px;
 }
-
 </style>
