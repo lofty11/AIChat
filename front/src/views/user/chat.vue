@@ -13,6 +13,7 @@
         >
           <el-menu-item>
             <el-button type="text" icon="el-icon-plus" style="color:#fff;" @click="addItem">新建对话</el-button>
+
           </el-menu-item>
           <el-menu-item v-for="(item, index) in sidebarItems" :key="index" :index="String(index + 1)" @click="selectItem(item.id)">
             <template slot="title">
@@ -197,6 +198,7 @@ export default {
       }
       return text
     }
+
   }
 }
 </script>

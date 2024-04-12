@@ -55,7 +55,7 @@ public class UserService {
     public UserDto getUserInfo(Long id)
     {
         User bo=this.userDao.findById(id);
-        logger.error(String.valueOf(bo));
+        //logger.error(String.valueOf(bo));
         if(null==bo) throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST);
         else
         {
