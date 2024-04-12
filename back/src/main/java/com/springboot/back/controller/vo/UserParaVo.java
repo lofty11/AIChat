@@ -19,9 +19,10 @@ public class UserParaVo {
     @NotNull
     private String type;
 
+    String enumerationRange;
+
     @NotNull
     private Integer necessary;
 
-    @NotNull
     private String description;
 }

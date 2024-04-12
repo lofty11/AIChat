@@ -1,5 +1,8 @@
 package com.springboot.back;
 
+import com.springboot.core.model.dto.TokenDto;
+import com.springboot.core.util.JwtUtil;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,6 +18,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 public class PlugControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    private static TokenDto adminToken;
+
+    @BeforeAll
+    public static void setup(){
+        JwtUtil jwtUtil = new JwtUtil();
+        adminToken = jwtUtil.createToken(1L, "admin", 0, 3600);
+    }
 
     @Test
     public void createFunctionTest() throws Exception {
@@ -113,4 +124,13 @@ public class PlugControllerTest {
                 .andReturn();
     }
 
+    @Test
+    public void updateUserParameterTest() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{id}/userParameter", 2)
+                        .header("authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"test\", \"field\": 0, \"type\": \"string\",\"necessary\": 0}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
 }

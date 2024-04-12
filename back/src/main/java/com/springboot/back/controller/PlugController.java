@@ -12,6 +12,7 @@ import com.springboot.back.service.dto.FunctionDto;
 import com.springboot.back.service.dto.PlugDto;
 import com.springboot.back.service.dto.PlugParaDto;
 import com.springboot.back.service.dto.UserParaDto;
+import com.springboot.core.aop.Audit;
 import com.springboot.core.aop.LoginUser;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.ReturnObject;
@@ -39,6 +40,7 @@ public class PlugController {
 
     /*创建函数*/
     @PostMapping("/function")
+    @Audit
     public ReturnObject createFunction(@Valid @RequestBody FunctionVo vo,
                                        @LoginUser UserDto user){
         this.plugService.createFunctionService(vo.getName(),vo.getEname(),vo.getType(),vo.getApi()
@@ -48,6 +50,7 @@ public class PlugController {
 
     /*创建插件*/
     @PostMapping("/plug")
+    @Audit
     public ReturnObject createPlug(@Valid @RequestBody PlugVo vo,
                                    @LoginUser UserDto user){
         this.plugService.createPlugService(vo.getName(),vo.getPurpose(), vo.getDescription(),
@@ -57,6 +60,7 @@ public class PlugController {
 
     /*创建插件参数*/
     @PostMapping("/{plugId}/plugParameter")
+    @Audit
     public ReturnObject createPlugParameter(@PathVariable Long plugId,
                                              @Valid @RequestBody PlugParaVo vo,
                                              @LoginUser UserDto user) {
@@ -66,15 +70,17 @@ public class PlugController {
 
     /*创建用户参数*/
     @PostMapping("/{plugId}/userParameter")
+    @Audit
     public ReturnObject createUserParameter(@PathVariable Long plugId,
                                        @Valid @RequestBody UserParaVo vo,
                                        @LoginUser UserDto user) {
-        this.plugService.createUserPara(vo.getName(),vo.getField(),vo.getType(),vo.getNecessary(),vo.getDescription(),0, plugId, user);
+        this.plugService.createUserPara(vo.getName(),vo.getField(),vo.getType(), vo.getEnumerationRange(), vo.getNecessary(),vo.getDescription(),0, plugId, user);
         return new ReturnObject(ReturnNo.CREATED);
     }
 
     /*编辑插件*/
     @PutMapping("/{plugId}/plug")
+    @Audit
     public ReturnObject updatePlug(@PathVariable Long plugId,
                                                  @Valid @RequestBody PlugVo vo,
                                                  @LoginUser UserDto user) {
@@ -85,6 +91,7 @@ public class PlugController {
 
     /*编辑函数*/
     @PutMapping("/{functionId}/function")
+    @Audit
     public ReturnObject updateFunction(@PathVariable Long functionId,
                                    @Valid @RequestBody FunctionVo vo,
                                    @LoginUser UserDto user) {
@@ -95,6 +102,7 @@ public class PlugController {
 
     /*编辑插件参数*/
     @PutMapping("/{id}/plugParameter")
+    @Audit
     public ReturnObject updatePlugParameter(@PathVariable Long id,
                                    @Valid @RequestBody PlugParaVo vo,
                                    @LoginUser UserDto user) {
@@ -104,10 +112,11 @@ public class PlugController {
 
     /*编辑用户参数*/
     @PutMapping("/{id}/userParameter")
+    @Audit
     public ReturnObject updateUserParameter(@PathVariable Long id,
                                        @Valid @RequestBody UserParaVo vo,
                                        @LoginUser UserDto user) {
-        this.plugService.updateUserParaService(id, vo.getName(),vo.getField(),vo.getType(),
+        this.plugService.updateUserParaService(id, vo.getName(),vo.getField(),vo.getType(), vo.getEnumerationRange(),
                 vo.getNecessary(),vo.getDescription(),0,user);
         return new ReturnObject(ReturnNo.OK);
     }

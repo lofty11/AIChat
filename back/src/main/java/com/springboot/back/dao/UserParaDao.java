@@ -33,12 +33,12 @@ public class UserParaDao {
 
     private UserPara getBo(UserParaPo po) {
         UserPara bo = UserPara.builder().id(po.getId()).plug_id(po.getPlugId()).name(po.getName()).field(po.getField())
-                .type(po.getType()).necessary(po.getNecessary()).description(po.getDescription()).deleted(po.getDeleted()).build();
+                .type(po.getType()).enumerationRange(po.getEnumerationRange()).necessary(po.getNecessary()).description(po.getDescription()).deleted(po.getDeleted()).build();
         return bo;
     }
     private UserParaPo getPo(UserPara bo) {
         UserParaPo po = UserParaPo.builder().id(bo.getId()).plugId(bo.getPlug_id()).name(bo.getName()).field(bo.getField())
-                .type(bo.getType()).necessary(bo.getNecessary()).description(bo.getDescription()).deleted(bo.getDeleted()).build();
+                .type(bo.getType()).enumerationRange(bo.getEnumerationRange()).necessary(bo.getNecessary()).description(bo.getDescription()).deleted(bo.getDeleted()).build();
         return po;
     }
     public void delete(Long id) {
