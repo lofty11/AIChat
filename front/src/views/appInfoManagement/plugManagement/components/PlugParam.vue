@@ -27,7 +27,7 @@
 </template>
 <script>
 
-import { createPlugPara, getPlugParaById } from '@/api/plug'
+import { createPlugPara, getPlugParaById, modifyPlugParaById } from '@/api/plug'
 
 export default {
   props: {
@@ -65,6 +65,7 @@ export default {
       if (newValue === '0') {
         this.paramTable = [{ name: '', value: '' }]
       } else {
+        console.log(newValue)
         getPlugParaById(newValue).then(response => {
           console.log(response.data)
           this.paramTable = response.data
@@ -88,12 +89,17 @@ export default {
             })
           } else {
             console.log(this.plugParaId)
-            console.log(this.plugId)
+            modifyPlugParaById(this.plugParaId, this.paramTable).then((response) => {
+              if (response.errno === 0) { this.$message.success('编辑插件参数成功！') }
+              this.plugParamDialogVisible = false
+            })
           }
+        } else {
+          this.$message.error('请将插件参数填写完整！')
+          return false
         }
       })
-
-      console.log(this.plugParaId)
+      // console.log(this.plugParaId)
       this.$emit('update:plugParamDialogVisible', false)
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible="userParamDialogVisible" title="添加用户参数" append-to-body @close="close">
+  <el-dialog :visible="userParamDialogVisible" :title="dialogTitle" append-to-body @close="close">
     <el-form ref="configUserParam" :model="paramTable" :rules="rules" align="right">
       <!-- 表单内容 -->
       <el-form-item prop="name" label="字段名称">
@@ -37,11 +37,16 @@
   </el-dialog>
 </template>
 <script>
+
 export default {
   props: {
     userParamDialogVisible: {
       type: Boolean,
       default: false
+    },
+    dialogTitle: {
+      type: String,
+      default: ''
     }
   },
   data() {

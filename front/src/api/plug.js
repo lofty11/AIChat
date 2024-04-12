@@ -20,7 +20,7 @@ export function getAllPlug() {
 export function getPlugById(plugId) {
   return request(
     {
-      url: `/plug/${plugId}/pluginfo`,
+      url: `/plug/${plugId}/plug`,
       method: 'get'
     }
   )
@@ -49,36 +49,42 @@ export function getAllFunc() {
     }
   )
 }
-export function getFuncById(funcId) {
+export function getFuncById(functionId) {
   return request(
     {
-      url: `/plug/${funcId}/funcinfo`,
+      url: `/plug/id/${functionId}/function`,
       method: 'get'
     }
   )
 }
-
-export function getTypeList() {
+export function getFuncByName(functionName) {
   return request(
     {
-      url: '/appinfo/plug/types',
+      url: `/plug/name/${functionName}/function`,
       method: 'get'
     }
   )
 }
-
+export function getFuncTypes() {
+  return request(
+    {
+      url: '/plug/functionTypes',
+      method: 'get'
+    }
+  )
+}
 export function createFunc(data) {
   return request({
     method: 'post',
-    url: '/plug/func',
+    url: '/plug/function',
     data
   })
 }
 
-export function modifyFuncById(funcId, data) {
+export function modifyFuncById(functionId, data) {
   return request({
     method: 'put',
-    url: `/plug/${funcId}/func`,
+    url: `/plug/${functionId}/function`,
     data
   })
 }
@@ -86,36 +92,36 @@ export function modifyFuncById(funcId, data) {
 export function delFuncById(id) {
   return request({
     method: 'delete',
-    url: `/plug/${id}/func`
+    url: `/plug/${id}/function`
   })
 }
 
 export function getPlugParaById(id) {
   return request({
     method: 'get',
-    url: `/plug/${id}/plugpara`
+    url: `/plug/${id}/plugParameter`
   })
 }
 
 export function delPlugParaById(id) {
   return request({
     method: 'delete',
-    url: `/plug/${id}/plugpara`
+    url: `/plug/${id}/plugParameter`
   })
 }
 
 export function createPlugPara(plugId, data) {
   return request({
     method: 'post',
-    url: `/plug/${plugId}/plugpara`,
+    url: `/plug/${plugId}/plugParameter`,
     data
   })
 }
 
-export function modifyPlugParaById(plugId, data) {
+export function modifyPlugParaById(id, data) {
   return request({
     method: 'put',
-    url: `/plug/${plugId}/plugpara`,
+    url: `/plug/${id}/plugParameter`,
     data
   })
 }
@@ -123,12 +129,33 @@ export function modifyPlugParaById(plugId, data) {
 export function createUserPara(plugId, data) {
   return request({
     method: 'post',
-    url: `/plug/${plugId}/userpara`
+    url: `/plug/${plugId}/userParameter`,
+    data
   })
 }
 export function delUserParaById(id) {
   return request({
     method: 'delete',
-    url: `/plug/${id}/userpara`
+    url: `/plug/${id}/userParameter`
+  })
+}
+export function modifyUserParaById(id, data) {
+  return request({
+    method: 'put',
+    url: `/plug/${id}/userParameter`,
+    data
+  })
+}
+export function getUserParaById(id) {
+  return request({
+    method: 'get',
+    url: `/plug/${id}/userParameter`
+  })
+}
+
+export function getServiceApis() {
+  return request({
+    method: 'get',
+    url: '/plug/serviceApis'
   })
 }
