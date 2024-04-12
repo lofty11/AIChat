@@ -9,21 +9,6 @@
         <el-form-item prop="ename" label="函数名称（英）">
           <el-input v-model="funcForm.ename" style="width: 75%" placeholder="请输入函数名称" />
         </el-form-item>
-        <el-form-item prop="type" label="函数类型">
-          <el-select v-model="funcForm.type" style="width: 75%" placeholder="请选择函数类型">
-            <el-option label="类型一" value="1" />
-            <el-option label="类型二" value="2" />
-            <el-option label="类型三" value="3" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item prop="api" label="服务API">
-          <el-select v-model="funcForm.api" style="width: 75%" placeholder="请选择服务API">
-            <el-option label="api1" value="1" />
-            <el-option label="api2" value="2" />
-            <el-option label="api3" value="3" />
-          </el-select>
-        </el-form-item>
 
         <el-form-item prop="description" label="函数描述">
           <el-input
@@ -36,6 +21,22 @@
             placeholder="请输入函数描述"
           />
         </el-form-item>
+        <el-form-item prop="typeName" label="函数类型">
+          <el-select v-model="funcForm.type" style="width: 75%" placeholder="请选择函数类型">
+            <el-option label="类型一" value="1" />
+            <el-option label="类型二" value="2" />
+            <el-option label="类型三" value="3" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item prop="apiName" label="服务API">
+          <el-select v-model="funcForm.api" style="width: 75%" placeholder="请选择服务API">
+            <el-option label="api1" value="1" />
+            <el-option label="api2" value="2" />
+            <el-option label="api3" value="3" />
+          </el-select>
+        </el-form-item>
+
         <el-form-item>
           <el-row>
             <el-col span="10">
@@ -46,7 +47,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <Parameter :func-id.sync="funcId" />
   </div>
 
 </template>
@@ -67,18 +67,22 @@ export default {
   },
   data() {
     return {
+      typeList: [],
+      apiList: [],
       currentId: null,
       funcForm: {
-        id: '',
+        id: '0',
         name: '',
         ename: '',
+        type: '',
+        typeName: '',
+        api: '',
+        apiName: '',
         description: ''
       },
       rules: {
         name: [{ required: true, message: '函数名称不能为空', trigger: 'blur' }],
         ename: [{ required: true, message: '函数英文名称不能为空', trigger: 'blur' }],
-        type: [{ required: true, message: '函数类型不能为空', trigger: 'blur' }],
-        api: [{ required: true, message: '服务API不能为空', trigger: 'blur' }],
         description: [{ required: true, message: '函数描述不能为空', trigger: 'blur' }]
       }
     }
@@ -87,15 +91,18 @@ export default {
     funcId(newValue) {
       if (newValue === '0') {
         this.funcForm = {
+          id: '0',
           name: '',
-          enName: '',
+          ename: '',
+          type: '',
+          typeName: '',
+          api: '',
+          apiName: '',
           description: ''
         }
       } else {
-        // console.log(newValue)
         getFuncById(newValue).then(response => {
           this.funcForm = response.data
-          // console.log(response.data)
         })
       }
     }

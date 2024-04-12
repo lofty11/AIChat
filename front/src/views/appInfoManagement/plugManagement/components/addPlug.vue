@@ -76,7 +76,6 @@ export default {
       this.$emit('update:addPlugDialogVisible', false)
     },
     trans() {
-      this.$message.success('提交成功！')
       this.form.name = this.plugInfo.name
       this.form.description = this.plugInfo.description
       this.form.purpose = this.plugInfo.purpose
@@ -87,7 +86,14 @@ export default {
       this.$refs.addPlug.validate((valid) => {
         if (valid) {
           this.trans()
-          createPlug(this.form)
+          createPlug(this.form).then(response => {
+            if (response.errno === 1) {
+              this.addItem('addPlug')
+              this.$message.success('添加插件成功')
+            } else {
+              this.$message.error('hhh添加插件失败')
+            }
+          })
           this.$refs.addPlug.resetFields()
           this.$emit('update:addPlugDialogVisible', false)
         } else {
@@ -95,6 +101,9 @@ export default {
           return false
         }
       })
+    },
+    addItem(dataType) {
+      this.$emit('add-item', JSON.parse(JSON.stringify(this.form)), dataType)
     }
 
   }

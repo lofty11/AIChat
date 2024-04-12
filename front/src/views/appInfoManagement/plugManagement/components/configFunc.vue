@@ -1,71 +1,28 @@
 <template>
-  <el-dialog :visible="configFuncDialogVisible" title="配置函数" @close="close">
+  <el-dialog :visible="configFuncDialogVisible" title="结果渲染" @close="close">
+
     <el-form>
-      <el-steps :active="active" finish-status="success" simple style="margin-top: 20px">
-        <el-step title="1.任务基础信息" />
-        <el-step title="2.结果渲染" />
-      </el-steps>
+      <el-form-item>
+        <el-row>
+          <el-col>
+            内容排布设定：
+          </el-col>
+        </el-row>
+      </el-form-item>
+      <el-form-item prop="layoutSetting" class="form-item-content">
+        <quill-editor ref="myQuillEditor" v-model="result" class="editor" :options="editorOption" />
+      </el-form-item>
+      <el-form-item>
+        <el-row>
+          <el-col span="10">
 
-      <el-form v-if="active==0" ref="configFunc" :model="funcInfo" :rules="rules" align="right">
-        <!-- 表单内容 -->
-        <el-form-item prop="name" label="函数名称">
-          <el-input v-model="funcInfo.name" style="width: 75%" placeholder="请输入函数名称" />
-        </el-form-item>
-        <el-form-item prop="enName" label="函数名称（英）">
-          <el-input v-model="funcInfo.enName" style="width: 75%" placeholder="请输入函数名称" />
-        </el-form-item>
-        <el-form-item prop="type" label="函数类型">
-          <el-select v-model="funcInfo.type" style="width: 75%" placeholder="请选择函数类型">
-            <el-option label="类型一" value="1" />
-            <el-option label="类型二" value="2" />
-            <el-option label="类型三" value="3" />
-          </el-select>
-        </el-form-item>
+            <el-button type="primary" @click="submitConfigFuncInfo">提交</el-button>
+          </el-col>
+        </el-row>
+      </el-form-item>
 
-        <el-form-item prop="api" label="服务API">
-          <el-select v-model="funcInfo.api" style="width: 75%" placeholder="请选择服务API">
-            <el-option label="api1" value="1" />
-            <el-option label="api2" value="2" />
-            <el-option label="api3" value="3" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item prop="description" label="函数描述">
-          <el-input
-            v-model="funcInfo.description"
-            type="textarea"
-            rows="4"
-            style="width: 75%"
-            maxlength="255"
-            show-word-limit
-            placeholder="请输入函数描述"
-          />
-        </el-form-item>
-      </el-form>
-
-      <el-form>
-        <el-form-item v-if="active==1">
-          <el-row>
-            <el-col>
-              内容排布设定：
-            </el-col>
-          </el-row>
-        </el-form-item>
-        <el-form-item v-if="active==1" prop="layoutSetting" class="form-item-content">
-          <quill-editor ref="myQuillEditor" v-model="result" class="editor" :options="editorOption" />
-        </el-form-item>
-        <el-form-item>
-          <el-row>
-            <el-col span="10">
-              <el-button v-if="active==0" type="primary" @click="next">下一步</el-button>
-              <el-button v-if="active==1" type="primary" @click="last">上一步</el-button>
-              <el-button v-if="active==1" type="primary" @click="submitConfigFuncInfo">提交</el-button>
-            </el-col>
-          </el-row>
-        </el-form-item>
-
-      </el-form>
     </el-form>
+
   </el-dialog>
 </template>
 <script>
@@ -92,7 +49,6 @@ export default {
   },
   data() {
     return {
-      active: 0,
       funcInfo: {
         name: '',
         enName: '',
@@ -102,13 +58,6 @@ export default {
       },
       result: {
         layoutSetting: ''
-      },
-      rules: {
-        name: [{ required: true, message: '函数名称不能为空', trigger: 'blur' }],
-        enName: [{ required: true, message: '函数英文名称不能为空', trigger: 'blur' }],
-        type: [{ required: true, message: '函数类型不能为空', trigger: 'blur' }],
-        api: [{ required: true, message: '服务API不能为空', trigger: 'blur' }],
-        description: [{ required: true, message: '函数描述不能为空', trigger: 'blur' }]
       },
       editorOption: { // 编辑框操作事件
         theme: 'snow', // or 'bubble'
@@ -134,18 +83,6 @@ export default {
   methods: {
     close() {
       this.$emit('update:configFuncDialogVisible', false)
-      this.active = 0
-    },
-    next() {
-      if (this.active++ >= 1) this.active = 0
-    },
-    last() {
-      if (this.active-- <= 0) this.active = 0
-    },
-    async getFuncDetail(data) {
-      // 等以后api能搞定了再换成这个
-      // this.funcInfo = await getFuncDetail(this.currentId)
-      this.funcInfo = data
     },
     submitConfigFuncInfo() {
       this.close()

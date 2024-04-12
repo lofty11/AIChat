@@ -86,14 +86,10 @@
       <plug-param :plug-id.sync="plugId" :plug-para-id.sync="plugParaId" :dialog-title="plugParamDialogTitle" :plug-param-dialog-visible.sync="plugParamDialogVisible" />
       <!--    添加插件参数配置-->
       <!--    添加用户参数配置-->
-      <user-param :dialog-title="userParamDialogTitle" :user-param-dialog-visible.sync="userParamDialogVisible" />
+      <user-param :user-para-id="userParaId" :dialog-title="userParamDialogTitle" :user-param-dialog-visible.sync="userParamDialogVisible" />
       <!--    添加用户参数配置-->
     </el-dialog>
-    <Parameter :plug-id.sync="plugId" />
   </div>
-  <!--    配置插件-->
-
-  <!--    配置插件-->
 </template>
 <script>
 
@@ -166,6 +162,7 @@ export default {
     openUserParamDialog(title, id) {
       this.userParamDialogVisible = true
       this.userParamDialogTitle = title
+      this.userParaId = id
     },
     delPlugPara(id) {
       this.$confirm('确定删除该插件参数？').then(() => {

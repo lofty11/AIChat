@@ -38,18 +38,15 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <Parameter :plug-id.sync="plugId" />
   </div>
 
 </template>
 <script>
 
 import { getPlugById, modifyPlugById } from '@/api/plug'
-import Parameter from '@/views/appInfoManagement/appServiceAPI/components/parameter.vue'
 
 export default {
   name: 'UpdatePlug',
-  components: { Parameter },
   props: {
     updatePlugDialogVisible: {
       type: Boolean,
@@ -94,8 +91,6 @@ export default {
           open: false
         }
       } else {
-        // console.log('plugId changed')
-        // console.log(newValue)
         getPlugById(newValue).then(response => {
           this.plugForm = response.data
           this.$set(this.plugForm, 'open', Boolean(response.data.open))

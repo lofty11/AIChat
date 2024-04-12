@@ -21,7 +21,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <Parameter :plug-para-id.sync="plugParaId" />
   </div>
 
 </template>
@@ -65,9 +64,7 @@ export default {
       if (newValue === '0') {
         this.paramTable = [{ name: '', value: '' }]
       } else {
-        console.log(newValue)
         getPlugParaById(newValue).then(response => {
-          console.log(response.data)
           this.paramTable = response.data
         })
       }
@@ -81,14 +78,11 @@ export default {
       this.$refs.paramTable.validate((valid) => {
         if (valid) {
           if (this.plugParaId === '0') {
-            console.log(this.plugId)
-            console.log('above is plugId')
             createPlugPara(this.plugId, this.paramTable).then((response) => {
               if (response.errno === 1) { this.$message.success('新增插件参数成功！') }
               this.$emit('update:plugParamDialogVisible', false)
             })
           } else {
-            console.log(this.plugParaId)
             modifyPlugParaById(this.plugParaId, this.paramTable).then((response) => {
               if (response.errno === 0) { this.$message.success('编辑插件参数成功！') }
               this.plugParamDialogVisible = false
@@ -99,7 +93,6 @@ export default {
           return false
         }
       })
-      // console.log(this.plugParaId)
       this.$emit('update:plugParamDialogVisible', false)
     }
   }
