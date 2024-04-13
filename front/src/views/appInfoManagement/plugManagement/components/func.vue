@@ -1,6 +1,6 @@
 <template>
   <el-dialog ref="func" :visible="funcDialogVisible" :title="dialogTitle" @close="close">
-    <el-form ref="funcInfo" :model="funcForm" :rules="rules" align="right">
+    <el-form ref="funcForm" :model="funcForm" :rules="rules" align="right">
       <!-- 表单内容 -->
       <el-form-item prop="name" label="函数名称">
         <el-input v-model="funcForm.name" style="width: 75%" placeholder="请输入函数名称" />
@@ -74,16 +74,6 @@ export default {
         apiName: '',
         description: ''
       },
-      form: {
-        id: '0',
-        name: '',
-        ename: '',
-        type: '',
-        typeName: '',
-        api: '',
-        apiName: '',
-        description: ''
-      },
       rules: {
         name: [{ required: true, message: '函数名称不能为空', trigger: 'blur' }],
         ename: [{ required: true, message: '函数英文名称不能为空', trigger: 'blur' }],
@@ -126,38 +116,31 @@ export default {
     },
     close() {
       this.$emit('update:funcDialogVisible', false)
-      this.$refs.funcInfo.resetFields()
-    },
-    trans() {
-      this.form.name = this.funcForm.name
-      this.form.ename = this.funcForm.ename
-      this.form.description = this.funcForm.description
-      this.form.type = this.typeList[this.funcForm.type].id
-      this.form.typeName = this.typeList[this.funcForm.type].type
-      this.form.api = this.apiList[this.funcForm.api].id
-      this.form.apiName = this.apiList[this.funcForm.api].type
     },
     confirm() {
-      this.$refs.funcInfo.validate((valid) => {
+      console.log('confirm')
+      this.$refs.funcForm.validate((valid) => {
         if (valid) {
-          this.trans()
           if (this.funcId === '0') {
-            createFunc(this.form).then(response => {
-              if (response.errno === 1) { this.$message.success('新增函数成功！') } else {
+            createFunc(this.funcForm).then(response => {
+              if (response.errno === 1) {
+                this.$message.success('新增函数成功！')
+                this.$emit('update:funcDialogVisible', false)
+              } else {
                 this.$message.error('新增函数失败')
               }
             })
           } else {
-            modifyFuncById(this.funcId, this.form).then((response) => {
-              if (response.errono === 0) {
+            modifyFuncById(this.funcId, this.funcForm).then((response) => {
+              console.log('编辑函数')
+              if (response.errno === 0) {
                 this.$message.success('编辑函数成功')
+                this.$emit('update:funcDialogVisible', false)
               } else {
                 this.$message.error('编辑函数失败')
               }
             })
           }
-          this.$refs.funcInfo.resetFields()
-          this.$emit('update:funcDialogVisible', false)
         } else {
           this.$message.error('请将表单填写完整！')
           return false
