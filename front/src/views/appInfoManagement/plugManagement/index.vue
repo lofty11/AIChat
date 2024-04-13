@@ -43,7 +43,7 @@
           <el-button type="primary" @click="search(funcInfo.name)">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="addFuncDialog">新建函数</el-button>
+          <el-button type="primary" @click="openFuncDialog('新建函数','0')">新建函数</el-button>
         </el-form-item>
         <el-table
           :data="funcTable.slice((currentPage-1)*pageSize,currentPage*pageSize)"
@@ -66,7 +66,7 @@
             label="操作"
           >
             <template v-slot="data">
-              <el-button type="text" size="small" @click="updateFuncDialog(data.row.id)">编辑</el-button>
+              <el-button type="text" size="small" @click="openFuncDialog('编辑函数',data.row.id)">编辑</el-button>
               <el-button type="text" size="small" @click="configFuncDialog(data.row.id)">渲染</el-button>
               <el-button type="text" size="small" style="color: red" @click="delFunc(data.row.id,data.$index)">删除</el-button>
             </template>
@@ -99,8 +99,7 @@
     <!--    编辑、配置插件-->
 
     <!--    编辑、创建、配置函数-->
-    <add-func ref="addFunc" :add-func-dialog-visible.sync="addFuncDialogVisible" />
-    <update-func ref="updateFunc" :func-id.sync="funcId" :update-func-dialog-visible.sync="updateFuncDialogVisible" />
+    <func :func-id="funcId" :func-dialog-visible.sync="funcDialogVisible" :dialog-title="funcDialogTitle" />
     <config-func ref="configFunc" :config-func-dialog-visible.sync="configFuncDialogVisible" />
     <!--    编辑、创建、配置函数-->
 
@@ -109,25 +108,24 @@
 
 <script>
 import AddPlug from '@/views/appInfoManagement/plugManagement/components/addPlug.vue'
-import AddFunc from '@/views/appInfoManagement/plugManagement/components/addFunc.vue'
-import UpdateFunc from '@/views/appInfoManagement/plugManagement/components/updateFunc.vue'
 import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
 import UpdatePlug from '@/views/appInfoManagement/plugManagement/components/updatePlug.vue'
 import ConfigPlug from '@/views/appInfoManagement/plugManagement/components/configPlug.vue'
 import { delFuncById, delPlugById, getAllFunc, getAllPlug, getFuncByName, getFuncTypes } from '@/api/plug'
+import Func from '@/views/appInfoManagement/plugManagement/components/func.vue'
 
 export default {
-  components: { ConfigPlug, UpdatePlug, ConfigFunc, UpdateFunc, AddFunc, AddPlug },
+  components: { Func, ConfigPlug, UpdatePlug, ConfigFunc, AddPlug },
   data() {
     return {
       isSearch: false,
       searchData: '',
       plugId: '0',
       funcId: '0',
+      funcDialogTitle: '',
       addPlugDialogVisible: false,
-      updateFuncDialogVisible: false,
-      addFuncDialogVisible: false,
       configFuncDialogVisible: false,
+      funcDialogVisible: false,
       updatePlugDialogVisible: false,
       configPlugDialogVisible: false,
       funcTypeList: [],
@@ -216,12 +214,10 @@ export default {
         })
       }
     },
-    addFuncDialog() {
-      this.addFuncDialogVisible = true
-    },
-    updateFuncDialog(id) {
-      this.updateFuncDialogVisible = true
+    openFuncDialog(title, id) {
+      this.funcDialogTitle = title
       this.funcId = id
+      this.funcDialogVisible = true
     },
     configFuncDialog(data) {
       this.configFuncDialogVisible = true

@@ -1,28 +1,28 @@
 <template>
-  <el-dialog :visible="addFuncDialogVisible" title="创建函数" @close="close">
-    <el-form ref="addFunc" :model="funcInfo" :rules="rules" align="right">
+  <el-dialog ref="func" :visible="funcDialogVisible" :title="dialogTitle" @close="close">
+    <el-form ref="funcInfo" :model="funcForm" :rules="rules" align="right">
       <!-- 表单内容 -->
       <el-form-item prop="name" label="函数名称">
-        <el-input v-model="funcInfo.name" style="width: 75%" placeholder="请输入函数名称" />
+        <el-input v-model="funcForm.name" style="width: 75%" placeholder="请输入函数名称" />
       </el-form-item>
       <el-form-item prop="eName" label="函数名称（英）">
-        <el-input v-model="funcInfo.ename" style="width: 75%" placeholder="请输入函数名称" />
+        <el-input v-model="funcForm.ename" style="width: 75%" placeholder="请输入函数名称" />
       </el-form-item>
       <el-form-item prop="type" label="函数类型">
-        <el-select v-model="funcInfo.type" style="width: 75%" placeholder="请选择函数类型">
+        <el-select v-model="funcForm.type" style="width: 75%" placeholder="请选择函数类型">
           <el-option v-for="item in typeList" :key="item.id" :label="item.type" :value="item.id" />
         </el-select>
       </el-form-item>
 
       <el-form-item prop="api" label="服务API">
-        <el-select v-model="funcInfo.api" style="width: 75%" placeholder="请选择服务API">
+        <el-select v-model="funcForm.api" style="width: 75%" placeholder="请选择服务API">
           <el-option v-for="item in apiList" :key="item.id" :label="item.type" :value="item.id" />
         </el-select>
       </el-form-item>
 
       <el-form-item prop="description" label="函数描述">
         <el-input
-          v-model="funcInfo.description"
+          v-model="funcForm.description"
           type="textarea"
           rows="4"
           style="width: 75%"
@@ -43,12 +43,20 @@
   </el-dialog>
 </template>
 <script>
-import { createFunc, getFuncTypes, getServiceApis } from '@/api/plug'
+import { createFunc, getFuncById, getFuncTypes, getServiceApis, modifyFuncById } from '@/api/plug'
 export default {
   props: {
-    addFuncDialogVisible: {
+    funcDialogVisible: {
       type: Boolean,
       default: false
+    },
+    funcId: {
+      type: String,
+      default: ''
+    },
+    dialogTitle: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -56,7 +64,8 @@ export default {
       // 样例数据，后续等数据库完善，使用api提供的
       typeList: [],
       apiList: [],
-      funcInfo: {
+      funcForm: {
+        id: '0',
         name: '',
         ename: '',
         type: '',
@@ -66,6 +75,7 @@ export default {
         description: ''
       },
       form: {
+        id: '0',
         name: '',
         ename: '',
         type: '',
@@ -83,6 +93,25 @@ export default {
       }
     }
   },
+  watch: {
+    funcId(newValue) {
+      if (newValue === '0') {
+        this.funcForm = {
+          name: '',
+          ename: '',
+          type: '',
+          typeName: '',
+          api: '',
+          apiName: '',
+          description: ''
+        }
+      } else {
+        getFuncById(newValue).then(response => {
+          this.funcForm = response.data
+        })
+      }
+    }
+  },
   created() {
     getFuncTypes().then((response) => {
       this.typeList = response.data
@@ -96,28 +125,39 @@ export default {
       this.$emit('add-item', JSON.parse(JSON.stringify(this.form)), dataType)
     },
     close() {
-      this.$emit('update:addFuncDialogVisible', false)
+      this.$emit('update:funcDialogVisible', false)
+      this.$refs.funcInfo.resetFields()
     },
     trans() {
-      this.form.name = this.funcInfo.name
-      this.form.ename = this.funcInfo.ename
-      this.form.description = this.funcInfo.description
-      this.form.type = this.typeList[this.funcInfo.type].id
-      this.form.typeName = this.typeList[this.funcInfo.type].type
-      this.form.api = this.apiList[this.funcInfo.api].id
-      this.form.apiName = this.apiList[this.funcInfo.api].type
+      this.form.name = this.funcForm.name
+      this.form.ename = this.funcForm.ename
+      this.form.description = this.funcForm.description
+      this.form.type = this.typeList[this.funcForm.type].id
+      this.form.typeName = this.typeList[this.funcForm.type].type
+      this.form.api = this.apiList[this.funcForm.api].id
+      this.form.apiName = this.apiList[this.funcForm.api].type
     },
     confirm() {
-      this.$refs.addFunc.validate((valid) => {
+      this.$refs.funcInfo.validate((valid) => {
         if (valid) {
           this.trans()
-          createFunc(this.form).then(response => {
-            if (response.errno === 1) { this.$message.success('新增函数成功！') } else {
-              this.$message.error('新增函数失败')
-            }
-          })
-          this.$refs.addFunc.resetFields()
-          this.$emit('update:addFuncDialogVisible', false)
+          if (this.funcId === '0') {
+            createFunc(this.form).then(response => {
+              if (response.errno === 1) { this.$message.success('新增函数成功！') } else {
+                this.$message.error('新增函数失败')
+              }
+            })
+          } else {
+            modifyFuncById(this.funcId, this.form).then((response) => {
+              if (response.errono === 0) {
+                this.$message.success('编辑函数成功')
+              } else {
+                this.$message.error('编辑函数失败')
+              }
+            })
+          }
+          this.$refs.funcInfo.resetFields()
+          this.$emit('update:funcDialogVisible', false)
         } else {
           this.$message.error('请将表单填写完整！')
           return false
