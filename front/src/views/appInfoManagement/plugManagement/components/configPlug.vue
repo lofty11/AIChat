@@ -7,7 +7,7 @@
           <el-table
             :data="plugParamTable"
             style="width: 100%;
-            background-color:grey"
+            background-color:white"
             empty-text="暂无数据"
           >
             <el-table-column
@@ -36,7 +36,7 @@
           <el-form-item>
             <el-table
               :data="userParamTable"
-              style="width: 100%;background-color:grey"
+              style="width: 100%;background-color:white"
               empty-text="暂无数据"
             >
               <el-table-column

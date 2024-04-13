@@ -45,6 +45,7 @@
 <script>
 import { createFunc, getFuncById, getFuncTypes, getServiceApis, modifyFuncById } from '@/api/plug'
 export default {
+  name: 'Func',
   props: {
     funcDialogVisible: {
       type: Boolean,

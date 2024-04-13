@@ -3,7 +3,7 @@
     <el-aside class="left-aside">
       <el-form>
         <el-form-item>
-          <el-button class="aside-button" @click="addPlugDialog">
+          <el-button class="aside-button" @click="openPlugDialog('新增插件','0')">
             创建插件
           </el-button>
         </el-form-item>
@@ -21,7 +21,7 @@
             label="操作"
           >
             <template v-slot="data">
-              <el-button type="text" size="small" @click="updatePlugDialog(data.row.id)">编辑</el-button>
+              <el-button type="text" size="small" @click="openPlugDialog('编辑插件',data.row.id)">编辑</el-button>
               <el-button type="text" size="small" @click="configPlugDialog(data.row.id)">配置</el-button>
               <el-button type="text" size="small" style="color: red" @click="delPlug(data.row.id,data.$index)">删除</el-button>
             </template>
@@ -35,12 +35,12 @@
     <div class="divider" />
 
     <el-main class="right-main">
-      <el-form ref="funcInfo" inline="true" :model="funcInfo" label-width="80px">
+      <el-form ref="funcInfo" inline="true" :model="funcForm" label-width="80px">
         <el-form-item label="函数名称">
           <el-input v-model="searchData" placeholder="请输入函数名称" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="search(funcInfo.name)">查询</el-button>
+          <el-button type="primary" @click="search(funcForm.name)">查询</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="openFuncDialog('新建函数','0')">新建函数</el-button>
@@ -89,17 +89,16 @@
       </el-form>
 
     </el-main>
-    <!--    创建插件-->
-    <add-plug :add-plug-dialog-visible.sync="addPlugDialogVisible" @add-item="addItemToList" />
-    <!--    创建插件-->
+    <!--    创建、编辑插件-->
+    <Plug :plug-id.sync="plugId" :plug-dialog-visible.sync="plugDialogVisible" :dialog-title="plugDialogTitle" @add-item="addItemToList" />
+    <!--    创建、编辑插件-->
 
-    <!--    编辑、配置插件-->
-    <update-plug ref="updatePlug" :plug-id.sync="plugId" :update-plug-dialog-visible.sync="updatePlugDialogVisible" />
+    <!--    配置插件-->
     <config-plug :plug-id.sync="plugId" :config-plug-dialog-visible.sync="configPlugDialogVisible" />
-    <!--    编辑、配置插件-->
+    <!--    配置插件-->
 
     <!--    编辑、创建、配置函数-->
-    <func :func-id="funcId" :func-dialog-visible.sync="funcDialogVisible" :dialog-title="funcDialogTitle" />
+    <Func :func-id="funcId" :func-dialog-visible.sync="funcDialogVisible" :dialog-title="funcDialogTitle" />
     <config-func ref="configFunc" :config-func-dialog-visible.sync="configFuncDialogVisible" />
     <!--    编辑、创建、配置函数-->
 
@@ -107,15 +106,14 @@
 </template>
 
 <script>
-import AddPlug from '@/views/appInfoManagement/plugManagement/components/addPlug.vue'
 import ConfigFunc from '@/views/appInfoManagement/plugManagement/components/configFunc.vue'
-import UpdatePlug from '@/views/appInfoManagement/plugManagement/components/updatePlug.vue'
 import ConfigPlug from '@/views/appInfoManagement/plugManagement/components/configPlug.vue'
-import { delFuncById, delPlugById, getAllFunc, getAllPlug, getFuncByName, getFuncTypes } from '@/api/plug'
+import { delFuncById, delPlugById, getAllFunc, getAllPlug, getFuncByName } from '@/api/plug'
 import Func from '@/views/appInfoManagement/plugManagement/components/func.vue'
+import Plug from '@/views/appInfoManagement/plugManagement/components/plug.vue'
 
 export default {
-  components: { Func, ConfigPlug, UpdatePlug, ConfigFunc, AddPlug },
+  components: { Plug, Func, ConfigPlug, ConfigFunc },
   data() {
     return {
       isSearch: false,
@@ -123,23 +121,16 @@ export default {
       plugId: '0',
       funcId: '0',
       funcDialogTitle: '',
-      addPlugDialogVisible: false,
+      plugDialogTitle: '',
+      plugDialogVisible: false,
       configFuncDialogVisible: false,
       funcDialogVisible: false,
-      updatePlugDialogVisible: false,
       configPlugDialogVisible: false,
       funcTypeList: [],
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 5, // 每页的数据条数
-      plugInfo: {
-        name: '',
-        purpose: '',
-        description: '',
-        available: false,
-        open: false
-      },
-      funcInfo: {
+      funcForm: {
         name: '',
         enName: '',
         type: '',
@@ -189,16 +180,8 @@ export default {
     }).catch((error) => {
       console.error('获取函数失败:', error)
     })
-    getFuncTypes().then((response) => {
-      this.funcTypeList = response.data
-    }).catch((error) => {
-      console.log('获取函数类型失败', error)
-    })
   },
   methods: {
-    addPlugDialog() {
-      this.addPlugDialogVisible = true // 打开对话框
-    },
     search() {
       if (this.searchData === '') {
         this.$message.error('请输入函数名称！')
@@ -213,6 +196,11 @@ export default {
           }
         })
       }
+    },
+    openPlugDialog(title, id) {
+      this.plugDialogTitle = title
+      this.plugId = id
+      this.plugDialogVisible = true
     },
     openFuncDialog(title, id) {
       this.funcDialogTitle = title
@@ -249,10 +237,6 @@ export default {
           this.$message.error(error)
         })
       })
-    },
-    updatePlugDialog(id) {
-      this.updatePlugDialogVisible = true
-      this.plugId = id
     },
     configPlugDialog(id) {
       this.configPlugDialogVisible = true
