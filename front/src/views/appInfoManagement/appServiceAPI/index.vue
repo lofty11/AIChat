@@ -35,10 +35,9 @@
             <el-pagination
               align="right"
               :current-page="currentPage"
-              :page-sizes="[1,5,10,20]"
+              :page-sizes="[1,5,10]"
               :page-size="pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="tableData.length"
+              layout="sizes, prev, pager, next, jumper"
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
             />
@@ -103,7 +102,7 @@ export default {
   },
   created() {
     // 在组件创建后立即发起 HTTP 请求
-    getAllAPI().then((response) => {
+    getAllAPI({ page: 1, pageSize: 10 }).then((response) => {
       this.tableData = response.data.list
       this.pageSize = response.data.pageSize
     })
@@ -116,11 +115,6 @@ export default {
       this.parameterVisible = parameterV
       this.formVisible = formV
       this.apiId = String(id)
-      if (this.apiId !== '0') {
-        this.apiEdit = true
-      } else {
-        this.apiEdit = false
-      }
     },
     // 打开详情页
     openDetailDialog(id) {
@@ -163,6 +157,13 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
+      if (val * this.pageSize > this.tableData.length) {
+        getAllAPI({ page: val, pageSize: this.pageSize }).then(response => {
+          if (response.errno === 0) {
+            this.tableData.push(...response.data.list)
+          }
+        })
+      }
     },
     deleteButton(id, index) {
       this.$confirm('是否确认删除该应用服务API?', '提示', {

@@ -7,10 +7,11 @@ export function createAPI(data) {
     data
   })
 }
-export function getAllAPI() {
+export function getAllAPI(data) {
   return request({
     url: '/application/applications',
-    method: 'get'
+    method: 'get',
+    params: data
   })
 }
 
