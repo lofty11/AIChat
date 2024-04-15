@@ -89,8 +89,8 @@ public class FunctionDao {
         }
         return po.getId();
     }
-    public List<Function> retrieveAll() throws RuntimeException {
-        List<FunctionPo> reList = this.functionPoMapper.findAll(PageRequest.of(0, Constants.MAX_RETURN))
+    public List<Function> retrieveAll(Integer page, Integer pageSize) throws RuntimeException {
+        List<FunctionPo> reList = this.functionPoMapper.findAll(PageRequest.of(page-1, pageSize))
                 .stream().toList();
         if (reList.isEmpty()) {
             return new ArrayList<>();

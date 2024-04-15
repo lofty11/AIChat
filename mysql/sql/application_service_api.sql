@@ -254,7 +254,7 @@ INSERT INTO type_union VALUES(NULL, 'integer');
 
 INSERT INTO func_type VALUES(NULL, 'http请求');
 INSERT INTO func_type VALUES(NULL, 'http请求2');
-INSERT INTO func_type VALUES(NULL, 'http请求2');
+INSERT INTO func_type VALUES(NULL, 'http请求3');
 INSERT INTO service_api VALUES(NULL, 'SerpApi');
 INSERT INTO service_api VALUES(NULL, 'SerpApi2');
 INSERT INTO service_api VALUES(NULL, 'SerpApi3');
