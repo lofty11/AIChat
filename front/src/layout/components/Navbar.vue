@@ -6,26 +6,23 @@
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              Home
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/lofty11/AIChat">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <!--          <a target="_blank" href="https://github.com/lofty11/AIChat/#/">-->
-          <!--            <el-dropdown-item>Docs</el-dropdown-item>-->
-          <!--          </a>-->
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
+        <el-button @click.native="logout">退出登录 </el-button>
+        <!--        <el-dropdown-menu slot="dropdown" class="user-dropdown">-->
+        <!--          <router-link to="/">-->
+        <!--            <el-dropdown-item>-->
+        <!--              Home-->
+        <!--            </el-dropdown-item>-->
+        <!--          </router-link>-->
+        <!--          <a target="_blank" href="https://github.com/lofty11/AIChat">-->
+        <!--            <el-dropdown-item>Github</el-dropdown-item>-->
+        <!--          </a>-->
+        <!--          &lt;!&ndash;          <a target="_blank" href="https://github.com/lofty11/AIChat/#/">&ndash;&gt;-->
+        <!--          &lt;!&ndash;            <el-dropdown-item>Docs</el-dropdown-item>&ndash;&gt;-->
+        <!--          &lt;!&ndash;          </a>&ndash;&gt;-->
+        <!--          <el-dropdown-item divided @click.native="logout">-->
+        <!--            <span style="display:block;">Log Out</span>-->
+        <!--          </el-dropdown-item>-->
+        <!--        </el-dropdown-menu>-->
       </el-dropdown>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dialogVisible" ref="messageContainer" class="chat-messages" style="width: 100%" @scroll="handleScroll">
+  <div v-if="dialogVisible" ref="messageContainer" class="chat-messages" style="width: 100%">
     <el-timeline>
       <el-timeline-item v-for="(message, index) in messages" :key="index">
         <el-card v-if="message.type === 0" class="user-message" header="YOU">
@@ -55,35 +55,8 @@ export default {
       this.messages.push(newValue)
     }
   },
-  mounted() {
-    // window.addEventListener('scroll', this.handleScroll, true)
-  },
-  destroyed() {
-    // window.removeEventListener('scroll', this.handleScroll)
-  },
   methods: {
-    handleScroll() {
-      // 滚动过的距离
-      const container = this.$refs.messageContainer
 
-      // 判断是否滚动到了底部
-      if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
-        console.log('滚动')
-        getAllMessages(this.id, { paga: this.page + 1, pageSize: this.pageSize }).then(response => {
-          if (response.errno === 0) {
-            this.messages.push(...response.data.list)
-            this.page = response.page
-            this.pageSize = response.pageSize
-          }
-        })
-      }
-      // var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-      // 当前可视区的高度
-      // var clientHeight = document.documentElement.clientHeight
-      // 滚动条的长度
-      // var scrollHeight = document.documentElement.scrollHeight
-      // 当滚动过的距离+可视区的高度>=滚动条长度时，就相当于滚动到了底部
-    }
   }
 }
 </script>

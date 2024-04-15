@@ -57,7 +57,7 @@ public class ChatController {
     public ReturnObject getAllChats(@LoginUser UserDto user,
                                     @RequestParam(required = false,defaultValue = "1")Integer page,
                                     @RequestParam(required = false,defaultValue = "10")Integer pageSize){
-        logger.error(String.valueOf(user));
+        //logger.error(String.valueOf(user));
         return new ReturnObject(this.userService.findAllChats(user,page,pageSize));
     }
     @GetMapping("/messages/{chatId}")
