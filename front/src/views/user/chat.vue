@@ -4,7 +4,6 @@
       <el-aside width="20%" style="height: 100%">
 
         <el-menu
-          default-active="1"
           class="el-menu-vertical-demo"
           background-color="#545c59"
           text-color="#fff"

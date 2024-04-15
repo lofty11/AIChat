@@ -35,8 +35,9 @@ public class UserController {
     @GetMapping("/info")
     public ReturnObject getUserInfo(@RequestParam String token){
         UserToken userToken=JwtUtil.verifyTokenAndGetClaims(token);
+        logger.error(String.valueOf(userToken));
         UserDto dto=this.userService.getUserInfo(userToken.getUserId());
-        //logger.error(String.valueOf(dto));
+        logger.error(String.valueOf(dto));
         return new ReturnObject(dto);
     }
     @GetMapping("/logout")

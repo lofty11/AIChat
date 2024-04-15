@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dialogVisible" class="chat-messages" style="width: 100%">
+  <div v-if="dialogVisible" ref="messageContainer" class="chat-messages" style="width: 100%">
     <el-timeline>
       <el-timeline-item v-for="(message, index) in messages" :key="index">
         <el-card v-if="message.type === 0" class="user-message" header="YOU">
@@ -16,7 +16,6 @@
 
 <script>
 import { getAllMessages } from '@/api/chat'
-
 export default {
   name: 'Dialog',
   props: {
@@ -35,15 +34,19 @@ export default {
   },
   data() {
     return {
-      messages: []
+      messages: [],
+      pageSize: 10, // 每次加载的项目数量
+      page: 1 // 当前页码
     }
   },
   watch: {
     id(newValue) {
       if (newValue !== '0') {
-        getAllMessages(this.id).then(response => {
+        getAllMessages(this.id, { paga: 1, pageSize: 10 }).then(response => {
           if (response.errno === 0) {
             this.messages = response.data.list
+            this.page = response.data.page
+            this.pageSize = response.data.pageSize
           }
         })
       }
@@ -51,8 +54,10 @@ export default {
     dialogMessage(newValue) {
       this.messages.push(newValue)
     }
-  }
+  },
+  methods: {
 
+  }
 }
 </script>
 

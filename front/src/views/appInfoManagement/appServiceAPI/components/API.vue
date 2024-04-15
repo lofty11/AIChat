@@ -233,16 +233,10 @@ export default {
 
   },
   methods: {
-    addItemToList(data, type) {
-      if (type === 'i') {
-        this.form.extensionInput.push(data)
-      } else if (type === 'o') {
-        this.form.extensionOutput.push(data)
-      } else if (type === 'ei') {
-        this.form.extensionInput.splice(this.paraIndex, 1, data)
-      } else if (type === 'eo') {
-        this.form.extensionOutput.splice(this.paraIndex, 1, data)
-      }
+    addItemToList() {
+      getApiById(this.id).then(response => {
+        this.form = response.data
+      })
     },
     handleClose() {
       this.$emit('update:apiDialogVisible', false)
@@ -273,11 +267,12 @@ export default {
     openParameterDialog(title, index, id) {
       this.dialogTitle = title
       this.parameterDialogVisible = true
-      this.paraId = id.toString()
+      this.paraId = String(id)
       this.paraIndex = index
     },
     deleteButton(type, index, id) {
-      this.paraId = id.toString()
+      console.log(id)
+      this.paraId = String(id)
       this.$confirm('是否确认删除该参数?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -300,7 +295,7 @@ export default {
                 type: 'success',
                 message: '删除成功!'
               })
-              this.form.extensionOutput.slice(index, 1)
+              this.form.extensionOutput.splice(index, 1)
             }
           })
         }

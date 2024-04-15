@@ -1,5 +1,6 @@
 package com.springboot.back.controller;
 
+import com.springboot.back.service.FunctionCallService;
 import com.springboot.core.aop.Audit;
 import com.springboot.core.aop.LoginUser;
 import com.springboot.core.model.ReturnNo;
@@ -16,14 +17,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping(value = "/chat", produces = "application/json;charset=UTF-8")
 public class ChatController {
     private static Logger logger = LoggerFactory.getLogger(ChatController.class);
     private final UserService userService;
+    private final FunctionCallService functionCallService;
     @Autowired
-    public ChatController(UserService userService){
+    public ChatController(UserService userService, FunctionCallService functionCallService){
         this.userService=userService;
+        this.functionCallService=functionCallService;
     }
     @DeleteMapping("/{chatId}")
     @Audit
@@ -39,8 +44,9 @@ public class ChatController {
     }
     @PostMapping("/message")
     @Audit
-    public ReturnObject createMessage( @LoginUser UserDto user,@Valid @RequestBody Message bo) {
+    public ReturnObject createMessage( @LoginUser UserDto user,@Valid @RequestBody Message bo) throws IOException {
         MessageDto dto= this.userService.addMessage(user,bo);
+
         return new ReturnObject(ReturnNo.CREATED,dto);
     }
 
@@ -57,7 +63,7 @@ public class ChatController {
     public ReturnObject getAllChats(@LoginUser UserDto user,
                                     @RequestParam(required = false,defaultValue = "1")Integer page,
                                     @RequestParam(required = false,defaultValue = "10")Integer pageSize){
-        logger.error(String.valueOf(user));
+        //logger.error(String.valueOf(user));
         return new ReturnObject(this.userService.findAllChats(user,page,pageSize));
     }
     @GetMapping("/messages/{chatId}")

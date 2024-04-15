@@ -43,33 +43,25 @@ public class UserDao {
             return null;
         }
         Optional<UserPo> ret = this.userPoMapper.findById(id);
-        if(ret.isPresent() )return Common.cloneObj(ret,User.class);
+        //logger.error(String.valueOf(ret));
+        if(ret.isPresent() )return Common.cloneObj(ret.get(),User.class);
         else
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "用户", id));
     }
-    public User findByUserTel(String userTel) throws RuntimeException {
-        if(null == userTel) {
-            return null;
-        }
-        UserPo po = this.userPoMapper.findByUserTel(userTel);
-        if(null == po) {
-            throw new BusinessException(ReturnNo.AUTH_INVALID_ACCOUNT);
-        }
-        return Common.cloneObj(po,User.class);
-    }
+
     public User findByUserName(String userName,
                                Integer userLevel) throws RuntimeException {
         if(null == userName) {
             return null;
         }
-        UserPo po = this.userPoMapper.findByUserName(userName);
-        if(null == po) {
+        Optional<UserPo> ret = this.userPoMapper.findByUserName(userName);
+        if(!ret.isPresent() ) {
             throw new BusinessException(ReturnNo.AUTH_INVALID_ACCOUNT );
         }
-    else if(!po.getUserLevel().equals(userLevel)){
-        throw new BusinessException(ReturnNo.IDENTIFYNOTMATTCH,String.format(ReturnNo.IDENTIFYNOTMATTCH.getMessage(), userName, po.getId()));
+    else if(!ret.get().getUserLevel().equals(userLevel)){
+        throw new BusinessException(ReturnNo.IDENTIFYNOTMATTCH,String.format(ReturnNo.IDENTIFYNOTMATTCH.getMessage(), userName, ret.get().getId()));
         }
-        return Common.cloneObj(po,User.class);
+        return Common.cloneObj(ret.get(),User.class);
     }
 
 }

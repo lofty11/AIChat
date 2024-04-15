@@ -99,9 +99,6 @@ export default {
     id() {
       this.handleChange()
     },
-    dialogTitle() {
-      this.handleChange()
-    },
     parameterDialogVisible(newValue) {
       if (newValue === true) {
         if (this.dialogTitle === '添加插件API出参' || this.dialogTitle === '添加插件API入参') {
@@ -113,9 +110,9 @@ export default {
     }
   },
   methods: {
-    addItem(type) {
+    addItem() {
       // 在子组件中触发一个自定义事件，并传递需要添加的值
-      this.$emit('add-item', JSON.parse(JSON.stringify(this.form)), type)
+      this.$emit('add-item')
     },
     handleChange() {
       if (this.dialogTitle === '编辑插件API出参') {
@@ -156,28 +153,28 @@ export default {
           if (this.dialogTitle === '添加插件API入参') {
             createInputPara(this.apiId, this.form).then(response => {
               if (response.errno === 1) {
-                this.addItem('i')
+                this.addItem()
                 this.$message.success('添加成功！')
               }
             })
           } else if (this.dialogTitle === '添加插件API出参') {
             createOutputPara(this.apiId, this.form).then(response => {
               if (response.errno === 1) {
-                this.addItem('o')
+                this.addItem()
                 this.$message.success('添加成功！')
               }
             })
           } else if (this.dialogTitle === '编辑插件API出参') {
             modifyOutputParaById(this.id, this.form).then(response => {
               if (response.errno === 0) {
-                this.addItem('eo')
+                this.addItem()
                 this.$message.success('添加成功！')
               }
             })
           } else if (this.dialogTitle === '编辑插件API入参') {
             modifyInputParaById(this.id, this.form).then(response => {
               if (response.errno === 0) {
-                this.addItem('ei')
+                this.addItem()
                 this.$message.success('添加成功！')
               }
             })
