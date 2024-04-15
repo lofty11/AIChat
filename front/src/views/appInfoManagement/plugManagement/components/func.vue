@@ -5,7 +5,7 @@
       <el-form-item prop="name" label="函数名称">
         <el-input v-model="funcForm.name" style="width: 75%" placeholder="请输入函数名称" />
       </el-form-item>
-      <el-form-item prop="eName" label="函数名称（英）">
+      <el-form-item prop="ename" label="函数名称（英）">
         <el-input v-model="funcForm.ename" style="width: 75%" placeholder="请输入函数名称" />
       </el-form-item>
       <el-form-item prop="type" label="函数类型">

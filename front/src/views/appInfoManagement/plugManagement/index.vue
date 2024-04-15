@@ -35,7 +35,7 @@
     <div class="divider" />
 
     <el-main class="right-main">
-      <el-form ref="funcInfo" inline="true" :model="funcForm" label-width="80px">
+      <el-form inline="true" :model="funcForm" label-width="80px">
         <el-form-item label="函数名称">
           <el-input v-model="searchData" placeholder="请输入函数名称" />
         </el-form-item>

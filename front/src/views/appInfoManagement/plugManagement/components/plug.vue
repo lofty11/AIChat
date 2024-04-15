@@ -147,7 +147,6 @@ export default {
     addItem(dataType) {
       this.$emit('add-item', dataType)
     }
-
   }
 }
 </script>
