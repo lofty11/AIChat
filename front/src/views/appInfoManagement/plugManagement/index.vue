@@ -98,7 +98,7 @@
     <!--    配置插件-->
 
     <!--    编辑、创建、配置函数-->
-    <Func :func-id="funcId" :func-dialog-visible.sync="funcDialogVisible" :dialog-title="funcDialogTitle" />
+    <Func :func-id="funcId" :func-dialog-visible.sync="funcDialogVisible" :dialog-title="funcDialogTitle" @add-item="addItemToList" />
     <config-func ref="configFunc" :config-func-dialog-visible.sync="configFuncDialogVisible" />
     <!--    编辑、创建、配置函数-->
 
@@ -242,10 +242,18 @@ export default {
       this.configPlugDialogVisible = true
       this.plugId = id
     },
-    addItemToList(data, type) {
+    addItemToList(type) {
       switch (type) {
         case 'addPlug':
-          this.plugTable.push(data)
+          getAllPlug().then(response => {
+            this.plugTable = response.data.list
+          })
+          break
+        case 'addFunc':
+          getAllFunc().then(response => {
+            this.funcTable = response.data.list
+            console.log(response.data.list)
+          })
           break
       }
     },

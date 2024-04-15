@@ -39,7 +39,7 @@
 </template>
 <script>
 
-import { createPlug, getAllPlug, getPlugById, modifyPlugById } from '@/api/plug'
+import { createPlug, getPlugById, modifyPlugById } from '@/api/plug'
 
 export default {
   name: 'Plug',
@@ -145,7 +145,7 @@ export default {
       })
     },
     addItem(dataType) {
-      this.$emit('add-item', JSON.parse(JSON.stringify(this.form)), dataType)
+      this.$emit('add-item', dataType)
     }
 
   }

@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     addItem(dataType) {
-      this.$emit('add-item', JSON.parse(JSON.stringify(this.form)), dataType)
+      this.$emit('add-item', dataType)
     },
     close() {
       this.$emit('update:funcDialogVisible', false)
@@ -125,6 +125,7 @@ export default {
           if (this.funcId === '0') {
             createFunc(this.funcForm).then(response => {
               if (response.errno === 1) {
+                this.addItem('addFunc')
                 this.$message.success('新增函数成功！')
                 this.$emit('update:funcDialogVisible', false)
               } else {
