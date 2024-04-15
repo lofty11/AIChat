@@ -116,7 +116,6 @@ export default {
   components: { Plug, Func, ConfigPlug, ConfigFunc },
   data() {
     return {
-      isSearch: false,
       searchData: '',
       plugId: '0',
       funcId: '0',
@@ -190,10 +189,12 @@ export default {
           if (response.errno === 0) {
             this.funcTable = []
             this.funcTable.push(response.data)
-            this.isSearch = true
           } else {
             this.$message.info('未查询到相关函数')
           }
+        }).catch(error => {
+          console.log(error)
+          this.$message.error('未查询到相关函数')
         })
       }
     },

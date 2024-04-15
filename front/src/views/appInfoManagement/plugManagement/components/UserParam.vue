@@ -146,6 +146,9 @@ export default {
               this.userParamDialogVisible = false
             })
           }
+        } else {
+          this.$message.error('请将表单填写完整！')
+          return false
         }
       })
       this.$emit('update:userParamDialogVisible', false)

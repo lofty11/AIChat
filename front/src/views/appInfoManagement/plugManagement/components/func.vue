@@ -143,6 +143,7 @@ export default {
               }
             })
           }
+          this.$refs.funcForm.resetFields()
         } else {
           this.$message.error('请将表单填写完整！')
           return false

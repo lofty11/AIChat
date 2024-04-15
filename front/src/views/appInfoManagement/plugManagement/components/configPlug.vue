@@ -174,6 +174,8 @@ export default {
         delPlugParaById(id).then(response => {
           if (response.errno === 0) {
             this.$message.success('删除插件参数成功！')
+          } else {
+            this.$message.error('删除插件参数失败')
           }
         })
       })
@@ -183,6 +185,8 @@ export default {
         delUserParaById(id).then(response => {
           if (response.errno === 0) {
             this.$message.success('删除用户参数成功！')
+          } else {
+            this.$message.error('删除用户参数失败')
           }
         })
       })
