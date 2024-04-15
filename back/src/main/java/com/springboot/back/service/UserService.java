@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +32,15 @@ public class UserService {
     private  UserDao userDao;
     private  ChatDao chatDao ;
     private  MessageDao messageDao;
+    private final FunctionCallService functionCallService;
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
     @Autowired
-    public UserService(UserDao userDao, ChatDao chatDao, MessageDao messageDao)
+    public UserService(UserDao userDao, ChatDao chatDao, MessageDao messageDao, FunctionCallService functionCallService)
     {
         this.userDao=userDao;
         this.chatDao=chatDao;
         this.messageDao=messageDao;
+        this.functionCallService=functionCallService;
     }
     @Transactional
     public UserDto login(String userName, String password,
@@ -105,7 +108,8 @@ public class UserService {
         return dto;
     }
     @Transactional
-    public MessageDto addMessage(UserDto user, Message bo)throws RuntimeException {
+    public MessageDto addMessage(UserDto user, Message bo) throws RuntimeException, IOException {
+        this.functionCallService.FunctionCall(bo.getContent());
         logger.debug("addMessage : bo = {}, user = {}",bo,user);
         Message message=messageDao.addMessage(user,bo);
         MessageDto dto=Common.cloneObj(message,MessageDto.class);
