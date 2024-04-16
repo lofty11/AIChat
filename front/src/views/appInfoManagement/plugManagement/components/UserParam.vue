@@ -12,9 +12,7 @@
         </el-form-item>
         <el-form-item prop="type" label="类型">
           <el-select v-model="paramForm.type" style="width: 75%" placeholder="请选择类型">
-            <el-option label="类型一" value="type01" />
-            <el-option label="类型二" value="type02" />
-            <el-option label="类型三" value="type03" />
+            <el-option v-for="item in typeList" :key="item.id" :label="item.type" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item prop="enumerationRange" label="枚举范围">
@@ -42,6 +40,7 @@
 <script>
 
 import { createUserPara, getUserParaById, modifyUserParaById } from '@/api/plug'
+import { getTypeUnions } from '@/api/common'
 
 export default {
   props: {
@@ -110,6 +109,12 @@ export default {
       }
     }
   },
+  mounted() {
+    getTypeUnions().then(response => {
+      this.typeList = response.data
+      console.log(response.data)
+    })
+  },
   methods: {
     close() {
       this.$emit('update:userParamDialogVisible', false)
@@ -137,7 +142,7 @@ export default {
               this.$emit('update:userParamDialogVisible', false)
             })
           } else {
-            modifyUserParaById(this.userParaId, this.paramForm).then(response => {
+            modifyUserParaById(this.userParaId, this.form).then(response => {
               if (response.errno === 0) {
                 this.$message.success('编辑用户参数成功！')
               } else {

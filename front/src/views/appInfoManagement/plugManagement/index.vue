@@ -170,13 +170,13 @@ export default {
     getAllPlug().then((response) => {
       this.plugTable = response.data.list
       this.pageSize = response.data.pageSize
-    }).catch((error) => {
+    }).catch(error => {
       console.error('获取插件失败:', error)
     })
     getAllFunc().then((response) => {
       this.funcTable = response.data.list
       this.pageSize = response.data.pageSize
-    }).catch((error) => {
+    }).catch(error => {
       console.error('获取函数失败:', error)
     })
   },

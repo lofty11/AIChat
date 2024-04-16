@@ -16,7 +16,7 @@
         <el-row>
           <el-col span="10">
 
-            <el-button type="primary" @click="submitConfigFuncInfo">提交</el-button>
+            <el-button type="primary" @click="confirm">提交</el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -84,7 +84,7 @@ export default {
     close() {
       this.$emit('update:configFuncDialogVisible', false)
     },
-    submitConfigFuncInfo() {
+    confirm() {
       this.close()
     }
   }
