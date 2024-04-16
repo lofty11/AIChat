@@ -106,4 +106,8 @@ public class ApplicationServiceDao {
         return reList.stream().map(this::getBo).collect(Collectors.toList());
     }
 
+    public List<Object[]> retrieveIdsAndNames() {
+        List<Object[]> ret = applicationServicePoMapper.findAllIdsAndNames();
+        return ret;
+    }
 }
