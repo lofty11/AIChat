@@ -285,13 +285,13 @@ INSERT INTO extension_output VALUES (NULL, '从揽收到送达所耗时间', 'ta
 INSERT INTO extension_output VALUES (NULL, '物流明细', 'logisticsTraceDetailList', 'array', NULL, 0, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
 
 
-INSERT INTO `functions` VALUES (NULL, '获取实时天气', 'get_current_weather', 1, 1, '天气预报查询', 0);
-INSERT INTO `functions` VALUES (NULL, '获取实时天气', 'get_current_weather', 1, 2, '天气预报查询', 0);
-INSERT INTO `functions` VALUES (NULL, '获取实时天气', 'get_current_weather', 1, 3, '天气预报查询', 0);
+INSERT INTO `functions` VALUES (NULL, '获取实时天气', 'get_current_weather1', 1, 1, '天气预报查询', 0);
+INSERT INTO `functions` VALUES (NULL, '获取实时天气', 'get_current_weather2', 1, 2, '天气预报查询', 0);
+INSERT INTO `functions` VALUES (NULL, '获取实时天气', 'get_current_weather3', 1, 3, '天气预报查询', 0);
 INSERT INTO `functions` VALUES (NULL, '汇率查询', 'get_exchange_rate', 1, 4, '十大银行汇率查询', 0);
-INSERT INTO `functions` VALUES (NULL, '快递查询', 'get_express_status', 1, 5, '快递状态查询', 0);
-INSERT INTO `functions` VALUES (NULL, '快递查询', 'get_express_status', 1, 6, '快递状态查询', 0);
-INSERT INTO `functions` VALUES (NULL, '快递查询', 'get_express_status', 1, 7, '快递状态查询', 0);
+INSERT INTO `functions` VALUES (NULL, '快递查询', 'get_express_status1', 1, 5, '快递状态查询', 0);
+INSERT INTO `functions` VALUES (NULL, '快递查询', 'get_express_status2', 1, 6, '快递状态查询', 0);
+INSERT INTO `functions` VALUES (NULL, '快递查询', 'get_express_status3', 1, 7, '快递状态查询', 0);
 
 
 INSERT INTO type_union VALUES(NULL, 'string');
