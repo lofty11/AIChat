@@ -33,10 +33,13 @@ public class PlugService {
     private final ServiceApiDao serviceApiDao;
     private final TypeUnionDao typeUnionDao;
 
+    private final ApplicationServiceDao applicationServiceDao;
+
 
     @Autowired
     public PlugService(FunctionDao functionDao, PlugDao plugDao, PlugParaDao plugParaDao, UserParaDao userParaDao,
-                       FunctionTypeDao functionTypeDao,ServiceApiDao serviceApiDao,TypeUnionDao typeUnionDao){
+                       FunctionTypeDao functionTypeDao,ServiceApiDao serviceApiDao,TypeUnionDao typeUnionDao,
+                        ApplicationServiceDao applicationServiceDao){
         this.functionDao = functionDao;
         this.plugDao = plugDao;
         this.plugParaDao = plugParaDao;
@@ -44,6 +47,7 @@ public class PlugService {
         this.functionTypeDao = functionTypeDao;
         this.serviceApiDao = serviceApiDao;
         this.typeUnionDao = typeUnionDao;
+        this.applicationServiceDao = applicationServiceDao;
     }
 
     @Transactional()
@@ -238,7 +242,8 @@ public class PlugService {
 
     private  FunctionDto getFunctionDto(Function function) {
         FunctionType functionType = this.functionTypeDao.findById(function.getType().longValue());
-        ServiceApi serviceApi = this.serviceApiDao.findById(function.getApi().longValue());
+        ApplicationService applicationService = this.applicationServiceDao.findById(Long.valueOf(function.getApi()));
+        //ServiceApi serviceApi = this.serviceApiDao.findById(function.getApi().longValue());
         FunctionDto functionDto = new FunctionDto();
         functionDto.setId(function.getId());
         functionDto.setName(function.getName());
@@ -246,7 +251,8 @@ public class PlugService {
         functionDto.setType(function.getType());
         functionDto.setTypeName(functionType.getType());
         functionDto.setApi(function.getApi());
-        functionDto.setApiName(serviceApi.getType());
+        //functionDto.setApiName(serviceApi.getType());
+        functionDto.setApiName(applicationService.getApiName());
         functionDto.setDescription(function.getDescription());
         return functionDto;
     }
