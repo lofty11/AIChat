@@ -93,13 +93,6 @@ public class PlugControllerTest {
                 .andReturn();
     }
 
-    @Test
-    public void getFunctionByNameTest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{funcName}/funcinfoByName", "search")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();
-    }
 
     @Test
     public void getfuncTypesTest() throws Exception {
@@ -117,7 +110,7 @@ public class PlugControllerTest {
     }
     @Test
     public void getplugTest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{plugId}/pluginfo", 1)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{plugId}/plug", 1)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
@@ -143,16 +136,6 @@ public class PlugControllerTest {
     }
 
     @Test
-    public void getPlugTest() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/plugs")
-                        .header("Authorization", adminToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"test\", \"field\": 0, \"type\": \"string\",\"necessary\": 0}"))
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();
-    }
-
-    @Test
     public void getTypeUnions() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/common/typeUnions")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -167,4 +150,12 @@ public class PlugControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
+    @Test
+    public void getFunctionByNameTest() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/name/{functionName}/function","获取实时天气1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
 }

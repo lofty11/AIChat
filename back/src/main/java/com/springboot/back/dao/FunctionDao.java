@@ -59,9 +59,6 @@ public class FunctionDao {
     }
 
     public Function findById(Long id) throws RuntimeException {
-        if (null == id) {
-            return null;
-        }
         Optional<FunctionPo> po = this.functionPoMapper.findById(id);
         if(po.isPresent()) {
             return this.getBo(po.get());
