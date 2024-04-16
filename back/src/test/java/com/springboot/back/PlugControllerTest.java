@@ -142,4 +142,11 @@ public class PlugControllerTest {
                 .andReturn();
     }
 
+    @Test
+    public void getServiceApisTest() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/serviceApis")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
 }
