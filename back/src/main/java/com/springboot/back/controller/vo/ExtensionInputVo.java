@@ -15,7 +15,7 @@ public class ExtensionInputVo {
     String field;
 
     @NotNull
-    String type;
+    Integer type;
 
     String enumerationRange;
 

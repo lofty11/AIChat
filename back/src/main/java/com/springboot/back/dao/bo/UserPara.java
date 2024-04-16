@@ -30,7 +30,7 @@ public class UserPara extends SSObject implements Serializable {
 
     @Getter
     @Setter
-    private String type;
+    private Integer type;
 
     @Getter
     @Setter
@@ -50,7 +50,7 @@ public class UserPara extends SSObject implements Serializable {
 
     @Builder
     public UserPara(Long id, Long creatorId, Long modifierId, String modifierName, String creatorName, LocalDateTime gmtCreate, LocalDateTime gmtModified,
-            Long plug_id, String name, String field, String type, String enumerationRange, Integer necessary, String description, Integer deleted) {
+            Long plug_id, String name, String field, Integer type, String enumerationRange, Integer necessary, String description, Integer deleted) {
         super(id, creatorId, creatorName, modifierId, modifierName, gmtCreate, gmtModified);
         this.plug_id = plug_id;
         this.name = name;

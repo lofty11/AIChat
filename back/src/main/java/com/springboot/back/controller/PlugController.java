@@ -195,8 +195,8 @@ public class PlugController {
     /*通过funcName获取函数*/
     @GetMapping("/name/{functionName}/function")
     public ReturnObject getFunctionByName(@PathVariable String functionName) {
-
-        FunctionDto ret = this.plugService.retrieveFunction(this.plugService.findFuncIdByName(functionName));
+        Long funcId=this.plugService.findFuncIdByName(functionName);
+        FunctionDto ret = this.plugService.retrieveFunction(funcId);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
@@ -212,4 +212,5 @@ public class PlugController {
         List<ServiceApi> ret = this.plugService.retrieveServiceApis();
         return new ReturnObject(ReturnNo.OK, ret);
     }
+
 }

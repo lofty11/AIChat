@@ -132,7 +132,25 @@ public class PlugControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
+    @Test
+    public void getUserParameterTest() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{id}/userParameter", 1)
+                        .header("Authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"test\", \"field\": 0, \"type\": \"string\",\"necessary\": 0}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
 
+    @Test
+    public void getPlugTest() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/plugs")
+                        .header("Authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"test\", \"field\": 0, \"type\": \"string\",\"necessary\": 0}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
 
     @Test
     public void getTypeUnions() throws Exception {

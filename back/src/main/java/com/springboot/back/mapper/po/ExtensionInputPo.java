@@ -25,7 +25,7 @@ public class ExtensionInputPo {
     private String field;
 
     @Column(name = "type")
-    private String type;
+    private Integer type;
 
     @Column(name = "enumeration_range")
     private String enumerationRange;

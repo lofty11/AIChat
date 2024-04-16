@@ -19,7 +19,8 @@ public class ExtensionInputDto {
 
     private String field;
 
-    private String type;
+    private Integer type;
+    private String typeName;
 
     private String enumerationRange;
 

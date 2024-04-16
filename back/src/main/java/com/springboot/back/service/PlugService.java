@@ -31,17 +31,19 @@ public class PlugService {
     private final UserParaDao userParaDao;
     private final FunctionTypeDao functionTypeDao;
     private final ServiceApiDao serviceApiDao;
+    private final TypeUnionDao typeUnionDao;
 
 
     @Autowired
     public PlugService(FunctionDao functionDao, PlugDao plugDao, PlugParaDao plugParaDao, UserParaDao userParaDao,
-                       FunctionTypeDao functionTypeDao,ServiceApiDao serviceApiDao){
+                       FunctionTypeDao functionTypeDao,ServiceApiDao serviceApiDao,TypeUnionDao typeUnionDao){
         this.functionDao = functionDao;
         this.plugDao = plugDao;
         this.plugParaDao = plugParaDao;
         this.userParaDao = userParaDao;
         this.functionTypeDao = functionTypeDao;
         this.serviceApiDao = serviceApiDao;
+        this.typeUnionDao = typeUnionDao;
     }
 
     @Transactional()
@@ -65,7 +67,7 @@ public class PlugService {
     }
 
     @Transactional
-    public void createUserPara(String name, String field,String type,String enumerationRange, Integer necessary,String description, Integer deleted, Long plugId, UserDto user) {
+    public void createUserPara(String name, String field,Integer type,String enumerationRange, Integer necessary,String description, Integer deleted, Long plugId, UserDto user) {
         UserPara userPara = UserPara.builder().plug_id(plugId).name(name).field(field).type(type).enumerationRange(enumerationRange).necessary(necessary).description(description).deleted(deleted).build();
         this.userParaDao.insert(userPara, user);
     }
@@ -112,7 +114,7 @@ public class PlugService {
     }
 
     @Transactional
-    public void updateUserParaService(Long id, String name, String field,String type,String enumerationRange, Integer necessary,String description, Integer deleted, UserDto user) {
+    public void updateUserParaService(Long id, String name, String field,Integer type,String enumerationRange, Integer necessary,String description, Integer deleted, UserDto user) {
         UserPara userPara = this.userParaDao.findById(id);
         if (null == userPara) {
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
@@ -186,8 +188,9 @@ public class PlugService {
     @Transactional
     public UserParaDto retrieveUserPara(Long id) {
         UserPara userPara = this.userParaDao.findById(id);
+        TypeUnion typeUnion = this.typeUnionDao.findById(userPara.getType().longValue());
         UserParaDto ret = UserParaDto.builder().id(userPara.getId()).name(userPara.getName()).
-                field(userPara.getField()).type(userPara.getType()).enumerationRange(userPara.getEnumerationRange()).description(userPara.getDescription())
+                field(userPara.getField()).type(userPara.getType()).typeName(typeUnion.getType()).enumerationRange(userPara.getEnumerationRange()).description(userPara.getDescription())
                 .necessary(userPara.getNecessary()).build();
         return ret;
     }
@@ -201,7 +204,7 @@ public class PlugService {
             List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> PlugParaDto.builder().id(obj.getId()).name(obj.getName()).value(obj.getValue()).build()).collect(Collectors.toList());
             List<UserPara> userParas = this.userParaDao.retrieveByPlugId(plug.getId());
             List<UserParaDto> userParaDtos = userParas.stream().map(obj -> UserParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
-                    type(obj.getType()).enumerationRange(obj.getEnumerationRange()).necessary(obj.getNecessary()).description(obj.getDescription()).build()).collect(Collectors.toList());
+                    type(obj.getType()).typeName(this.typeUnionDao.findById(obj.getType().longValue()).getType()).enumerationRange(obj.getEnumerationRange()).necessary(obj.getNecessary()).description(obj.getDescription()).build()).collect(Collectors.toList());
             PlugDto plugDto = getPlugDto(plug, plugParaDtos, userParaDtos);
             ret.add(plugDto);
         }
