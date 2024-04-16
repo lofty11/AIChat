@@ -1,5 +1,6 @@
 package com.springboot.back;
 
+import com.springboot.back.dao.ApplicationServiceDao;
 import com.springboot.back.mapper.ApplicationServicePoMapper;
 import com.springboot.back.mapper.ExtensionInputPoMapper;
 import jakarta.annotation.Resource;
@@ -22,6 +23,9 @@ public class ApplicationControllerTest {
 
     @Resource
     ExtensionInputPoMapper extensionInputPoMapper;
+
+    @Resource
+    ApplicationServiceDao applicationServiceDao;
 
     @Test
     public void deleteApplicationTest() throws Exception{
@@ -148,5 +152,10 @@ public class ApplicationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
+    }
+
+    @Test
+    public void retrieveIdsAndNames() throws Exception{
+        this.applicationServiceDao.retrieveIdsAndNames();
     }
 }

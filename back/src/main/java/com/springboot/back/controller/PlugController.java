@@ -7,11 +7,9 @@ import com.springboot.back.controller.vo.PlugVo;
 import com.springboot.back.controller.vo.UserParaVo;
 import com.springboot.back.dao.bo.FunctionType;
 import com.springboot.back.dao.bo.ServiceApi;
+import com.springboot.back.service.ApplicationApiService;
 import com.springboot.back.service.PlugService;
-import com.springboot.back.service.dto.FunctionDto;
-import com.springboot.back.service.dto.PlugDto;
-import com.springboot.back.service.dto.PlugParaDto;
-import com.springboot.back.service.dto.UserParaDto;
+import com.springboot.back.service.dto.*;
 import com.springboot.core.aop.Audit;
 import com.springboot.core.aop.LoginUser;
 import com.springboot.core.model.ReturnNo;
@@ -33,9 +31,12 @@ public class PlugController {
 
     private final PlugService plugService;
 
+    private final ApplicationApiService applicationService;
+
     @Autowired
-    public PlugController(PlugService plugService) {
+    public PlugController(PlugService plugService, ApplicationApiService applicationService) {
         this.plugService = plugService;
+        this.applicationService = applicationService;
     }
 
     /*创建函数*/
@@ -209,7 +210,8 @@ public class PlugController {
     /*获取服务API列表*/
     @GetMapping("/serviceApis")
     public ReturnObject getServiceApis() {
-        List<ServiceApi> ret = this.plugService.retrieveServiceApis();
+        //List<ServiceApi> ret = this.plugService.retrieveServiceApis();
+        List<ServiceApiDto> ret = this.applicationService.retrieveNames();
         return new ReturnObject(ReturnNo.OK, ret);
     }
 

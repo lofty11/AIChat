@@ -11,6 +11,7 @@ import com.springboot.back.dao.bo.TypeUnion;
 import com.springboot.back.service.dto.ApplicationServiceDto;
 import com.springboot.back.service.dto.ExtensionInputDto;
 import com.springboot.back.service.dto.ExtensionOutputDto;
+import com.springboot.back.service.dto.ServiceApiDto;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.PageDto;
@@ -216,6 +217,19 @@ public class ApplicationApiService {
         ExtensionOutputDto ret = ExtensionOutputDto.builder().id(id).field(extensionOutput.getField()).fieldName(extensionOutput.getFieldName())
                 .type(extensionOutput.getType()).typeName(typeUnion.getType()).enumerationRange(extensionOutput.getEnumerationRange()).required(extensionOutput.getRequired())
                 .description(extensionOutput.getDescription()).build();
+        return ret;
+    }
+
+    @Transactional
+    public List<ServiceApiDto> retrieveNames() {
+        List<ServiceApiDto> ret = new ArrayList<>();
+        List<Object[]> resultList = this.applicationServiceDao.retrieveIdsAndNames();
+        for (Object[] result : resultList) {
+            Long id = (Long) result[0];
+            String name = (String) result[1];
+            ServiceApiDto serviceApiDto = new ServiceApiDto(id, name);
+            ret.add(serviceApiDto);
+        }
         return ret;
     }
 }
