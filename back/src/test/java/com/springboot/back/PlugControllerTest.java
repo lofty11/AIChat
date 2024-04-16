@@ -1,6 +1,5 @@
 package com.springboot.back;
 
-import com.springboot.core.model.dto.TokenDto;
 import com.springboot.core.util.JwtUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -133,4 +132,14 @@ public class PlugControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
+
+
+    @Test
+    public void getTypeUnions() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/common/typeUnions")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
 }
