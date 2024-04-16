@@ -18,7 +18,7 @@
           </el-row>
         </el-header>
         <el-main>
-          <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%">
+          <el-table :data="tableData" style="width: 100%">
             <el-table-column type="index" label="序号" />
             <el-table-column prop="apiName" label="应用服务API名称" />
             <el-table-column prop="apiCode" label="API code" />
@@ -35,9 +35,9 @@
             <el-pagination
               align="right"
               :current-page="currentPage"
-              :page-sizes="[1,5,10]"
               :page-size="pageSize"
-              layout="sizes, prev, pager, next, jumper"
+
+              layout=" prev, pager, next, jumper"
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
             />
@@ -46,7 +46,7 @@
       </el-container>
     </div>
     <API :id.sync="apiId" :api-dialog-visible.sync="apiDialogVisible" :form-visible="formVisible" :parameter-visible="parameterVisible" :title.sync="dialogTitle" />
-    <Detail :detail-dialog-visible.sync="detailDialogVisible" :list.sync="detailData" />
+    <Detail :id.sync="detailId" :detail-dialog-visible.sync="detailDialogVisible" />
   </div>
 </template>
 
@@ -73,11 +73,10 @@ export default {
           code: 'SerpApi'
         }
       ],
-      detailData: [
-      ],
+      detailId: '0',
       currentPage: 1, // 当前页码
-      total: 20, // 总条数
-      pageSize: 5 // 每页的数据条数
+      total: 11, // 总条数
+      pageSize: 10 // 每页的数据条数
     }
   },
   watch: {
@@ -108,6 +107,11 @@ export default {
     })
   },
   methods: {
+    displayData() {
+      const startIndex = (this.currentPage - 1) * this.pageSize
+      const endIndex = this.currentPage * this.pageSize
+      return this.tableData.slice(startIndex, endIndex)
+    },
     // 打开API窗口
     openAPIDialog(title, formV, parameterV, id) {
       this.apiDialogVisible = true
@@ -118,8 +122,8 @@ export default {
     },
     // 打开详情页
     openDetailDialog(id) {
+      this.detailId = String(id)
       this.detailDialogVisible = true
-      this.detailData = this.tableData[id - 1]
     },
     // 搜索
     search() {
@@ -156,14 +160,15 @@ export default {
     // 当前页改变时触发 跳转其他页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
-      this.currentPage = val
-      if (val * this.pageSize > this.tableData.length) {
-        getAllAPI({ page: val, pageSize: this.pageSize }).then(response => {
-          if (response.errno === 0) {
-            this.tableData.push(...response.data.list)
-          }
-        })
-      }
+
+      getAllAPI({ page: val, pageSize: this.pageSize }).then(response => {
+        if (response.errno === 0) {
+          this.tableData = response.data.list
+          this.total += this.tableData.length
+          this.currentPage = val
+          console.log(this.tableData)
+        }
+      })
     },
     deleteButton(id, index) {
       this.$confirm('是否确认删除该应用服务API?', '提示', {
