@@ -48,7 +48,12 @@
       <el-table-column
         prop="required"
         label="是否必填"
-      />
+      >
+        <template scope="scope">
+          <!-- 根据 required 的值显示不同的内容 -->
+          {{ scope.row.required === 1 ? '是' : '否' }}
+        </template>
+      </el-table-column>
       <el-table-column
         prop="description"
         label="描述"
@@ -76,7 +81,12 @@
       <el-table-column
         prop="required"
         label="是否必填"
-      />
+      >
+        <template scope="scope">
+          <!-- 根据 required 的值显示不同的内容 -->
+          {{ scope.row.required === 1 ? '是' : '否' }}
+        </template>
+      </el-table-column>
       <el-table-column
         prop="description"
         label="描述"
@@ -91,6 +101,8 @@
 </template>
 
 <script>
+import { getApiById } from '@/api/api'
+
 export default {
   name: 'Detail',
   props: {
@@ -98,8 +110,8 @@ export default {
       type: Boolean,
       default: false
     },
-    list: {
-      type: Array
+    id: {
+      type: String
       // default: {
       //   apiName: '',
       //   apiCode: '',
@@ -112,6 +124,18 @@ export default {
   },
   data() {
     return {
+      list: []
+    }
+  },
+  watch: {
+    id(newValue) {
+      if (newValue !== 0) {
+        getApiById(newValue).then(response => {
+          if (response.errno === 0) {
+            this.list = response.data
+          }
+        })
+      }
     }
   },
   methods: {
@@ -126,13 +150,13 @@ export default {
     },
     RequestMethodDisplay(requestMethod) {
       // 根据 requestMethod 的值返回相应的文字
-      if (requestMethod === 0) {
+      if (requestMethod === 1) {
         return 'GET'
-      } else if (requestMethod === 1) {
-        return 'POST'
       } else if (requestMethod === 2) {
-        return 'PUT'
+        return 'POST'
       } else if (requestMethod === 3) {
+        return 'PUT'
+      } else if (requestMethod === 4) {
         return 'DELETE'
       }
       // 其他情况的处理

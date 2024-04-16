@@ -238,7 +238,7 @@ INSERT INTO extension_input VALUES (NULL, '快递代码', 'expressCode', 'string
 INSERT INTO extension_input VALUES (NULL, '快递公司编号', 'expressCode', 'string', NULL, 0, '例如圆通:YTO。注意：快递公司编号不传时，系统会自动识别快递公司编号，但响应时间会比传递快递编号略长', 6, 1, 'admin', NULL, NULL, NOW(), NULL);
 INSERT INTO extension_input VALUES (NULL, '运单编号', 'number', 'string', NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
 INSERT INTO extension_input VALUES (NULL, '手机号', 'mobile', 'string', NULL, 0, '顺丰速运/丰网速运需要传入收/寄件人手机号或后四位手机号', 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '快递代号', 'type', 'string', NULL, 0, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '快递代号', 'expressCode', 'string', NULL, 0, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
 INSERT INTO extension_input VALUES (NULL, '快递编号', 'number', 'string', NULL, 1, '顺丰速运/丰网速运需要传入收/寄件人手机号或后四位手机号', 7, 1, 'admin', NULL, NULL, NOW(), NULL);
 INSERT INTO extension_input VALUES (NULL, '手机号', 'mobile', 'string', NULL, 0, '查顺丰时要输入寄件人或收件人手机号, 11位完整手机号或手机号后4位', 7, 1, 'admin', NULL, NULL, NOW(), NULL);
 
