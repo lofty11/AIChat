@@ -64,7 +64,12 @@
           <el-table-column
             prop="required"
             label="是否必填"
-          />
+          >
+            <template slot-scope="scope">
+              <!-- 根据 required 的值显示不同的内容 -->
+              {{ scope.row.required === 1 ? '是' : '否' }}
+            </template>
+          </el-table-column>
           <el-table-column
             prop="description"
             label="描述"
@@ -103,7 +108,12 @@
           <el-table-column
             prop="required"
             label="是否必填"
-          />
+          >
+            <template slot-scope="scope">
+              <!-- 根据 required 的值显示不同的内容 -->
+              {{ scope.row.required === 1 ? '是' : '否' }}
+            </template>
+          </el-table-column>
           <el-table-column
             prop="description"
             label="描述"
