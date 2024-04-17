@@ -102,7 +102,7 @@ CREATE TABLE userpara
     id bigint AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     field VARCHAR(255) NOT NULL,
-    type VARCHAR(255) NOT NULL,
+    type INTEGER NOT NULL,
     enumeration_range VARCHAR(255),
     necessary INTEGER NOT NULL,
     description VARCHAR(255),
@@ -157,14 +157,6 @@ CREATE TABLE func_type
 );
 alter table func_type character set utf8;
 
-DROP TABLE IF EXISTS service_api;
-CREATE TABLE service_api
-(
-    id  bigint AUTO_INCREMENT PRIMARY KEY,
-    type VARCHAR(255) NOT NULL
-);
-alter table service_api character set utf8;
-
 DROP TABLE IF EXISTS `chat`;
 CREATE TABLE chat (
                       id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -198,8 +190,8 @@ INSERT INTO `plug` VALUES (NULL, 'plug_test', 'web_search', 'http请求', 1, 1, 
 INSERT INTO `plug` VALUES (NULL, 'plug_test2', 'b', 'http', 1, 1, 1);
 INSERT INTO `plugpara` VALUES (NULL,'aaa', 1, 0,1);
 INSERT INTO `plugpara` VALUES (NULL,'bbb', 1, 0,1);
-INSERT INTO `userpara` VALUES (NULL, 'search', 'b', 'c', '多个值由逗号分开', 1, 'e', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
-INSERT INTO `userpara` VALUES (NULL, 'search1', 'b', 'c', NULL, 1, 'e', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO `userpara` VALUES (NULL, 'search', 'b', 1, '多个值由逗号分开', 1, 'e', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO `userpara` VALUES (NULL, 'search1', 'b', 2, NULL, 1, 'e', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
 
 INSERT INTO user VALUES (NULL,0, 'admin', '123456', '10000');
 INSERT INTO user VALUES (NULL,1,'zmr','100000','181000000');
@@ -285,13 +277,13 @@ INSERT INTO extension_output VALUES (NULL, '从揽收到送达所耗时间', 'ta
 INSERT INTO extension_output VALUES (NULL, '物流明细', 'logisticsTraceDetailList', 'array', NULL, 0, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
 
 
-INSERT INTO `functions` VALUES (NULL, '获取实时天气', 'get_current_weather1', 1, 1, '天气预报查询', 0);
-INSERT INTO `functions` VALUES (NULL, '获取实时天气', 'get_current_weather2', 1, 2, '天气预报查询', 0);
-INSERT INTO `functions` VALUES (NULL, '获取实时天气', 'get_current_weather3', 1, 3, '天气预报查询', 0);
+INSERT INTO `functions` VALUES (NULL, '获取实时天气1', 'get_current_weather1', 1, 1, '天气预报查询', 0);
+INSERT INTO `functions` VALUES (NULL, '获取实时天气2', 'get_current_weather2', 1, 2, '天气预报查询', 0);
+INSERT INTO `functions` VALUES (NULL, '获取实时天气3', 'get_current_weather3', 1, 3, '天气预报查询', 0);
 INSERT INTO `functions` VALUES (NULL, '汇率查询', 'get_exchange_rate', 1, 4, '十大银行汇率查询', 0);
-INSERT INTO `functions` VALUES (NULL, '快递查询', 'get_express_status1', 1, 5, '快递状态查询', 0);
-INSERT INTO `functions` VALUES (NULL, '快递查询', 'get_express_status2', 1, 6, '快递状态查询', 0);
-INSERT INTO `functions` VALUES (NULL, '快递查询', 'get_express_status3', 1, 7, '快递状态查询', 0);
+INSERT INTO `functions` VALUES (NULL, '快递查询1', 'get_express_status1', 1, 5, '快递状态查询', 0);
+INSERT INTO `functions` VALUES (NULL, '快递查询2', 'get_express_status2', 1, 6, '快递状态查询', 0);
+INSERT INTO `functions` VALUES (NULL, '快递查询3', 'get_express_status3', 1, 7, '快递状态查询', 0);
 
 
 INSERT INTO type_union VALUES(NULL, 'string');
@@ -302,6 +294,3 @@ INSERT INTO type_union VALUES(NULL, 'int');
 INSERT INTO func_type VALUES(NULL, 'http请求');
 INSERT INTO func_type VALUES(NULL, 'http请求2');
 INSERT INTO func_type VALUES(NULL, 'http请求3');
-INSERT INTO service_api VALUES(NULL, 'SerpApi');
-INSERT INTO service_api VALUES(NULL, 'SerpApi2');
-INSERT INTO service_api VALUES(NULL, 'SerpApi3');

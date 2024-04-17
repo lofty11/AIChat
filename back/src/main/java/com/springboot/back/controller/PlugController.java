@@ -6,7 +6,6 @@ import com.springboot.back.controller.vo.PlugParaVo;
 import com.springboot.back.controller.vo.PlugVo;
 import com.springboot.back.controller.vo.UserParaVo;
 import com.springboot.back.dao.bo.FunctionType;
-import com.springboot.back.dao.bo.ServiceApi;
 import com.springboot.back.service.ApplicationApiService;
 import com.springboot.back.service.PlugService;
 import com.springboot.back.service.dto.*;
@@ -210,7 +209,6 @@ public class PlugController {
     /*获取服务API列表*/
     @GetMapping("/serviceApis")
     public ReturnObject getServiceApis() {
-        //List<ServiceApi> ret = this.plugService.retrieveServiceApis();
         List<ServiceApiDto> ret = this.applicationService.retrieveNames();
         return new ReturnObject(ReturnNo.OK, ret);
     }
