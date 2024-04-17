@@ -17,7 +17,7 @@ public class UserParaVo {
     private String field;
 
     @NotNull
-    private String type;
+    private Integer type;
 
     String enumerationRange;
 
