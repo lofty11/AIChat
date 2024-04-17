@@ -187,7 +187,7 @@ CREATE TABLE message (
 alter table message  character set utf8;
 
 INSERT INTO `plug` VALUES (NULL, 'plug_test', 'web_search', 'http请求', 1, 1, 0);
-INSERT INTO `plug` VALUES (NULL, 'plug_test2', 'b', 'http', 1, 1, 1);
+INSERT INTO `plug` VALUES (NULL, 'plug_test2', 'b', 'http', 1, 1, 0);
 INSERT INTO `plugpara` VALUES (NULL,'aaa', 1, 0,1);
 INSERT INTO `plugpara` VALUES (NULL,'bbb', 1, 0,1);
 INSERT INTO `userpara` VALUES (NULL, 'search', 'b', 1, '多个值由逗号分开', 1, 'e', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);

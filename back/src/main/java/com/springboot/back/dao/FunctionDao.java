@@ -4,7 +4,6 @@ import com.springboot.back.dao.bo.Function;
 import com.springboot.back.mapper.FunctionPoMapper;
 import com.springboot.back.mapper.po.FunctionPo;
 import com.springboot.core.exception.BusinessException;
-import com.springboot.core.model.Constants;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +54,7 @@ public class FunctionDao {
             this.functionPoMapper.save(functionPo);
             return functionPo.getId();
         } else {
-            throw new BusinessException(ReturnNo.APPLICATION_EXIST, String.format(ReturnNo.APPLICATION_EXIST.getMessage(), po.getId()));
+            throw new BusinessException(ReturnNo.FUNCTION_EXIST, String.format(ReturnNo.FUNCTION_EXIST.getMessage(), po.getId()));
         }
     }
 
@@ -85,7 +84,7 @@ public class FunctionDao {
     public Long findByName(String funcName) {
         FunctionPo po = this.functionPoMapper.findByName(funcName);
         if (null == po) {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), (Object) null));
+            throw new BusinessException(ReturnNo.RESOURCE_NAME_NOTEXIST, String.format(ReturnNo.RESOURCE_NAME_NOTEXIST.getMessage(), "函数", funcName));
         }
         return po.getId();
     }

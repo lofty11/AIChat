@@ -54,7 +54,7 @@ public class PlugParaDao {
             this.plugParaPoMapper.save(plugParaPo);
             return plugParaPo.getId();
         } else {
-            throw new BusinessException(ReturnNo.APPLICATION_EXIST, String.format(ReturnNo.APPLICATION_EXIST.getMessage(), po.getId()));
+            throw new BusinessException(ReturnNo.PLUGPARA_EXIST, String.format(ReturnNo.PLUGPARA_EXIST.getMessage(), po.getId()));
         }
     }
 
