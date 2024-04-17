@@ -19,6 +19,8 @@ public class ExtensionOutputDto {
 
     private String field;
 
+    private Long typeId;
+
     private String type;
 
     private String enumerationRange;

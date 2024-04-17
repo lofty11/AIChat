@@ -30,7 +30,7 @@ CREATE TABLE extension_input
     input_id bigint AUTO_INCREMENT PRIMARY KEY,
     field_name VARCHAR(255) NOT NULL,
     field VARCHAR(255) NOT NULL,
-    type VARCHAR(255) NOT NULL,
+    type INTEGER NOT NULL,
     enumeration_range VARCHAR(255),
     required INTEGER NOT NULL,
     description VARCHAR(255),
@@ -52,7 +52,7 @@ CREATE TABLE extension_output
     out_id bigint AUTO_INCREMENT PRIMARY KEY,
     field_name VARCHAR(255) NOT NULL,
     field VARCHAR(255) NOT NULL,
-    type VARCHAR(255) NOT NULL,
+    type INTEGER NOT NULL,
     enumeration_range VARCHAR(255),
     required INTEGER NOT NULL,
     description VARCHAR(255),
@@ -206,75 +206,75 @@ INSERT INTO application_service VALUES (NULL, '快递查询2', 'express2', 'http
 INSERT INTO application_service VALUES (NULL, '快递查询3', 'express3', 'https://qgkdwlcx.api.bdymkt.com/express3/query', 1, 1, 'admin', NULL, NULL, NOW(), NULL);
 
 
-INSERT INTO extension_input VALUES (NULL, '地名', 'area', 'string', '地名不能带有“市”、“县”，比如查杭州，area传入“杭州”，而不是传入“杭州市”', 0, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '地名id', 'areaId', 'string', NULL, 0, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '地区名称', 'areaCn', 'string', '地名不能带有“市”、“县”，比如查杭州，area传入“杭州”，而不是传入“杭州市”', 0, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '地区编码', 'areaCode', 'string', NULL, 0, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, 'ip地址', 'ip', 'string', NULL, 0, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '纬度', 'lat', 'string', NULL, 0, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '经度', 'lng', 'string', NULL, 0, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '是否需要3小时段天气预', 'need3hour', 'string', NULL, 0, '1:需要，0:不需要', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '是否需要生活指数数据', 'needIndex', 'string', NULL, 0, '1:需要，0:不需要', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '是否需要24小时天气指数', 'needObserve', 'string', NULL, 0, '1:需要，0:不需要', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '是否需要天气预警', 'needalarm', 'string', NULL, 0, '1:需要，0:不需要', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '是否需要1小时段天气预报', 'need1hour', 'string', NULL, 0, '1:需要，0:不需要', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '城市', 'city', 'string', NULL, 0, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '城市id', 'cityid', 'string', NULL, 0, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '城市天气代号', 'citycode', 'string', NULL, 0, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '经纬度', 'location', 'string', NULL, 0, '纬度在前经度在后用,分割如：39.983424,116.322987', 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, 'ip', 'ip', 'string', NULL, 0, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '银行编码', 'bankCode', 'string', '工商银行：ICBC，中国银行：BOC，农业银行：ABCHINA，交通银行：BANKCOMM，建设银行：CCB，招商银行：CMBCHINA，光大银行：CEBBANK，浦发银行：SPDB，兴业银行：CIB，中信银行：ECITIC', 1, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '快递单号', 'number', 'string', NULL, 1, NULL, 5, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '手机号', 'mobile', 'string', NULL, 0, '查顺丰快递时要输入寄件人或收件人手机号', 5, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '快递代码', 'expressCode', 'string', NULL, 1, '自动识别请传auto', 5, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '快递公司编号', 'expressCode', 'string', NULL, 0, '例如圆通:YTO。注意：快递公司编号不传时，系统会自动识别快递公司编号，但响应时间会比传递快递编号略长', 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '运单编号', 'number', 'string', NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '手机号', 'mobile', 'string', NULL, 0, '顺丰速运/丰网速运需要传入收/寄件人手机号或后四位手机号', 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '快递代号', 'expressCode', 'string', NULL, 0, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '快递编号', 'number', 'string', NULL, 1, '顺丰速运/丰网速运需要传入收/寄件人手机号或后四位手机号', 7, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_input VALUES (NULL, '手机号', 'mobile', 'string', NULL, 0, '查顺丰时要输入寄件人或收件人手机号, 11位完整手机号或手机号后4位', 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '地名', 'area', 1, '地名不能带有“市”、“县”，比如查杭州，area传入“杭州”，而不是传入“杭州市”', 0, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '地名id', 'areaId', 1, NULL, 0, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '地区名称', 'areaCn', 1, '地名不能带有“市”、“县”，比如查杭州，area传入“杭州”，而不是传入“杭州市”', 1, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '地区编码', 'areaCode', 1, NULL, 0, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, 'ip地址', 'ip', 1, NULL, 0, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '纬度', 'lat', 1, NULL, 0, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '经度', 'lng', 1, NULL, 0, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '是否需要3小时段天气预', 'need3hour', 1, NULL, 0, '1:需要，0:不需要', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '是否需要生活指数数据', 'needIndex', 1, NULL, 0, '1:需要，0:不需要', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '是否需要24小时天气指数', 'needObserve', 1, NULL, 0, '1:需要，0:不需要', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '是否需要天气预警', 'needalarm', 1, NULL, 0, '1:需要，0:不需要', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '是否需要1小时段天气预报', 'need1hour', 1, NULL, 0, '1:需要，0:不需要', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '城市', 'city', 1, NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '城市id', 'cityid', 1, NULL, 0, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '城市天气代号', 'citycode', 1, NULL, 0, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '经纬度', 'location', 1, NULL, 0, '纬度在前经度在后用,分割如：39.983424,116.322987', 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, 'ip', 'ip', 1, NULL, 0, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '银行编码', 'bankCode', 1, '工商银行：ICBC，中国银行：BOC，农业银行：ABCHINA，交通银行：BANKCOMM，建设银行：CCB，招商银行：CMBCHINA，光大银行：CEBBANK，浦发银行：SPDB，兴业银行：CIB，中信银行：ECITIC', 1, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '快递单号', 'number', 1, NULL, 1, NULL, 5, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '手机号', 'mobile', 1, NULL, 0, '查顺丰快递时要输入寄件人或收件人手机号', 5, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '快递代码', 'expressCode', 1, NULL, 1, '自动识别请传auto', 5, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '快递公司编号', 'expressCode', 1, NULL, 0, '例如圆通:YTO。注意：快递公司编号不传时，系统会自动识别快递公司编号，但响应时间会比传递快递编号略长', 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '运单编号', 'number', 1, NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '手机号', 'mobile', 1, NULL, 0, '顺丰速运/丰网速运需要传入收/寄件人手机号或后四位手机号', 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '快递代号', 'expressCode', 1, NULL, 0, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '快递编号', 'number', 1, NULL, 1, '顺丰速运/丰网速运需要传入收/寄件人手机号或后四位手机号', 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '手机号', 'mobile', 1, NULL, 0, '查顺丰时要输入寄件人或收件人手机号, 11位完整手机号或手机号后4位', 7, 1, 'admin', NULL, NULL, NOW(), NULL);
 
 
-INSERT INTO extension_output VALUES (NULL, '地名', 'area', 'string', NULL, 1, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '当前实时天气', 'now', 'json', NULL, 1, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '未来7天天气', 'dayWeathers', 'array', NULL, 0, '按日期从早到晚排序', 1, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '白天天气', 'day', 'json', NULL, 1, NULL, 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '夜间天气', 'night', 'json', NULL, 1, NULL, 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '城市信息', 'cityInfo', 'json', NULL, 1, NULL, 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '当前天气', 'now', 'json', NULL, 1, NULL, 2, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '城市', 'city', 'string', NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '日期', 'date', 'string', NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '天气', 'weather', 'string', NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '当前温度', 'temp', 'string', NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '最高温度', 'temphigh', 'string', NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '最低温度', 'templow', 'string', NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '指标', 'index', 'array', NULL, 0, '空调指数和运动指数', 3, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '货币数量', 'listSize', 'int', NULL, 1, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '汇率集合', 'list', 'array', NULL, 1, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '银行编码', 'name', 'string', NULL, 0, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '日期', 'day', 'string', NULL, 0, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '时间', 'time', 'string', NULL, 0, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递公司', 'expressName', 'string', NULL, 1, NULL, 5, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递单号', 'number', 'string', NULL, 1, NULL, 5, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递公司', 'expressName', 'string', NULL, 1, NULL, 5, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递派送状态', 'status', 'int', '1-13', 1, 'status字段说明：1在途中，2派送中，3已签收，4派送失败，5揽收，6退回，7转单，8疑难，9退签，10待清关，11清关中，12已清关，13清关异常', 5, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递配送轨迹', 'logisticsList', 'array', NULL, 0, NULL, 5, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递公司名称', 'expressCompanyName', 'string', NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递单号', 'taskNo', 'string', NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '物流状态', 'logisticsStatusDesc', 'string', NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '运单号物流流转当前最新变更时间', 'theLastTime', 'string', NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '运单号物流流转当前最新描述', 'theLastMessage', 'string', NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '从揽收到送达所耗时间', 'takeTime', 'string', NULL, 0, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '物流明细', 'logisticsTraceDetails', 'array', NULL, 0, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递员', 'courier', 'string', NULL, 0, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递员联系方式', 'courierPhone', 'string', NULL, 0, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递公司名称', 'logisticsCompanyName', 'string', NULL, 1, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '快递单号名称', 'mailNo', 'string', NULL, 1, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '运单号物流流转当前最新变更时间', 'theLastTime', 'string', NULL, 1, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '运单号物流流转当前最新描述', 'theLastMessage', 'string', NULL, 1, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '运单号当前物流状态文字描述', 'logisticsStatusDesc', 'string', NULL, 1, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '从揽收到送达所耗时间', 'takeTime', 'string', NULL, 0, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
-INSERT INTO extension_output VALUES (NULL, '物流明细', 'logisticsTraceDetailList', 'array', NULL, 0, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '地名', 'area', 1, NULL, 1, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '当前实时天气', 'now', 3, NULL, 1, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '未来7天天气', 'dayWeathers', 2, NULL, 0, '按日期从早到晚排序', 1, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '白天天气', 'day', 3, NULL, 1, NULL, 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '夜间天气', 'night', 3, NULL, 1, NULL, 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '城市信息', 'cityInfo', 3, NULL, 1, NULL, 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '当前天气', 'now', 3, NULL, 1, NULL, 2, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '城市', 'city', 1, NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '日期', 'date', 1, NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '天气', 'weather', 1, NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '当前温度', 'temp', 1, NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '最高温度', 'temphigh', 1, NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '最低温度', 'templow', 1, NULL, 1, NULL, 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '指标', 'index', 2, NULL, 0, '空调指数和运动指数', 3, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '货币数量', 'listSize', 4, NULL, 1, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '汇率集合', 'list', 2, NULL, 1, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '银行编码', 'name', 1, NULL, 0, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '日期', 'day', 1, NULL, 0, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '时间', 'time', 1, NULL, 0, NULL, 4, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递公司', 'expressName', 1, NULL, 1, NULL, 5, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递单号', 'number', 1, NULL, 1, NULL, 5, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递公司', 'expressName', 1, NULL, 1, NULL, 5, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递派送状态', 'status', 4, '1-13', 1, 'status字段说明：1在途中，2派送中，3已签收，4派送失败，5揽收，6退回，7转单，8疑难，9退签，10待清关，11清关中，12已清关，13清关异常', 5, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递配送轨迹', 'logisticsList', 2, NULL, 0, NULL, 5, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递公司名称', 'expressCompanyName', 1, NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递单号', 'taskNo', 1, NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '物流状态', 'logisticsStatusDesc', 1, NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '运单号物流流转当前最新变更时间', 'theLastTime', 1, NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '运单号物流流转当前最新描述', 'theLastMessage', 1, NULL, 1, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '从揽收到送达所耗时间', 'takeTime', 1, NULL, 0, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '物流明细', 'logisticsTraceDetails', 2, NULL, 0, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递员', 'courier', 1, NULL, 0, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递员联系方式', 'courierPhone', 1, NULL, 0, NULL, 6, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递公司名称', 'logisticsCompanyName', 1, NULL, 1, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '快递单号名称', 'mailNo', 1, NULL, 1, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '运单号物流流转当前最新变更时间', 'theLastTime', 1, NULL, 1, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '运单号物流流转当前最新描述', 'theLastMessage', 1, NULL, 1, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '运单号当前物流状态文字描述', 'logisticsStatusDesc', 1, NULL, 1, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '从揽收到送达所耗时间', 'takeTime', 1, NULL, 0, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_output VALUES (NULL, '物流明细', 'logisticsTraceDetailList', 2, NULL, 0, NULL, 7, 1, 'admin', NULL, NULL, NOW(), NULL);
 
 
 INSERT INTO `functions` VALUES (NULL, '获取实时天气1', 'get_current_weather1', 1, 1, '天气预报查询', 0);
