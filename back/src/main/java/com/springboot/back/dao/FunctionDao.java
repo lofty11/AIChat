@@ -97,4 +97,16 @@ public class FunctionDao {
         }
         return reList.stream().map(this::getBo).collect(Collectors.toList());
     }
+
+    public List<Object[]> retrieveNamesAndDescriptions() {
+        return this.functionPoMapper.findAllNamesAndDescriptions();
+    }
+
+    public Long findApiId(String functionName){
+        FunctionPo po = this.functionPoMapper.findByEname(functionName);
+        if (null == po){
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "函数",functionName));
+        }
+        return Long.valueOf(po.getApi());
+    }
 }
