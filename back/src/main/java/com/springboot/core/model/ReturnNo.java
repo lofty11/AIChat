@@ -21,6 +21,8 @@ public enum ReturnNo {
     IDENTIFYNOTMATTCH(21,"%s对象（id=%d)身份不匹配"),
     //状态码 404
     RESOURCE_ID_NOTEXIST(4,"%s对象(id=%d)不存在"),
+    RESOURCE_NAME_NOTEXIST(5,"%s对象(name=%s)不存在"),
+
 
     //状态码 500
     INTERNAL_SERVER_ERR(2,"服务器内部错误"),
@@ -52,7 +54,15 @@ public enum ReturnNo {
      ************************************/
     APPLICATION_EXIST(103,"应用服务api(id=%s)已经存在"),
     INPUT_EXIST(104, "插件入参(id=%s)已经存在"),
-    OUTPUT_EXIST(105,"插件出参(id=%s)已经存在");
+    OUTPUT_EXIST(105,"插件出参(id=%s)已经存在"),
+
+    /**************************************
+     *  插件模块
+     ************************************/
+    PLUG_EXIST(106,"插件(id=%s)已经存在"),
+    PLUGPARA_EXIST(108,"插件参数(id=%s)已经存在"),
+    USERPARA_EXIST(109,"用户参数(id=%s)已经存在"),
+    FUNCTION_EXIST(110,"函数(id=%s)已经存在");
 
 
     private int errNo;

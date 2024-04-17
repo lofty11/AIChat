@@ -54,7 +54,7 @@ public class UserParaDao {
             this.userParaPoMapper.save(userParaPo);
             return userParaPo.getId();
         } else {
-            throw new BusinessException(ReturnNo.APPLICATION_EXIST, String.format(ReturnNo.APPLICATION_EXIST.getMessage(), po.getId()));
+            throw new BusinessException(ReturnNo.USERPARA_EXIST, String.format(ReturnNo.USERPARA_EXIST.getMessage(), po.getId()));
         }
     }
 

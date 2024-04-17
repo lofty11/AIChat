@@ -4,7 +4,6 @@ import com.springboot.back.dao.bo.Plug;
 import com.springboot.back.mapper.PlugPoMapper;
 import com.springboot.back.mapper.po.PlugPo;
 import com.springboot.core.exception.BusinessException;
-import com.springboot.core.model.Constants;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +54,7 @@ public class PlugDao {
             this.plugPoMapper.save(plugPo);
             return plugPo.getId();
         } else {
-            throw new BusinessException(ReturnNo.APPLICATION_EXIST, String.format(ReturnNo.APPLICATION_EXIST.getMessage(), po.getId()));
+            throw new BusinessException(ReturnNo.PLUG_EXIST, String.format(ReturnNo.PLUG_EXIST.getMessage(), po.getId()));
         }
     }
 
