@@ -206,7 +206,7 @@ INSERT INTO application_service VALUES (NULL, '快递查询2', 'express2', 'http
 INSERT INTO application_service VALUES (NULL, '快递查询3', 'express3', 'https://qgkdwlcx.api.bdymkt.com/express3/query', 1, 1, 'admin', NULL, NULL, NOW(), NULL);
 
 
-INSERT INTO extension_input VALUES (NULL, '地名', 'area', 1, '地名不能带有“市”、“县”，比如查杭州，area传入“杭州”，而不是传入“杭州市”', 0, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
+INSERT INTO extension_input VALUES (NULL, '地名', 'area', 1, '地名不能带有“市”、“县”，比如查杭州，area传入“杭州”，而不是传入“杭州市”', 1, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
 INSERT INTO extension_input VALUES (NULL, '地名id', 'areaId', 1, NULL, 0, NULL, 1, 1, 'admin', NULL, NULL, NOW(), NULL);
 INSERT INTO extension_input VALUES (NULL, '地区名称', 'areaCn', 1, '地名不能带有“市”、“县”，比如查杭州，area传入“杭州”，而不是传入“杭州市”', 1, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
 INSERT INTO extension_input VALUES (NULL, '地区编码', 'areaCode', 1, NULL, 0, 'areaCode、areaCn、ip、lng&lat四选一', 2, 1, 'admin', NULL, NULL, NOW(), NULL);
