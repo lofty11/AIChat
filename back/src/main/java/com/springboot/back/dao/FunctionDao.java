@@ -4,6 +4,7 @@ import com.springboot.back.dao.bo.Function;
 import com.springboot.back.mapper.FunctionPoMapper;
 import com.springboot.back.mapper.po.FunctionPo;
 import com.springboot.core.exception.BusinessException;
+import com.springboot.core.model.Constants;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,9 @@ public class FunctionDao {
     }
 
     public Function findById(Long id) throws RuntimeException {
+        if (null == id) {
+            return null;
+        }
         Optional<FunctionPo> po = this.functionPoMapper.findById(id);
         if(po.isPresent()) {
             return this.getBo(po.get());
