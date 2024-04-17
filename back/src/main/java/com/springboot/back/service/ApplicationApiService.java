@@ -3,6 +3,7 @@ package com.springboot.back.service;
 import com.springboot.back.dao.ApplicationServiceDao;
 import com.springboot.back.dao.ExtensionInputDao;
 import com.springboot.back.dao.ExtensionOutputDao;
+import com.springboot.back.dao.TypeUnionDao;
 import com.springboot.back.dao.bo.ApplicationService;
 import com.springboot.back.dao.bo.ExtensionInput;
 import com.springboot.back.dao.bo.ExtensionOutput;
@@ -30,12 +31,15 @@ public class ApplicationApiService {
 
     private final ExtensionOutputDao extensionOutputDao;
 
+    private final TypeUnionDao typeUnionDao;
+
     @Autowired
     public ApplicationApiService(ApplicationServiceDao applicationServiceDao, ExtensionInputDao extensionInputDao,
-                                 ExtensionOutputDao extensionOutputDao) {
+                                 ExtensionOutputDao extensionOutputDao, TypeUnionDao typeUnionDao) {
         this.applicationServiceDao = applicationServiceDao;
         this.extensionInputDao = extensionInputDao;
         this.extensionOutputDao = extensionOutputDao;
+        this.typeUnionDao = typeUnionDao;
     }
 
     @Transactional
@@ -73,7 +77,7 @@ public class ApplicationApiService {
     }
 
     @Transactional
-    public void createExtensionInput(String fieldName, String field, String type, String enumerationRange, Integer required,
+    public void createExtensionInput(String fieldName, String field, Long type, String enumerationRange, Integer required,
                                      String description, Long applicationId, UserDto user) {
         ExtensionInput extensionInput = ExtensionInput.builder().fieldName(fieldName).field(field).type(type).enumerationRange(enumerationRange)
                 .required(required).description(description).applicationId(applicationId).build();
@@ -81,7 +85,7 @@ public class ApplicationApiService {
     }
 
     @Transactional
-    public void createExtensionOutput(String fieldName, String field, String type, String enumerationRange, Integer required,
+    public void createExtensionOutput(String fieldName, String field, Long type, String enumerationRange, Integer required,
                                      String description, Long applicationId, UserDto user) {
         ExtensionOutput extensionOutput = ExtensionOutput.builder().fieldName(fieldName).field(field).type(type).enumerationRange(enumerationRange)
                 .required(required).description(description).applicationId(applicationId).build();
@@ -102,7 +106,7 @@ public class ApplicationApiService {
     }
 
     @Transactional
-    public void updateExtensionInput(Long id, String fieldName, String field, String type, String enumerationRange,
+    public void updateExtensionInput(Long id, String fieldName, String field, Long type, String enumerationRange,
                                      Integer required, String description, UserDto user) {
         ExtensionInput extensionInput = this.extensionInputDao.findById(id);
         if (null == extensionInput) {
@@ -118,7 +122,7 @@ public class ApplicationApiService {
     }
 
     @Transactional
-    public void updateExtensionOutput(Long id, String fieldName, String field, String type, String enumerationRange,
+    public void updateExtensionOutput(Long id, String fieldName, String field, Long type, String enumerationRange,
                                      Integer required, String description, UserDto user) {
         ExtensionOutput extensionOutput = this.extensionOutputDao.findById(id);
         if (null == extensionOutput) {
@@ -146,13 +150,13 @@ public class ApplicationApiService {
             List<ExtensionInput> extensionInputs = this.extensionInputDao.retrieveByApplicationId(applicationService.getId());
             List<ExtensionInputDto> inputDtos = extensionInputs.stream().map(obj -> {
                 return ExtensionInputDto.builder().id(obj.getId()).fieldName(obj.getFieldName())
-                        .field(obj.getField()).type(obj.getType()).enumerationRange(obj.getEnumerationRange()).required(obj.getRequired())
+                        .field(obj.getField()).typeId(obj.getType()).type(this.typeUnionDao.findById(obj.getType()).getType()).enumerationRange(obj.getEnumerationRange()).required(obj.getRequired())
                         .description(obj.getDescription()).build();
             }).collect(Collectors.toList());
             List<ExtensionOutput> extensionOutputs = this.extensionOutputDao.retrieveByApplicationId(applicationService.getId());
             List<ExtensionOutputDto> outputDtos = extensionOutputs.stream().map(obj -> {
                 return ExtensionOutputDto.builder().id(obj.getId()).fieldName(obj.getFieldName()).field(obj.getField())
-                        .type(obj.getType()).enumerationRange(obj.getEnumerationRange()).required(obj.getRequired())
+                        .typeId(obj.getType()).type(this.typeUnionDao.findById(obj.getType()).getType()).enumerationRange(obj.getEnumerationRange()).required(obj.getRequired())
                         .description(obj.getDescription()).build();
             }).collect(Collectors.toList());
             ApplicationServiceDto applicationServiceDto = getApplicationServiceDto(applicationService, inputDtos, outputDtos);
@@ -180,13 +184,13 @@ public class ApplicationApiService {
         List<ExtensionInput> extensionInputs = this.extensionInputDao.retrieveByApplicationId(applicationId);
         List<ExtensionInputDto> inputDtos = extensionInputs.stream().map(obj -> {
             return ExtensionInputDto.builder().id(obj.getId()).fieldName(obj.getFieldName())
-                    .field(obj.getField()).type(obj.getType()).enumerationRange(obj.getEnumerationRange()).required(obj.getRequired())
+                    .field(obj.getField()).typeId(obj.getType()).type(this.typeUnionDao.findById(obj.getType()).getType()).enumerationRange(obj.getEnumerationRange()).required(obj.getRequired())
                     .description(obj.getDescription()).build();
         }).collect(Collectors.toList());
         List<ExtensionOutput> extensionOutputs = this.extensionOutputDao.retrieveByApplicationId(applicationId);
         List<ExtensionOutputDto> outputDtos = extensionOutputs.stream().map(obj -> {
             return ExtensionOutputDto.builder().id(obj.getId()).fieldName(obj.getFieldName()).field(obj.getField())
-                    .type(obj.getType()).enumerationRange(obj.getEnumerationRange()).required(obj.getRequired())
+                    .typeId(obj.getType()).type(this.typeUnionDao.findById(obj.getType()).getType()).enumerationRange(obj.getEnumerationRange()).required(obj.getRequired())
                     .description(obj.getDescription()).build();
         }).collect(Collectors.toList());
         ApplicationServiceDto ret = ApplicationServiceDto.builder().id(applicationService.getId()).apiName(applicationService.getApiName())
@@ -199,7 +203,7 @@ public class ApplicationApiService {
     public ExtensionInputDto retrieveInput(Long id) {
         ExtensionInput extensionInput = this.extensionInputDao.findById(id);
         ExtensionInputDto ret = ExtensionInputDto.builder().id(id).field(extensionInput.getField()).fieldName(extensionInput.getFieldName())
-                .type(extensionInput.getType()).enumerationRange(extensionInput.getEnumerationRange()).required(extensionInput.getRequired())
+                .typeId(extensionInput.getType()).type(this.typeUnionDao.findById(extensionInput.getType()).getType()).enumerationRange(extensionInput.getEnumerationRange()).required(extensionInput.getRequired())
                 .description(extensionInput.getDescription()).build();
         return ret;
     }
@@ -208,7 +212,7 @@ public class ApplicationApiService {
     public ExtensionOutputDto retrieveOutput(Long id) {
         ExtensionOutput extensionOutput = this.extensionOutputDao.findById(id);
         ExtensionOutputDto ret = ExtensionOutputDto.builder().id(id).field(extensionOutput.getField()).fieldName(extensionOutput.getFieldName())
-                .type(extensionOutput.getType()).enumerationRange(extensionOutput.getEnumerationRange()).required(extensionOutput.getRequired())
+                .typeId(extensionOutput.getType()).type(this.typeUnionDao.findById(extensionOutput.getType()).getType()).enumerationRange(extensionOutput.getEnumerationRange()).required(extensionOutput.getRequired())
                 .description(extensionOutput.getDescription()).build();
         return ret;
     }

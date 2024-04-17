@@ -15,7 +15,7 @@ public class ExtensionOutputVo {
     String field;
 
     @NotNull
-    String type;
+    Long type;
 
     String enumerationRange;
 
