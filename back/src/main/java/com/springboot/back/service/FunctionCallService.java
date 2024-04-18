@@ -2,18 +2,10 @@ package com.springboot.back.service;
 import com.springboot.back.dao.*;
 import com.springboot.back.dao.bo.ApplicationService;
 import com.springboot.back.dao.bo.ExtensionInput;
-import com.springboot.back.dao.bo.ExtensionOutput;
-import com.springboot.back.service.dto.ApplicationServiceDto;
-import com.springboot.back.service.dto.ExtensionInputDto;
-import com.springboot.back.service.dto.ExtensionOutputDto;
-import com.springboot.core.exception.BusinessException;
-import com.springboot.core.model.ReturnNo;
-import com.springboot.core.model.dto.PageDto;
-import com.springboot.core.model.dto.UserDto;
 import okhttp3.OkHttpClient;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import okhttp3.*;
 import org.json.JSONObject;
 import com.baidubce.http.ApiExplorerClient;
@@ -24,7 +16,6 @@ import com.baidubce.model.ApiExplorerResponse;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class FunctionCallService {
@@ -51,59 +42,59 @@ public class FunctionCallService {
         this.applicationServiceDao = applicationServiceDao;
     }
 
-    public void FunctionCall(String content) throws IOException {
+    public String FunctionCall(String content) throws IOException {
+        String result;
+
         //第一次请求
         MediaType mediaType = MediaType.parse("application/json");
         JSONObject contentBody = new JSONObject();
-        List<JSONObject> messages = new ArrayList<JSONObject>();
+        List<JSONObject> messages = new ArrayList<>();
         JSONObject message = new JSONObject();
         message.put("role", "user");
         message.put("content", content);
         messages.add(message);
-        contentBody.put("messages", messages);
-        contentBody.put("disable_search", false);
-        contentBody.put("enable_citation", false);
         getFunctions(contentBody);
-        System.out.println(contentBody);
-        RequestBody body = RequestBody.create(mediaType, String.valueOf(contentBody));
-        Request request = new Request.Builder()
-                .url("https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token=" + getAccessToken())
-                .method("POST", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
-        Response response = HTTP_CLIENT.newCall(request).execute();
-        String jsonResponse = response.body().string();
-        response.close();
-        System.out.println(jsonResponse);
+        String jsonResponse = wenxinRequest(mediaType, contentBody, messages);
+
+        //判断是否要调用函数
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        if (!jsonObject.getString("result").isEmpty()){
+            result=jsonObject.getString("result");
+            System.out.println(result);
+            return result;
+        }
 
         //函数调用
-        JSONObject jsonObject = new JSONObject(jsonResponse);
         JSONObject functionCall = jsonObject.getJSONObject("function_call");
         String functionName = functionCall.getString("name");
         String argumentsString = functionCall.getString("arguments");
         JSONObject arguments = new JSONObject(argumentsString);
         ApplicationService applicationService = this.applicationServiceDao.findById(this.functionDao.findApiId(functionName));
-        String path = applicationService.getRequestUrl();
-        ApiExplorerRequest request2 = null;
-        switch (applicationService.getRequestMethod()){
-            case 1:
-                request2 = new ApiExplorerRequest(HttpMethodName.GET,path);
-                break;
-            case 2:
-                request2 = new ApiExplorerRequest(HttpMethodName.POST,path);
-                break;
-            default:
-                break;
-        }
-        request2.setCredentials("4b4279a96be840ea8073cafa5f03da1f", "6dec6508cae9411283a8247ec33803a8");
-        request2.addHeaderParameter("Content-Type", "application/json; charset=utf-8");
+        ApiExplorerRequest request = getRequest(applicationService);
         for (String key : arguments.keySet()) {
             String value = arguments.getString(key);
-            request2.addQueryParameter(key, value);
+            if (Objects.equals(key, "bankCode")){
+                switch (value){
+                    case "工商银行" -> request.addHeaderParameter(key, "ICBC");
+                    case "中国银行" -> request.addHeaderParameter(key, "BOC");
+                    case "农业银行" -> request.addHeaderParameter(key, "ABCHINA");
+                    case "交通银行" -> request.addHeaderParameter(key, "BANKCOMM");
+                    case "建设银行" -> request.addHeaderParameter(key, "CCB");
+                    case "招商银行" -> request.addHeaderParameter(key, "CMBCHINA");
+                    case "光大银行" -> request.addHeaderParameter(key, "CEBBANK");
+                    case "浦发银行" -> request.addHeaderParameter(key, "SPDB");
+                    case "兴业银行" -> request.addHeaderParameter(key, "CIB");
+                    case "中信银行" -> request.addHeaderParameter(key, "ECITIC");
+                    default -> {
+                    }
+                }
+                continue;
+            }
+            request.addQueryParameter(key, value);
         }
         ApiExplorerClient client = new ApiExplorerClient(new AppSigner());
-        ApiExplorerResponse response2 = client.sendRequest(request2);
-        String jsonResponse2 = response2.getResult();
+        ApiExplorerResponse response = client.sendRequest(request);
+        String jsonResponse2 = response.getResult();
         JSONObject jsonObject2 = new JSONObject(jsonResponse2);
         System.out.println(jsonResponse2);
         JSONObject dataJson = jsonObject2.getJSONObject("data");
@@ -121,33 +112,63 @@ public class FunctionCallService {
             String value = arguments.getString(key);
             arguments2.put(key, value);
         }
-        function_call.put("arguments", arguments2);
+        function_call.put("arguments", arguments2.toString());
         message2.put("function_call", function_call);
         messages.add(message2);
         JSONObject message3 = new JSONObject();
         message3.put("role", "function");
         message3.put("name",functionName);
-        message3.put("content",dataJson);
+        message3.put("content",dataJson.toString());
         messages.add(message3);
-        contentBody2.put("messages", messages);
-        contentBody2.put("disable_search", false);
-        contentBody2.put("enable_citation", false);
-        //getFunctions(contentBody2);
-        System.out.println(contentBody2);
-        RequestBody body2 = RequestBody.create(mediaType, String.valueOf(contentBody2));
-        Request request3 = new Request.Builder()
-                .url("https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token=" + getAccessToken())
-                .method("POST", body2)
+        if (applicationService.getId() == 5L)
+            getFunctions(contentBody2);
+        String jsonResponse3 = wenxinRequest(mediaType, contentBody2, messages);
+        JSONObject jsonObject3 = new JSONObject(jsonResponse3);
+        result=jsonObject3.getString("result");
+        System.out.println(result);
+        return result;
+    }
+
+    @NotNull
+    private static ApiExplorerRequest getRequest(ApplicationService applicationService) {
+        String path = applicationService.getRequestUrl();
+        ApiExplorerRequest request = null;
+        switch (applicationService.getRequestMethod()) {
+            case 1 -> request = new ApiExplorerRequest(HttpMethodName.GET, path);
+            case 2 -> request = new ApiExplorerRequest(HttpMethodName.POST, path);
+            default -> {
+            }
+        }
+        if (applicationService.getId() == 4L)
+            request.addHeaderParameter("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+        else
+            request.addHeaderParameter("Content-Type", "application/json; charset=utf-8");
+        if (applicationService.getId() == 5L)
+            request.addQueryParameter("expressCode", "auto");
+        request.setCredentials("4b4279a96be840ea8073cafa5f03da1f", "6dec6508cae9411283a8247ec33803a8");
+        return request;
+    }
+
+    private String wenxinRequest(MediaType mediaType, JSONObject contentBody, List<JSONObject> messages) throws IOException {
+        contentBody.put("messages", messages);
+        contentBody.put("disable_search", false);
+        contentBody.put("enable_citation", false);
+        System.out.println(contentBody);
+        RequestBody body = RequestBody.create(mediaType, String.valueOf(contentBody));
+        Request request = new Request.Builder()
+                .url("https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=" + getAccessToken())
+                .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
-        Response response3 = HTTP_CLIENT.newCall(request3).execute();
-        String jsonResponse3 = response3.body().string();
-        response3.close();
-        System.out.println(jsonResponse3);
+        Response response = HTTP_CLIENT.newCall(request).execute();
+        String jsonResponse = response.body().string();
+        response.close();
+        System.out.println(jsonResponse);
+        return jsonResponse;
     }
 
     private void getFunctions(JSONObject contentBody) {
-        List<JSONObject> functions = new ArrayList<JSONObject>();
+        List<JSONObject> functions = new ArrayList<>();
         List<Object[]> nameList = this.functionDao.retrieveNamesAndDescriptions();
         for(Object[] list: nameList) {
             String name = (String) list[0];
