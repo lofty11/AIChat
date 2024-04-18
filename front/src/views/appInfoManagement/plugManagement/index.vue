@@ -46,7 +46,7 @@
           <el-button type="primary" @click="openFuncDialog('新建函数','0')">新建函数</el-button>
         </el-form-item>
         <el-table
-          :data="funcTable.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+          :data="filteredData"
           style="width: 100%"
         >
           <el-table-column
@@ -74,14 +74,10 @@
         </el-table>
 
         <el-form-item class="block" style="margin-top:15px;">
-
           <el-pagination
-            align="right"
             :current-page="currentPage"
-            :page-sizes="[1,5,10,20]"
             :page-size="pageSize"
-            layout="sizes, prev, pager, next, jumper"
-            @size-change="handleSizeChange"
+            layout="prev, pager, next, jumper"
             @current-change="handleCurrentChange"
           />
         </el-form-item>
@@ -124,9 +120,8 @@ export default {
       configFuncDialogVisible: false,
       funcDialogVisible: false,
       configPlugDialogVisible: false,
-      funcTypeList: [],
       currentPage: 1, // 当前页码
-      total: 20, // 总条数
+      total: 0, // 总条数
       pageSize: 5, // 每页的数据条数
       funcForm: {
         name: '',
@@ -154,12 +149,18 @@ export default {
       }]
     }
   },
+  computed: {
+    filteredData() {
+      return this.funcTable.filter(item => {
+        return item.name.includes(this.searchData)
+      })
+    }
+  },
   watch: {
     searchData(newValue) {
       if (newValue === '') {
         getAllFunc().then((response) => {
           this.funcTable = response.data.list
-          this.pageSize = response.data.pageSize
         })
         this.isSearch = false
       }
@@ -168,13 +169,11 @@ export default {
   mounted() {
     getAllPlug().then((response) => {
       this.plugTable = response.data.list
-      this.pageSize = response.data.pageSize
     }).catch(error => {
       console.error('获取插件失败:', error)
     })
-    getAllFunc().then((response) => {
+    getAllFunc({ page: 1, pageSize: this.pageSize }).then((response) => {
       this.funcTable = response.data.list
-      this.pageSize = response.data.pageSize
     }).catch(error => {
       console.error('获取函数失败:', error)
     })
@@ -252,14 +251,14 @@ export default {
           break
       }
     },
-    // 每页条数改变时触发 选择一页显示多少行
-    handleSizeChange(val) {
-      this.currentPage = 1
-      this.pageSize = val
-    },
-    // 当前页改变时触发 跳转其他页
     handleCurrentChange(val) {
-      this.currentPage = val
+      getAllFunc({ page: val, pageSize: this.pageSize }).then(response => {
+        if (response.errno === 0) {
+          this.funcTable = response.data.list
+          this.total += this.funcTable.length
+          this.currentPage = val
+        }
+      })
     }
   }
 }

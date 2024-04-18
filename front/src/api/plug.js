@@ -41,11 +41,12 @@ export function modifyPlugById(plugId, data) {
   })
 }
 
-export function getAllFunc() {
+export function getAllFunc(data) {
   return request(
     {
       url: '/plug/functions',
-      method: 'get'
+      method: 'get',
+      params: data
     }
   )
 }
