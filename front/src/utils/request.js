@@ -44,16 +44,10 @@ service.interceptors.response.use(
   response => {
     // const { errmsg, data, errno } = response.data
     const res = response.data
-    console.log(response.data)
-    // if the custom code is not 20000, it is judged as an error.
+    // 不能删这个判断啊，删了都进不去系统了哈哈
     if (res.errno !== 0 && res.errno !== 1) {
-      Message({
-        message: res.message || '出错了！',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
+      // 用户模块
+      // 用户名不存在或者密码错误
       if (res.errno === 12 || res.errno === 13) {
         // to re-login
         MessageBox.confirm('用户名不存在或者密码错误', '错误', {
@@ -66,6 +60,7 @@ service.interceptors.response.use(
           })
         })
       }
+      // 用户身份不匹配
       if (res.errno === 21) {
         MessageBox.confirm('用户身份不匹配', '错误', {
           confirmButtonText: '重新登录',
@@ -77,10 +72,14 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
-    } else {
-      return res
+      Message({
+        message: res.errmsg,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(new Error(res.errmsg || 'Error'))
     }
+    return res
   },
   error => {
     Message({

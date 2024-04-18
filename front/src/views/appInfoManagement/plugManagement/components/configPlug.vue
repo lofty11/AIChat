@@ -51,10 +51,12 @@
               <el-table-column
                 prop="type"
                 label="类型"
+                :formatter="formatType"
               />
               <el-table-column
                 prop="necessary"
                 label="是否必填"
+                :formatter="formatNecessary"
               />
               <el-table-column
                 prop="description"
@@ -101,6 +103,7 @@ import {
   delUserParaById,
   getPlugById
 } from '@/api/plug'
+import { getTypeUnions } from '@/api/common'
 export default {
   components: { UserParam, PlugParam },
   props: {
@@ -121,6 +124,7 @@ export default {
       plugParamDialogTitle: '',
       userParamDialogVisible: false,
       userParamDialogTitle: '',
+      typeList: [],
       plugParamTable: [
         {
           name: ''
@@ -129,7 +133,7 @@ export default {
         name: '',
         field: '',
         type: '',
-        necessary: false,
+        necessary: '',
         description: ''
       }]
     }
@@ -144,18 +148,31 @@ export default {
           { name: '',
             field: '',
             type: '',
-            necessary: false,
+            necessary: '',
             description: '' }
         ]
       } else {
         getPlugById(newValue).then(response => {
           this.plugParamTable = response.data.plugParas
           this.userParamTable = response.data.userParas
+          console.log(this.userParamTable)
         })
       }
     }
   },
+  mounted() {
+    getTypeUnions().then(response => {
+      this.typeList = response.data
+      console.log(this.typeList)
+    })
+  },
   methods: {
+    formatNecessary(row) {
+      return row.necessary === '1' ? '是' : '否'
+    },
+    formatType(row) {
+      return this.typeList[row.type - 1].type
+    },
     close() {
       this.$emit('update:configPlugDialogVisible', false)
     },

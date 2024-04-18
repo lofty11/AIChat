@@ -112,7 +112,6 @@ export default {
   mounted() {
     getTypeUnions().then(response => {
       this.typeList = response.data
-      console.log(response.data)
     })
   },
   methods: {

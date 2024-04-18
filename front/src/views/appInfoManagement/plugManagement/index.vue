@@ -80,8 +80,7 @@
             :current-page="currentPage"
             :page-sizes="[1,5,10,20]"
             :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="plugTable.length"
+            layout="sizes, prev, pager, next, jumper"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
@@ -189,12 +188,7 @@ export default {
           if (response.errno === 0) {
             this.funcTable = []
             this.funcTable.push(response.data)
-          } else {
-            this.$message.info('未查询到相关函数')
           }
-        }).catch(error => {
-          console.log(error)
-          this.$message.error('未查询到相关函数')
         })
       }
     },
@@ -208,8 +202,9 @@ export default {
       this.funcId = id
       this.funcDialogVisible = true
     },
-    configFuncDialog(data) {
+    configFuncDialog(id) {
       this.configFuncDialogVisible = true
+      this.funcId = id
     },
     delFunc(id, index) {
       this.$confirm('确定删除该函数？').then(() => {
@@ -253,20 +248,17 @@ export default {
         case 'addFunc':
           getAllFunc().then(response => {
             this.funcTable = response.data.list
-            console.log(response.data.list)
           })
           break
       }
     },
     // 每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`)
       this.currentPage = 1
       this.pageSize = val
     },
     // 当前页改变时触发 跳转其他页
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
       this.currentPage = val
     }
   }
