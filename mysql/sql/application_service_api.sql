@@ -287,9 +287,11 @@ INSERT INTO `functions` VALUES (NULL, '快递查询3', 'get_express_status3', 1,
 
 
 INSERT INTO type_union VALUES(NULL, 'string');
+INSERT INTO type_union VALUES(NULL, 'array');
+INSERT INTO type_union VALUES(NULL, 'json');
+INSERT INTO type_union VALUES(NULL, 'int');
 INSERT INTO type_union VALUES(NULL, 'bool');
 INSERT INTO type_union VALUES(NULL, 'float');
-INSERT INTO type_union VALUES(NULL, 'int');
 
 INSERT INTO func_type VALUES(NULL, 'http请求');
 INSERT INTO func_type VALUES(NULL, 'http请求2');
