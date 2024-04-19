@@ -18,4 +18,6 @@ public interface ApplicationServicePoMapper extends JpaRepository<ApplicationSer
     @Query("SELECT a.id, a.apiName FROM ApplicationServicePo a")
     List<Object[]> findAllIdsAndNames();
 
+    @Query("SELECT max(a.id) FROM ApplicationServicePo a")
+    Long findMaxId();
 }

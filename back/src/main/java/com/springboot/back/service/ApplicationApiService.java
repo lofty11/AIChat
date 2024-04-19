@@ -93,13 +93,13 @@ public class ApplicationApiService {
     }
 
     @Transactional
-    public void updateApplicationService(Long id, String apiName, String apiCpde, String requestUrl, Integer requestMethod, UserDto user) {
+    public void updateApplicationService(Long id, String apiName, String apiCode, String requestUrl, Integer requestMethod, UserDto user) {
         ApplicationService applicationService = this.applicationServiceDao.findById(id);
         if (null == applicationService) {
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
         }
         applicationService.setApiName(apiName);
-        applicationService.setApiCode(apiCpde);
+        applicationService.setApiCode(apiCode);
         applicationService.setRequestUrl(requestUrl);
         applicationService.setRequestMethod(requestMethod);
         this.applicationServiceDao.save(id, applicationService, user);

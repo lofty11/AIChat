@@ -30,6 +30,18 @@ public class ApplicationService extends SSObject implements Serializable {
     @Setter
     private Integer requestMethod;
 
+    @Getter
+    @Setter
+    private Long creatorId;
+
+    @Getter
+    @Setter
+    private String creatorName;
+
+    @Getter
+    @Setter
+    private LocalDateTime gmtCreate;
+
     @Builder
     public ApplicationService(Long id, Long creatorId, Long modifierId, String modifierName, String creatorName, LocalDateTime gmtCreate, LocalDateTime gmtModified,
                  String apiName, String apiCode, String requestUrl, Integer requestMethod) {
@@ -38,5 +50,8 @@ public class ApplicationService extends SSObject implements Serializable {
         this.apiCode = apiCode;
         this.requestUrl = requestUrl;
         this.requestMethod = requestMethod;
+        this.creatorId = creatorId;
+        this.creatorName = creatorName;
+        this.gmtCreate = gmtCreate;
     }
 }
