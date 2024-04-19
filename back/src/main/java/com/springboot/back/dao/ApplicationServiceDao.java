@@ -40,13 +40,15 @@ public class ApplicationServiceDao {
 
     private ApplicationService getBo(ApplicationServicePo po) {
         ApplicationService bo = ApplicationService.builder().id(po.getId()).apiName(po.getApiName())
-                .apiCode(po.getApiCode()).requestUrl(po.getRequestUrl()).requestMethod(po.getRequestMethod()).build();
+                .apiCode(po.getApiCode()).requestUrl(po.getRequestUrl()).requestMethod(po.getRequestMethod()).
+                creatorId(po.getCreatorId()).creatorName(po.getCreatorName()).gmtCreate(po.getGmtCreate()).build();
         return bo;
     }
 
     private ApplicationServicePo getPo(ApplicationService bo) {
         ApplicationServicePo po = ApplicationServicePo.builder().id(bo.getId()).apiName(bo.getApiName())
-                .apiCode(bo.getApiCode()).requestUrl(bo.getRequestUrl()).requestMethod(bo.getRequestMethod()).build();
+                .apiCode(bo.getApiCode()).requestUrl(bo.getRequestUrl()).requestMethod(bo.getRequestMethod()).
+                creatorId(bo.getCreatorId()).creatorName(bo.getCreatorName()).gmtCreate(bo.getGmtCreate()).build();
         return po;
     }
 
@@ -55,6 +57,7 @@ public class ApplicationServiceDao {
             return null;
         }
         Optional<ApplicationServicePo> po = this.applicationServicePoMapper.findById(id);
+        System.out.println(po);
         if(po.isPresent()) {
             return this.getBo(po.get());
         } else {
