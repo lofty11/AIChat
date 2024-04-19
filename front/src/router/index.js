@@ -22,31 +22,6 @@ export const constantRoutes = [
     component: () => import('@/views/user/index')
   },
   {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '主页', icon: 'dashboard' }
-    }
-    ]
-  },
-
-  {
-    path: '/prompt',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/promptConfig/index'),
-        meta: { title: '提示词配置', icon: 'form' }
-      }
-    ]
-  },
-  {
     path: '/appinfo',
     component: Layout,
     redirect: '/appinfo/plug',
@@ -70,17 +45,28 @@ export const constantRoutes = [
       }
     ]
   },
-
-  // {
-  //   path: 'external-link',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-  //       meta: { title: 'External Link', icon: 'link' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/aboutUs',
+    children: [{
+      path: 'aboutUs',
+      name: 'AboutUs',
+      component: () => import('@/views/aboutUs/index'),
+      meta: { title: '关于我们', icon: 'user' }
+    }
+    ]
+  },
+  {
+    path: 'external-link',
+    component: Layout,
+    children: [
+      {
+        path: 'https://github.com/lofty11/AIChat',
+        meta: { title: 'GitHub', icon: 'link' }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
