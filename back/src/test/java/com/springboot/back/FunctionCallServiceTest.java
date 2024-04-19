@@ -13,6 +13,8 @@ public class FunctionCallServiceTest {
 
     @Test
     public void retrieveFunctionsTest() throws Exception {
-        this.functionCallService.FunctionCall("厦门的天气怎么样？");
+        String result=this.functionCallService.FunctionCall("我要查询快递75614797294952");
+        //介绍一下自己
+        //我要查询快递JT3070513774675的状态
     }
 }
