@@ -16,6 +16,7 @@ import com.baidubce.model.ApiExplorerResponse;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class FunctionCallService {
@@ -75,16 +76,16 @@ public class FunctionCallService {
             String value = arguments.getString(key);
             if (Objects.equals(key, "bankCode")){
                 switch (value){
-                    case "工商银行" -> request.addHeaderParameter(key, "ICBC");
-                    case "中国银行" -> request.addHeaderParameter(key, "BOC");
-                    case "农业银行" -> request.addHeaderParameter(key, "ABCHINA");
-                    case "交通银行" -> request.addHeaderParameter(key, "BANKCOMM");
-                    case "建设银行" -> request.addHeaderParameter(key, "CCB");
-                    case "招商银行" -> request.addHeaderParameter(key, "CMBCHINA");
-                    case "光大银行" -> request.addHeaderParameter(key, "CEBBANK");
-                    case "浦发银行" -> request.addHeaderParameter(key, "SPDB");
-                    case "兴业银行" -> request.addHeaderParameter(key, "CIB");
-                    case "中信银行" -> request.addHeaderParameter(key, "ECITIC");
+                    case "工商银行" -> request.setJsonBody("bankCode=ICBC");
+                    case "中国银行" -> request.setJsonBody("bankCode=BOC");
+                    case "农业银行" -> request.setJsonBody("bankCode=ABCHINA");
+                    case "交通银行" -> request.setJsonBody("bankCode=BANKCOMM");
+                    case "建设银行" -> request.setJsonBody("bankCode=CCB");
+                    case "招商银行" -> request.setJsonBody("bankCode=CMBCHINA");
+                    case "光大银行" -> request.setJsonBody("bankCode=CEBBANK");
+                    case "浦发银行" -> request.setJsonBody("bankCode=SPDB");
+                    case "兴业银行" -> request.setJsonBody("bankCode=CIB");
+                    case "中信银行" -> request.setJsonBody("bankCode=ECITIC");
                     default -> {
                     }
                 }
@@ -120,7 +121,7 @@ public class FunctionCallService {
         message3.put("name",functionName);
         message3.put("content",dataJson.toString());
         messages.add(message3);
-        if (applicationService.getId() == 5L)
+        if (applicationService.getId() == 4L || applicationService.getId() == 5L)
             getFunctions(contentBody2);
         String jsonResponse3 = wenxinRequest(mediaType, contentBody2, messages);
         JSONObject jsonObject3 = new JSONObject(jsonResponse3);
@@ -155,6 +156,11 @@ public class FunctionCallService {
         contentBody.put("enable_citation", false);
         System.out.println(contentBody);
         RequestBody body = RequestBody.create(mediaType, String.valueOf(contentBody));
+        OkHttpClient HTTP_CLIENT = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
         Request request = new Request.Builder()
                 .url("https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=" + getAccessToken())
                 .method("POST", body)
