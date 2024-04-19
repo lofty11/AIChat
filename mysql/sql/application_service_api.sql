@@ -186,12 +186,18 @@ CREATE TABLE message (
 );
 alter table message  character set utf8;
 
-INSERT INTO `plug` VALUES (NULL, 'plug_test', 'web_search', 'http请求', 1, 1, 0);
+INSERT INTO `plug` VALUES (NULL, '文生图', '生成以文字信息相对应的图片', '用户可输入文字，插件通过文字描述对应的图片', 1, 1, 0);
 INSERT INTO `plug` VALUES (NULL, 'plug_test2', 'b', 'http', 1, 1, 0);
-INSERT INTO `plugpara` VALUES (NULL,'aaa', 1, 0,1);
-INSERT INTO `plugpara` VALUES (NULL,'bbb', 1, 0,1);
-INSERT INTO `userpara` VALUES (NULL, 'search', 'b', 1, '多个值由逗号分开', 1, 'e', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
-INSERT INTO `userpara` VALUES (NULL, 'search1', 'b', 2, NULL, 1, 'e', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO `plugpara` VALUES (NULL,'responseId', 1, 0,1);
+INSERT INTO `plugpara` VALUES (NULL,'object', 1, 0,1);
+INSERT INTO `plugpara` VALUES (NULL,'created', 4, 0,1);
+INSERT INTO `plugpara` VALUES (NULL,'data', 3, 0,1);
+INSERT INTO `plugpara` VALUES (NULL,'usage', 3, 0,1);
+INSERT INTO `userpara` VALUES (NULL, '提示', 'prompt', 1, '多个值由逗号分开', 1, '功能提示', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO `userpara` VALUES (NULL, '规格', 'size', 1, NULL, 1, '生成参数大小', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO `userpara` VALUES (NULL, '数量', 'n', 4, NULL, 0, '生成数量', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO `userpara` VALUES (NULL, '迭代轮次', 'steps', 4, '10-50', 0, '迭代次数', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO `userpara` VALUES (NULL, '采样方式', 'sampler_index', 1, NULL, 0, '生成数量', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
 
 INSERT INTO user VALUES (NULL,0, 'admin', '123456', '10000');
 INSERT INTO user VALUES (NULL,1,'zmr','100000','181000000');
