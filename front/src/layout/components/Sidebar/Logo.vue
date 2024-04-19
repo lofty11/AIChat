@@ -24,8 +24,8 @@ export default {
   },
   data() {
     return {
-      title: '众数知识中台',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      title: '知识中台',
+      logo: 'https://www.crowddigital.cn/img/logo.658274c8.png'
     }
   }
 }
@@ -55,7 +55,7 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
+      width: 100px;
       height: 32px;
       vertical-align: middle;
       margin-right: 12px;
