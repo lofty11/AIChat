@@ -42,6 +42,18 @@ public class ExtensionOutput extends SSObject implements Serializable {
     @Setter
     private Long applicationId;
 
+    @Getter
+    @Setter
+    private Long creatorId;
+
+    @Getter
+    @Setter
+    private String creatorName;
+
+    @Getter
+    @Setter
+    private LocalDateTime gmtCreate;
+
     @Builder
     public ExtensionOutput(Long id, Long creatorId, Long modifierId, String modifierName, String creatorName, LocalDateTime gmtCreate, LocalDateTime gmtModified,
                           String fieldName, String field, Long type, String enumerationRange, Integer required, String description, Long applicationId){
@@ -53,5 +65,8 @@ public class ExtensionOutput extends SSObject implements Serializable {
         this.required = required;
         this.description = description;
         this.applicationId = applicationId;
+        this.creatorId = creatorId;
+        this.creatorName = creatorName;
+        this.gmtCreate = gmtCreate;
     }
 }
