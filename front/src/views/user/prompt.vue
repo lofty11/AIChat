@@ -12,19 +12,19 @@
       <el-row :gutter="20" type="flex" justify="center" align="middle">
         <el-col :span="8">
           <p><i class="el-icon-sunny" /> 你可以这样向我提问</p>
-          <el-card :body-style="{ color:'#606266', height:'100px',padding: '30px',background:'#F2F6FC' }">
+          <el-card :body-style="{ color:'#606266', height:'30%',padding: '10%',background:'#F2F6FC' }">
             "企业如何配合海关检查"
           </el-card>
         </el-col>
         <el-col :span="8">
           <p><i class="el-icon-sunny" />获得更好的答案</p>
-          <el-card :body-style="{ color:'#606266',height:'100px', padding: '30px', background:'#F2F6FC'}">
+          <el-card :body-style="{ color:'#606266',height:'30%', padding: '10%', background:'#F2F6FC'}">
             "泰国入境建议严查对生鲜水果有什么要求"
           </el-card>
         </el-col>
         <el-col :span="8">
           <p><i class="el-icon-sunny" />提出复杂的问题</p>
-          <el-card :body-style="{color:'#606266', height:'100px',padding: '30px',background:'#F2F6FC'}">
+          <el-card :body-style="{color:'#606266', height:'30%',padding: '10%',background:'#F2F6FC'}">
             "进出境旅客行李物品若属于应向海关申报的，具体如何申报？"
           </el-card>
         </el-col>
@@ -48,7 +48,8 @@ export default {
 .prompt-container {
   text-align: center;
   margin-top: 10%;
-
+  width: 100%;
+  height: 100%;
 }
 
 .logo-container {

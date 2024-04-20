@@ -23,11 +23,23 @@ router.beforeEach(async(to, from, next) => {
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
-      next({ path: '/' })
+      if (store.state.user.userLevel === 1) {
+        next({ path: '/' })
+      } else {
+        next({ path: '/user' })
+      }
+
       NProgress.done()
     } else {
       const hasGetUserInfo = store.getters.name
       if (hasGetUserInfo) {
+        // // Add logic to prevent direct navigation between / and /user
+        // if ((to.path === '/dashboard' && store.state.user.userLevel === 1) || (to.path === '/user' && store.state.user.userLevel !== 1)) {
+        //   next(`/login?redirect=${to.path}`)
+        //   NProgress.done()
+        // } else {
+        //   next()
+        // }
         next()
       } else {
         try {
