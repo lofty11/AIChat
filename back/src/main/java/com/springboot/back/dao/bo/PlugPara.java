@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlugPara extends SSObject implements Serializable {
-
     @Getter
     @Setter
     private Long plug_id;
@@ -27,19 +26,34 @@ public class PlugPara extends SSObject implements Serializable {
 
     @Getter
     @Setter
-    private Integer value;
+    private String field;
 
     @Getter
     @Setter
-    private Integer deleted;
+    private Integer type;
+
+    @Getter
+    @Setter
+    private String enumerationRange;
+
+    @Getter
+    @Setter
+    private Integer necessary;
+
+    @Getter
+    @Setter
+    private String description;
 
     @Builder
-    public PlugPara(Long id, Long creatorId, Long modifierId, String modifierName, String creatorName, LocalDateTime gmtCreate, LocalDateTime gmtModified
-            , Long plug_id, String name, Integer value, Integer deleted) {
+    public PlugPara(Long id, Long creatorId, Long modifierId, String modifierName, String creatorName, LocalDateTime gmtCreate, LocalDateTime gmtModified,
+                    Long plug_id, String name, String field, Integer type, String enumerationRange, Integer necessary, String description) {
         super(id, creatorId, creatorName, modifierId, modifierName, gmtCreate, gmtModified);
         this.plug_id = plug_id;
         this.name = name;
-        this.value = value;
-        this.deleted = deleted;
+        this.field = field;
+        this.type = type;
+        this.enumerationRange = enumerationRange;
+        this.necessary = necessary;
+        this.description = description;
     }
 }

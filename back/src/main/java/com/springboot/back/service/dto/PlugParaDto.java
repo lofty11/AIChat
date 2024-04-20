@@ -19,6 +19,14 @@ public class PlugParaDto {
 
     private String name;
 
-    private Integer value;
+    private String field;
 
+    private Integer type;
+    private String typeName;
+
+    private String enumerationRange;
+
+    private String description;
+
+    private Integer necessary;
 }

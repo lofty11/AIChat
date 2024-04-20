@@ -6,6 +6,7 @@ import com.springboot.back.mapper.po.UserParaPo;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
+import com.springboot.core.util.Common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,17 +29,16 @@ public class UserParaDao {
 
     @Autowired
     public UserParaDao(UserParaPoMapper userParaPoMapper) {
-        this.userParaPoMapper=userParaPoMapper;
+        this.userParaPoMapper = userParaPoMapper;
     }
 
     private UserPara getBo(UserParaPo po) {
-        UserPara bo = UserPara.builder().id(po.getId()).plug_id(po.getPlugId()).name(po.getName()).field(po.getField())
-                .type(po.getType()).enumerationRange(po.getEnumerationRange()).necessary(po.getNecessary()).description(po.getDescription()).deleted(po.getDeleted()).build();
+        UserPara bo = UserPara.builder().id(po.getId()).plug_id(po.getPlugId()).name(po.getName()).value(po.getValue()).build();
         return bo;
     }
     private UserParaPo getPo(UserPara bo) {
-        UserParaPo po = UserParaPo.builder().id(bo.getId()).plugId(bo.getPlug_id()).name(bo.getName()).field(bo.getField())
-                .type(bo.getType()).enumerationRange(bo.getEnumerationRange()).necessary(bo.getNecessary()).description(bo.getDescription()).deleted(bo.getDeleted()).build();
+        UserParaPo po = UserParaPo.builder().id(bo.getId()).plugId(bo.getPlug_id()).name(bo.getName())
+                .value(bo.getValue()).build();
         return po;
     }
     public void delete(Long id) {
@@ -54,7 +54,7 @@ public class UserParaDao {
             this.userParaPoMapper.save(userParaPo);
             return userParaPo.getId();
         } else {
-            throw new BusinessException(ReturnNo.USERPARA_EXIST, String.format(ReturnNo.USERPARA_EXIST.getMessage(), po.getId()));
+            throw new BusinessException(ReturnNo.PLUGPARA_EXIST, String.format(ReturnNo.PLUGPARA_EXIST.getMessage(), po.getId()));
         }
     }
 
@@ -86,6 +86,10 @@ public class UserParaDao {
         if (reList.isEmpty()) {
             return new ArrayList<>();
         }
-        return reList.stream().map(this::getBo).collect(Collectors.toList());
+        return reList.stream().map((po)-> {
+            UserPara bo = Common.cloneObj(po, UserPara.class);
+            return bo;
+        }).collect(Collectors.toList());
     }
+
 }
