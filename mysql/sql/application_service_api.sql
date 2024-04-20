@@ -173,7 +173,7 @@ DROP TABLE IF EXISTS `message`;
 CREATE TABLE message (
                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
                          chat_id BIGINT NOT NULL,
-                         content TEXT,
+                         content MEDIUMTEXT,
                          type TINYINT,
                          creator_id  bigint DEFAULT NULL,
                          creator_name varchar(128) DEFAULT NULL,

@@ -3,9 +3,9 @@
     <el-dialog :visible="configPlugDialogVisible" title="配置插件" append-to-body @close="close">
       <el-form ref="configPlug">
         <el-form-item>
-          插件参数配置:
+          用户参数配置:
           <el-table
-            :data="plugParamTable"
+            :data="userParamTable"
             style="width: 100%;
             background-color:white"
             empty-text="暂无数据"
@@ -22,20 +22,20 @@
               label="操作"
             >
               <template v-slot="data">
-                <el-button type="text" size="small" @click="openPlugParamDialog('编辑插件参数',data.row.id)">编辑</el-button>
-                <el-button type="text" size="small" style="color: red" @click="delPlugPara(data.row.id)">删除</el-button>
+                <el-button type="text" size="small" @click="openUserParamDialog('编辑用户参数',data.row.id)">编辑</el-button>
+                <el-button type="text" size="small" style="color: red" @click="delUserPara(data.row.id)">删除</el-button>
               </template>
             </el-table-column></el-table>
           <el-form-item />
           <el-form-item>
             <el-row type="flex" align="middle" justify="center">
-              <el-button type="text" @click="openPlugParamDialog('添加插件参数','0')">添加参数</el-button>
+              <el-button type="text" @click="openUserParamDialog('添加用户参数','0')">添加参数</el-button>
             </el-row>
           </el-form-item>
-          用户参数定义：
+          插件参数定义：
           <el-form-item>
             <el-table
-              :data="userParamTable"
+              :data="plugParamTable"
               style="width: 100%;
               background-color:white"
               empty-text="暂无数据"
@@ -65,15 +65,15 @@
                 label="操作"
               >
                 <template v-slot="data">
-                  <el-button type="text" size="small" @click="openUserParamDialog('编辑用户参数',data.row.id)">编辑</el-button>
-                  <el-button type="text" size="small" style="color: red" @click="delUserPara(data.row.id)">删除</el-button>
+                  <el-button type="text" size="small" @click="openPlugParamDialog('编辑插件参数',data.row.id)">编辑</el-button>
+                  <el-button type="text" size="small" style="color: red" @click="delPlugPara(data.row.id)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
           </el-form-item>
           <el-form-item>
             <el-row type="flex" align="middle" justify="center">
-              <el-button type="text" @click="openUserParamDialog('添加用户参数','0')">添加参数</el-button>
+              <el-button type="text" @click="openPlugParamDialog('添加插件参数','0')">添加参数</el-button>
             </el-row>
           </el-form-item>
           <el-form-item>
@@ -96,12 +96,12 @@
 </template>
 <script>
 
-import PlugParam from '@/views/appInfoManagement/plugManagement/components/PlugParam.vue'
 import UserParam from '@/views/appInfoManagement/plugManagement/components/UserParam.vue'
+import PlugParam from '@/views/appInfoManagement/plugManagement/components/PlugParam.vue'
 import {
   delPlugParaById,
   delUserParaById,
-  getPlugById
+  getPlugById, getUserParaById
 } from '@/api/plug'
 import { getTypeUnions } from '@/api/common'
 export default {
@@ -155,7 +155,6 @@ export default {
         getPlugById(newValue).then(response => {
           this.plugParamTable = response.data.plugParas
           this.userParamTable = response.data.userParas
-          console.log(this.userParamTable)
         })
       }
     }
@@ -163,7 +162,6 @@ export default {
   mounted() {
     getTypeUnions().then(response => {
       this.typeList = response.data
-      console.log(this.typeList)
     })
   },
   methods: {
@@ -213,13 +211,11 @@ export default {
         case 'addPlugPara':
           getPlugById(this.plugId).then(response => {
             this.plugParamTable = response.data.plugParas
-            console.log(response.data.plugParas)
           })
           break
         case 'addUserPara':
-          getPlugById(this.plugId).then(response => {
+          getUserParaById(this.plugId).then(response => {
             this.userParamTable = response.data.userParas
-            console.log(response.data.userParas)
           })
           break
       }

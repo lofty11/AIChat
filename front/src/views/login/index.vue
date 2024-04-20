@@ -119,7 +119,7 @@ export default {
             if (this.loginForm.userLevel === '0') {
               this.$router.push({ path: this.redirect || '/' })
             } else {
-              this.$router.push({ path: '/user' })
+              this.$router.push({ path: this.redirect || '/user' })
             }
             this.loading = false
           }).catch(() => {

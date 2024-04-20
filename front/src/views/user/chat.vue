@@ -33,29 +33,27 @@
 
       </el-aside>
       <el-container style="width:100%;height: 100%">
-        <el-main width="100%" height="75%">
+        <el-main ref="main" width="100%" height="75%">
           <Prompt :prompt-visible="promptVisible" />
-          <Dialog :id="chatId" :dialog-visible="dialogVisible" :dialog-message="message" />
+          <Dialog :id="chatId" :loading="loading" :dialog-visible="dialogVisible" :dialog-message="message" />
         </el-main>
         <el-footer height="25%" class="chat-input">
           <el-row type="flex" align="middle">
             <el-col :span="2">
+              <strong>插件：</strong>
+            </el-col>
+            <el-col v-for="(plugin, index) in plugins" :key="index" :span="3">
               <el-tooltip placement="top" effect="light">
-                <div slot="content"><strong>支持插件选择功能</strong><br>插件：图片生成</div>
-                <el-button type="info" plain size="small" icon="el-icon-s-grid">插件：</el-button>
+                <div slot="content"><strong>{{ plugin.name }}</strong><br>{{ plugin.description }}</div>
+                <el-radio v-model="selectedPlugin" :label="plugin.id" :title="plugin.description">{{ plugin.name }}</el-radio>
               </el-tooltip>
             </el-col>
-            <el-col :span="2">
-              <el-tooltip placement="top" effect="light">
-                <div slot="content"><strong>图片生成</strong><br>通过文字描述生成图片。</div>
-                <el-button type="info" size="small" icon="el-icon-picture" plain>图片生成</el-button>
-              </el-tooltip>
-
-            </el-col></el-row>
+          </el-row>
           <el-row :gutter="20" type="flex" align="middle" justify="center">
             <el-col :span="23">
               <el-input
                 v-model="userMessage"
+                v-loading="loading"
                 :rows="3"
                 type="textarea"
                 placeholder="有问题尽管问我..."
@@ -85,12 +83,24 @@
 <script>
 import Prompt from '@/views/user/prompt'
 import Dialog from '@/views/user/dialog'
-import { createChat, createMessage, deleteChat, getAllChats, modifyChatName } from '@/api/chat'
+import {
+  createAiMessage,
+  createChat,
+  createImageMessage,
+  createMessage,
+  deleteChat,
+  getAllChats,
+  modifyChatName
+} from '@/api/chat'
+import { getAllPlug } from '@/api/plug'
 export default {
   name: 'Chat',
   components: { Dialog, Prompt },
   data() {
     return {
+      loading: false,
+      plugins: [],
+      selectedPlugin: '',
       sidebarItems: [
         { chatName: 'Chat' },
         { chatName: 'Settings' }
@@ -123,25 +133,54 @@ export default {
         this.sidebarItems = response.data.list
       }
     })
+    getAllPlug().then(response => {
+      if (response.errno === 0) {
+        console.log(response.data)
+        this.plugins = response.data.list
+      }
+    })
   },
   methods: {
-    sendMessage() {
+    createMessages() {
+      createMessage({ chatId: this.chatId, content: this.userMessage, type: 0 }).then(response => {
+        if (response.errno === 1) {
+          this.message = response.data
+          this.loading = true
+          if (this.selectedPlugin === '') {
+            createAiMessage(this.message).then(response => {
+              if (response.errno === 1) {
+                this.message = response.data
+              }
+            }).finally(
+              () => {
+                this.loading = false// 在请求完成后隐藏加载动画
+              }
+            )
+          } else {
+            createImageMessage(this.message).then(response => {
+              if (response.errno === 1) {
+                this.message = response.data
+              }
+            }).finally(
+              () => {
+                this.loading = false// 在请求完成后隐藏加载动画
+              }
+            )
+          }
+        }
+      })
+    },
+    async sendMessage() {
       if (this.userMessage.trim() !== '') {
         if (this.promptVisible === true) {
           this.promptVisible = false
-          this.addItem()
+          await this.addItem()
         }
-        if (this.dialogVisible === false) { this.dialogVisible = true }
 
-        createMessage({ chatId: this.chatId, content: this.userMessage, type: 0 }).then(response => {
-          if (response.errno === 1) {
-            this.message = response.data
-          }
-        })
+        this.dialogVisible = true
+
+        this.createMessages()
         this.userMessage = ''
-        setTimeout(() => {
-          this.message = { content: '未连接网络.', type: 1 }
-        }, 500)
       }
     },
     selectItem(id) {
@@ -164,16 +203,21 @@ export default {
       })
     },
     addItem() {
-      createChat({ chatName: '新对话', userId: this.$store.state.user.id }).then(response => {
-        if (response.errno === 1) {
-          this.sidebarItems.unshift(response.data)
-          this.promptVisible = false
-          this.dialogVisible = true
-          this.messages = {}
-          this.chatId = String(response.data.id)
-        }
+      return new Promise((resolve, reject) => {
+        createChat({ chatName: '新对话', userId: this.$store.state.user.id }).then(response => {
+          if (response.errno === 1) {
+            this.sidebarItems.unshift(response.data)
+            this.promptVisible = false
+            this.dialogVisible = true
+            this.messages = {}
+            this.chatId = String(response.data.id)
+            return String(response.data.id)
+          }
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
       })
-      // You can implement adding logic here if needed
     },
     saveItem(index, id) {
       if (this.editedItemName.trim() !== '') {

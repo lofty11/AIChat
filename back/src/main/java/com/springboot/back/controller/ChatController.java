@@ -44,12 +44,26 @@ public class ChatController {
     }
     @PostMapping("/message")
     @Audit
-    public ReturnObject createMessage( @LoginUser UserDto user,@Valid @RequestBody Message bo) throws IOException {
+    public ReturnObject createMessage( @LoginUser UserDto user,@Valid @RequestBody Message bo) {
         MessageDto dto= this.userService.addMessage(user,bo);
 
         return new ReturnObject(ReturnNo.CREATED,dto);
-    }
 
+    }
+    @PostMapping("/aimessage")
+    @Audit
+    public ReturnObject createAiMessage( @LoginUser UserDto user,@Valid @RequestBody Message bo) throws IOException {
+        MessageDto dto= this.userService.addFunctionCallMessage(user,bo);
+        return new ReturnObject(ReturnNo.CREATED,dto);
+
+    }
+    @PostMapping("/imagemessage")
+    @Audit
+    public ReturnObject createImageMessage( @LoginUser UserDto user,@Valid @RequestBody Message bo) throws IOException {
+        MessageDto dto= this.userService.addImageMessage(user,bo);
+        return new ReturnObject(ReturnNo.CREATED,dto);
+
+    }
     @PutMapping("/chat")
     @Audit
     public ReturnObject updateChatName(@LoginUser UserDto user,
@@ -62,7 +76,7 @@ public class ChatController {
     @Audit
     public ReturnObject getAllChats(@LoginUser UserDto user,
                                     @RequestParam(required = false,defaultValue = "1")Integer page,
-                                    @RequestParam(required = false,defaultValue = "10")Integer pageSize){
+                                    @RequestParam(required = false,defaultValue = "100")Integer pageSize){
         //logger.error(String.valueOf(user));
         return new ReturnObject(this.userService.findAllChats(user,page,pageSize));
     }
@@ -75,5 +89,7 @@ public class ChatController {
 
         return new ReturnObject(this.userService.findAllMessages(user,chatId,page,pageSize));
     }
+
+
 
 }
