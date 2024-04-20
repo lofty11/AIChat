@@ -23,7 +23,7 @@ public class Message extends SSObject implements Serializable {
 
     @Getter
     @Setter
-    private Byte type;
+    private Byte type;//0为用户 1为AI
     @Builder
     public Message(Long id, Long creatorId, Long modifierId, String modifierName, String creatorName, LocalDateTime gmtCreate, LocalDateTime gmtModified,
                 Long chatId, String content,Byte type){

@@ -1,11 +1,10 @@
 <template>
-  <el-container style="height: 100%">
+  <el-container style="height: 100% ;">
     <el-col :span="1">
       <div class="logo-container">
         <img src="@/icons/png/chatLogo.png" alt="Logo" class="logo">
       </div>
       <el-menu
-        default-active="1"
         class="el-menu-vertical-demo"
         background-color="#545c64"
         text-color="#fff"

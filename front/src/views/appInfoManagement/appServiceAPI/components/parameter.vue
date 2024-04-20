@@ -15,10 +15,7 @@
         </el-form-item>
         <el-form-item label="类型" prop="type">
           <el-select v-model="form.type" placeholder="请选择">
-            <el-option label="string" value="string" />
-            <el-option label="json" value="json" />
-            <el-option label="integer" value="integer" />
-            <el-option label="array" value="array" />
+            <el-option v-for="type in types" :key="type.id" :label="type.type" :value="type.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="枚举范围" prop="enumerationRange">
@@ -47,6 +44,7 @@ import {
   modifyInputParaById,
   modifyOutputParaById
 } from '@/api/api'
+import { getTypeUnions } from '@/api/common'
 
 export default {
   name: 'Parameter',
@@ -70,6 +68,7 @@ export default {
   },
   data() {
     return {
+      types: {},
       form: {
         fieldName: '',
         field: '',
@@ -108,6 +107,14 @@ export default {
         }
       }
     }
+  },
+  created() {
+    getTypeUnions().then(response => {
+      if (response.errno === 0) {
+        console.log(response.data)
+        this.types = response.data
+      }
+    })
   },
   methods: {
     addItem() {

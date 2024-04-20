@@ -11,7 +11,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
 
 import '@/styles/index.scss' // global css
-
+import 'highlight.js/styles/dark.css'
 import App from './App'
 import store from './store'
 import router from './router'
@@ -44,4 +44,5 @@ new Vue({
   router,
   store,
   render: h => h(App)
+
 })

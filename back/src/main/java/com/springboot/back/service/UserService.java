@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,14 +34,16 @@ public class UserService {
     private  ChatDao chatDao ;
     private  MessageDao messageDao;
     private final FunctionCallService functionCallService;
+    private final ImagePluginService imagePluginService;
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
     @Autowired
-    public UserService(UserDao userDao, ChatDao chatDao, MessageDao messageDao, FunctionCallService functionCallService)
+    public UserService(UserDao userDao, ChatDao chatDao, MessageDao messageDao, ImagePluginService imagePluginService,FunctionCallService functionCallService)
     {
         this.userDao=userDao;
         this.chatDao=chatDao;
         this.messageDao=messageDao;
         this.functionCallService=functionCallService;
+        this.imagePluginService=imagePluginService;
     }
     @Transactional
     public UserDto login(String userName, String password,
@@ -108,8 +111,8 @@ public class UserService {
         return dto;
     }
     @Transactional
-    public MessageDto addMessage(UserDto user, Message bo) throws RuntimeException, IOException {
-        this.functionCallService.FunctionCall(bo.getContent());
+    public MessageDto addMessage(UserDto user, Message bo) throws RuntimeException {
+        //this.functionCallService.FunctionCall(bo.getContent());
         logger.debug("addMessage : bo = {}, user = {}",bo,user);
         Message message=messageDao.addMessage(user,bo);
         MessageDto dto=Common.cloneObj(message,MessageDto.class);
@@ -122,5 +125,23 @@ public class UserService {
         return chatDao.deleteChat(chatId);
     }
 
-
+    public MessageDto addFunctionCallMessage(UserDto user, Message bo) throws RuntimeException, IOException {
+        String content =this.functionCallService.FunctionCall((String) bo.getContent());
+        bo.setContent(content);
+        bo.setType((byte) 1);
+        Message message=messageDao.addMessage(user,bo);
+        MessageDto dto=Common.cloneObj(message,MessageDto.class);
+        logger.debug("addMessage : dto = {}",dto);
+        return dto;
+    }
+    public MessageDto addImageMessage(UserDto user, Message bo) throws RuntimeException, IOException {
+        String content ="<img src=\"data:image/png;base64,"+this.imagePluginService.createImage(bo.getContent())+"\" alt=\""+bo.getContent()+"\" style=\"width: 200px; height: auto;\" />";
+        logger.error(content);
+        bo.setContent(content);
+        bo.setType((byte) 2);
+        Message message=messageDao.addMessage(user,bo);
+        MessageDto dto=Common.cloneObj(message,MessageDto.class);
+        logger.debug("addMessage : dto = {}",dto);
+        return dto;
+    }
 }

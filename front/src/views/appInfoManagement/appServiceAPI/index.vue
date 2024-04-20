@@ -87,6 +87,11 @@ export default {
           this.tableData = response.data.list
           this.pageSize = response.data.pageSize
         })
+      } else if (newValue === false && this.isSearch === true) {
+        getApiById(this.apiId).then((response) => {
+          this.tableData = []
+          this.tableData.push(response.data)
+        })
       }
     },
     searchData(newValue) {
