@@ -30,14 +30,14 @@ public class ExtensionInputDao {
     private ExtensionInput getBo(ExtensionInputPo po) {
         ExtensionInput bo = ExtensionInput.builder().id(po.getId()).fieldName(po.getFieldName()).field(po.getField())
                 .type(po.getType()).enumerationRange(po.getEnumerationRange()).required(po.getRequired()).description(po.getDescription())
-                .applicationId(po.getApplicationId()).build();
+                .applicationId(po.getApplicationId()).creatorId(po.getCreatorId()).creatorName(po.getCreatorName()).gmtCreate(po.getGmtCreate()).build();
         return bo;
     }
 
     private ExtensionInputPo getPo(ExtensionInput bo) {
         ExtensionInputPo po = ExtensionInputPo.builder().id(bo.getId()).fieldName(bo.getFieldName()).field(bo.getField())
                 .type(bo.getType()).enumerationRange(bo.getEnumerationRange()).required(bo.getRequired()).description(bo.getDescription())
-                .applicationId(bo.getApplicationId()).build();
+                .applicationId(bo.getApplicationId()).creatorId(bo.getCreatorId()).creatorName(bo.getCreatorName()).gmtCreate(bo.getGmtCreate()).build();
         return po;
     }
 

@@ -62,9 +62,9 @@ public class PlugController {
     @PostMapping("/{plugId}/plugParameter")
     @Audit
     public ReturnObject createPlugParameter(@PathVariable Long plugId,
-                                             @Valid @RequestBody PlugParaVo vo,
+                                             @Valid @RequestBody UserParaVo vo,
                                              @LoginUser UserDto user) {
-        this.plugService.createPlugPara(vo.getName(), vo.getValue(),0, plugId, user);
+        this.plugService.createPlugPara(vo.getName(), vo.getValue(), plugId, user);
         return new ReturnObject(ReturnNo.CREATED);
     }
 
@@ -72,7 +72,7 @@ public class PlugController {
     @PostMapping("/{plugId}/userParameter")
     @Audit
     public ReturnObject createUserParameter(@PathVariable Long plugId,
-                                       @Valid @RequestBody UserParaVo vo,
+                                       @Valid @RequestBody PlugParaVo vo,
                                        @LoginUser UserDto user) {
         this.plugService.createUserPara(vo.getName(),vo.getField(),vo.getType(), vo.getEnumerationRange(), vo.getNecessary(),vo.getDescription(),0, plugId, user);
         return new ReturnObject(ReturnNo.CREATED);
@@ -104,9 +104,9 @@ public class PlugController {
     @PutMapping("/{id}/plugParameter")
     @Audit
     public ReturnObject updatePlugParameter(@PathVariable Long id,
-                                   @Valid @RequestBody PlugParaVo vo,
+                                   @Valid @RequestBody UserParaVo vo,
                                    @LoginUser UserDto user) {
-        this.plugService.updatePlugParaService(id, vo.getName(),vo.getValue(),0,user);
+        this.plugService.updatePlugParaService(id, vo.getName(),vo.getValue(),user);
         return new ReturnObject(ReturnNo.OK);
     }
 
@@ -114,10 +114,10 @@ public class PlugController {
     @PutMapping("/{id}/userParameter")
     @Audit
     public ReturnObject updateUserParameter(@PathVariable Long id,
-                                       @Valid @RequestBody UserParaVo vo,
+                                       @Valid @RequestBody PlugParaVo vo,
                                        @LoginUser UserDto user) {
         this.plugService.updateUserParaService(id, vo.getName(),vo.getField(),vo.getType(), vo.getEnumerationRange(),
-                vo.getNecessary(),vo.getDescription(),0,user);
+                vo.getNecessary(),vo.getDescription(),user);
         return new ReturnObject(ReturnNo.OK);
     }
 
@@ -163,17 +163,17 @@ public class PlugController {
         PlugDto ret = this.plugService.retrievePlug(plugId);
         return new ReturnObject(ReturnNo.OK, ret);
     }
-    /*根据id获取插件参数*/
+    /*根据id获取用户参数*/
     @GetMapping("/{id}/plugParameter")
-    public ReturnObject getPlugParameter(@PathVariable Long id) {
-        PlugParaDto ret = this.plugService.retrievePlugPara(id);
+    public ReturnObject getUserParameter(@PathVariable Long id) {
+        UserParaDto ret = this.plugService.retrieveUserPara(id);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
-    /*根据id获取用户参数*/
+    /*根据id获取插件参数*/
     @GetMapping("/{id}/userParameter")
-    public ReturnObject getUserParameter(@PathVariable Long id) {
-        UserParaDto ret = this.plugService.retrieveUserPara(id);
+    public ReturnObject getPlugParameter(@PathVariable Long id) {
+        PlugParaDto ret = this.plugService.retrievePlugPara(id);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 

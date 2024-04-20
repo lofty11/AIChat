@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "extension_output")
 @Data
@@ -38,4 +40,22 @@ public class ExtensionOutputPo {
 
     @Column(name = "application_id")
     private Long applicationId;
+
+    @Column(name = "creator_id")
+    private Long creatorId;
+
+    @Column(name = "creator_name")
+    private String creatorName;
+
+    @Column(name = "modifier_id")
+    private Long modifierId;
+
+    @Column(name = "modifier_name")
+    private String modifierName;
+
+    @Column(name = "gmt_create")
+    private LocalDateTime gmtCreate;
+
+    @Column(name = "gmt_modified")
+    private LocalDateTime gmtModified;
 }

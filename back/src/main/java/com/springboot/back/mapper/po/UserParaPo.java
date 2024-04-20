@@ -27,22 +27,6 @@ public class UserParaPo {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "field")
-    private String field;
-
-    @Column(name = "type")
-    private Integer type;
-
-    @Column(name = "enumeration_range")
-    private String enumerationRange;
-
-    @Column(name = "necessary")
-    private Integer necessary;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "deleted")
-    private Integer deleted;
-
+    @Column(name = "value")
+    private String value;
 }

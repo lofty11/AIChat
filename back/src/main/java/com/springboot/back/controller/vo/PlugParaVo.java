@@ -13,7 +13,16 @@ public class PlugParaVo {
     @NotNull
     private String name;
 
+    @NotNull
+    private String field;
 
     @NotNull
-    private Integer value;
+    private Integer type;
+
+    String enumerationRange;
+
+    @NotNull
+    private Integer necessary;
+
+    private String description;
 }

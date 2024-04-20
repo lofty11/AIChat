@@ -14,15 +14,5 @@ public class UserParaVo {
     private String name;
 
     @NotNull
-    private String field;
-
-    @NotNull
-    private Integer type;
-
-    String enumerationRange;
-
-    @NotNull
-    private Integer necessary;
-
-    private String description;
+    private String value;
 }
