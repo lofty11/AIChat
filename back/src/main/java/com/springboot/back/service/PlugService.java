@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 public class PlugService {
     private final FunctionDao functionDao;
     private final PlugDao plugDao;
-    private final PlugParaDao plugParaDao;
     private final UserParaDao userParaDao;
+    private final PlugParaDao plugParaDao;
     private final FunctionTypeDao functionTypeDao;
 
     private final ApplicationServiceDao applicationServiceDao;
@@ -36,13 +36,13 @@ public class PlugService {
 
 
     @Autowired
-    public PlugService(FunctionDao functionDao, PlugDao plugDao, PlugParaDao plugParaDao, UserParaDao userParaDao,
+    public PlugService(FunctionDao functionDao, PlugDao plugDao, UserParaDao userParaDao, PlugParaDao plugParaDao,
                        FunctionTypeDao functionTypeDao, ApplicationServiceDao applicationServiceDao,
                        TypeUnionDao typeUnionDao){
         this.functionDao = functionDao;
         this.plugDao = plugDao;
-        this.plugParaDao = plugParaDao;
         this.userParaDao = userParaDao;
+        this.plugParaDao = plugParaDao;
         this.functionTypeDao = functionTypeDao;
         this.applicationServiceDao = applicationServiceDao;
         this.typeUnionDao = typeUnionDao;
@@ -63,15 +63,15 @@ public class PlugService {
     }
 
     @Transactional
-    public void createPlugPara(String name, Integer value, Integer deleted, Long plugId, UserDto user) {
-        PlugPara plugPara = PlugPara.builder().plug_id(plugId).name(name).value(value).deleted(deleted).build();
-        this.plugParaDao.insert(plugPara, user);
+    public void createPlugPara(String name, String value, Long plugId, UserDto user) {
+        UserPara userPara = UserPara.builder().plug_id(plugId).name(name).value(value).build();
+        this.userParaDao.insert(userPara, user);
     }
 
     @Transactional
     public void createUserPara(String name, String field,Integer type,String enumerationRange, Integer necessary,String description, Integer deleted, Long plugId, UserDto user) {
-        UserPara userPara = UserPara.builder().plug_id(plugId).name(name).field(field).type(type).enumerationRange(enumerationRange).necessary(necessary).description(description).deleted(deleted).build();
-        this.userParaDao.insert(userPara, user);
+        PlugPara plugPara = PlugPara.builder().plug_id(plugId).name(name).field(field).type(type).enumerationRange(enumerationRange).necessary(necessary).description(description).build();
+        this.plugParaDao.insert(plugPara, user);
     }
 
     @Transactional
@@ -104,31 +104,29 @@ public class PlugService {
     }
 
     @Transactional
-    public void updatePlugParaService(Long id, String name,  Integer value, Integer deleted, UserDto user) {
-        PlugPara plugPara = this.plugParaDao.findById(id);
-        if (null == plugPara) {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
-        }
-        plugPara.setName(name);
-        plugPara.setValue(value);
-        plugPara.setDeleted(deleted);
-        this.plugParaDao.save(id, plugPara, user);
-    }
-
-    @Transactional
-    public void updateUserParaService(Long id, String name, String field,Integer type,String enumerationRange, Integer necessary,String description, Integer deleted, UserDto user) {
+    public void updatePlugParaService(Long id, String name,  String value, UserDto user) {
         UserPara userPara = this.userParaDao.findById(id);
         if (null == userPara) {
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
         }
         userPara.setName(name);
-        userPara.setField(field);
-        userPara.setType(type);
-        userPara.setEnumerationRange(enumerationRange);
-        userPara.setNecessary(necessary);
-        userPara.setDescription(description);
-        userPara.setDeleted(deleted);
+        userPara.setValue(value);
         this.userParaDao.save(id, userPara, user);
+    }
+
+    @Transactional
+    public void updateUserParaService(Long id, String name, String field,Integer type,String enumerationRange, Integer necessary,String description, UserDto user) {
+        PlugPara plugPara = this.plugParaDao.findById(id);
+        if (null == plugPara) {
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
+        }
+        plugPara.setName(name);
+        plugPara.setField(field);
+        plugPara.setType(type);
+        plugPara.setEnumerationRange(enumerationRange);
+        plugPara.setNecessary(necessary);
+        plugPara.setDescription(description);
+        this.plugParaDao.save(id, plugPara, user);
     }
 
     @Transactional
@@ -150,28 +148,28 @@ public class PlugService {
     }
     @Transactional
     public void deletePlugPara(Long id) {
-        PlugPara plugPara = this.plugParaDao.findById(id);
-        if (null == plugPara){
+        UserPara userPara = this.userParaDao.findById(id);
+        if (null == userPara){
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件参数", id));
         }
-        this.plugParaDao.delete(id);
+        this.userParaDao.delete(id);
     }
     @Transactional
     public void deleteUserPara(Long id) {
-        UserPara userPara = this.userParaDao.findById(id);
-        if (null == userPara){
+        PlugPara plugPara = this.plugParaDao.findById(id);
+        if (null == plugPara){
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "用户参数", id));
         }
-        this.userParaDao.delete(id);
+        this.plugParaDao.delete(id);
     }
 
     @Transactional
     public PlugDto retrievePlug(Long plugId) {
         Plug plug = this.plugDao.findById(plugId);
-        List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
-        List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> {PlugParaDto dto= Common.cloneObj(obj,PlugParaDto.class);return dto;}).collect(Collectors.toList());
         List<UserPara> userParas = this.userParaDao.retrieveByPlugId(plug.getId());
-        List<UserParaDto> userParaDtos = userParas.stream().map(obj -> UserParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
+        List<UserParaDto> userParaDtos = userParas.stream().map(obj -> {UserParaDto dto= Common.cloneObj(obj,UserParaDto.class);return dto;}).collect(Collectors.toList());
+        List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
+        List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> PlugParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
                 type(obj.getType()).typeName(this.typeUnionDao.findById(obj.getType().longValue()).getType()).enumerationRange(obj.getEnumerationRange()).necessary(obj.getNecessary()).description(obj.getDescription()).build()).collect(Collectors.toList());
 
         PlugDto ret = PlugDto.builder().id(plug.getId()).name(plug.getName()).purpose(plug.getPurpose()).
@@ -180,20 +178,20 @@ public class PlugService {
         return ret;
     }
     @Transactional
-    public PlugParaDto retrievePlugPara(Long id) {
-        PlugPara plugPara = this.plugParaDao.findById(id);
-        PlugParaDto ret = PlugParaDto.builder().id(plugPara.getId()).name(plugPara.getName()).
-                value(plugPara.getValue()).build();
+    public UserParaDto retrieveUserPara(Long id) {
+        UserPara userPara = this.userParaDao.findById(id);
+        UserParaDto ret = UserParaDto.builder().id(userPara.getId()).name(userPara.getName()).
+                value(userPara.getValue()).build();
         return ret;
     }
 
     @Transactional
-    public UserParaDto retrieveUserPara(Long id) {
-        UserPara userPara = this.userParaDao.findById(id);
-        TypeUnion typeUnion = this.typeUnionDao.findById(userPara.getType().longValue());
-        UserParaDto ret = UserParaDto.builder().id(userPara.getId()).name(userPara.getName()).
-                field(userPara.getField()).type(userPara.getType()).typeName(typeUnion.getType()).enumerationRange(userPara.getEnumerationRange()).description(userPara.getDescription())
-                .necessary(userPara.getNecessary()).build();
+    public PlugParaDto retrievePlugPara(Long id) {
+        PlugPara plugPara = this.plugParaDao.findById(id);
+        TypeUnion typeUnion = this.typeUnionDao.findById(plugPara.getType().longValue());
+        PlugParaDto ret = PlugParaDto.builder().id(plugPara.getId()).name(plugPara.getName()).
+                field(plugPara.getField()).type(plugPara.getType()).typeName(typeUnion.getType()).enumerationRange(plugPara.getEnumerationRange()).description(plugPara.getDescription())
+                .necessary(plugPara.getNecessary()).build();
         return ret;
     }
 
@@ -202,10 +200,10 @@ public class PlugService {
         List<Plug> plugs = this.plugDao.retrieveAll(page, pageSize);
         List<PlugDto> ret = new ArrayList<>();
         for(Plug plug: plugs) {
-            List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
-            List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> PlugParaDto.builder().id(obj.getId()).name(obj.getName()).value(obj.getValue()).build()).collect(Collectors.toList());
             List<UserPara> userParas = this.userParaDao.retrieveByPlugId(plug.getId());
-            List<UserParaDto> userParaDtos = userParas.stream().map(obj -> UserParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
+            List<UserParaDto> userParaDtos = userParas.stream().map(obj -> UserParaDto.builder().id(obj.getId()).name(obj.getName()).value(obj.getValue()).build()).collect(Collectors.toList());
+            List<PlugPara> plugParas = this.plugParaDao.retrieveByPlugId(plug.getId());
+            List<PlugParaDto> plugParaDtos = plugParas.stream().map(obj -> PlugParaDto.builder().id(obj.getId()).name(obj.getName()).field(obj.getField()).
                     type(obj.getType()).typeName(this.typeUnionDao.findById(obj.getType().longValue()).getType()).enumerationRange(obj.getEnumerationRange()).necessary(obj.getNecessary()).description(obj.getDescription()).build()).collect(Collectors.toList());
             PlugDto plugDto = getPlugDto(plug, plugParaDtos, userParaDtos);
             ret.add(plugDto);

@@ -6,7 +6,6 @@ import com.springboot.back.mapper.po.PlugParaPo;
 import com.springboot.core.exception.BusinessException;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
-import com.springboot.core.util.Common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,16 +28,17 @@ public class PlugParaDao {
 
     @Autowired
     public PlugParaDao(PlugParaPoMapper plugParaPoMapper) {
-        this.plugParaPoMapper=plugParaPoMapper;
+        this.plugParaPoMapper = plugParaPoMapper;
     }
 
     private PlugPara getBo(PlugParaPo po) {
-        PlugPara bo = PlugPara.builder().id(po.getId()).plug_id(po.getPlugId()).name(po.getName()).value(po.getValue()).build();
+        PlugPara bo = PlugPara.builder().id(po.getId()).plug_id(po.getPlugId()).name(po.getName()).field(po.getField())
+                .type(po.getType()).enumerationRange(po.getEnumerationRange()).necessary(po.getNecessary()).description(po.getDescription()).build();
         return bo;
     }
     private PlugParaPo getPo(PlugPara bo) {
-        PlugParaPo po = PlugParaPo.builder().id(bo.getId()).plugId(bo.getPlug_id()).name(bo.getName())
-                .value(bo.getValue()).deleted(bo.getDeleted()).build();
+        PlugParaPo po = PlugParaPo.builder().id(bo.getId()).plugId(bo.getPlug_id()).name(bo.getName()).field(bo.getField())
+                .type(bo.getType()).enumerationRange(bo.getEnumerationRange()).necessary(bo.getNecessary()).description(bo.getDescription()).build();
         return po;
     }
     public void delete(Long id) {
@@ -48,13 +48,13 @@ public class PlugParaDao {
     public Long insert(PlugPara plugPara, UserDto user) throws RuntimeException{
         PlugParaPo po = this.plugParaPoMapper.findByName(plugPara.getName());
         if (null == po) {
-            PlugParaPo plugParaPo = getPo(plugPara);
-            putUserFields(plugParaPo, "creator", user);
-            putGmtFields(plugParaPo, "create");
-            this.plugParaPoMapper.save(plugParaPo);
-            return plugParaPo.getId();
+            PlugParaPo userParaPo = getPo(plugPara);
+            putUserFields(userParaPo, "creator", user);
+            putGmtFields(userParaPo, "create");
+            this.plugParaPoMapper.save(userParaPo);
+            return userParaPo.getId();
         } else {
-            throw new BusinessException(ReturnNo.PLUGPARA_EXIST, String.format(ReturnNo.PLUGPARA_EXIST.getMessage(), po.getId()));
+            throw new BusinessException(ReturnNo.USERPARA_EXIST, String.format(ReturnNo.USERPARA_EXIST.getMessage(), po.getId()));
         }
     }
 
@@ -66,7 +66,7 @@ public class PlugParaDao {
         if(po.isPresent()) {
             return this.getBo(po.get());
         } else {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "应用服务API", id));
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "用户参数", id));
         }
     }
 
@@ -86,10 +86,6 @@ public class PlugParaDao {
         if (reList.isEmpty()) {
             return new ArrayList<>();
         }
-        return reList.stream().map((po)-> {
-            PlugPara bo = Common.cloneObj(po, PlugPara.class);
-            return bo;
-        }).collect(Collectors.toList());
+        return reList.stream().map(this::getBo).collect(Collectors.toList());
     }
-
 }

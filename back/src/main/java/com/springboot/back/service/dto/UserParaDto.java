@@ -19,14 +19,6 @@ public class UserParaDto {
 
     private String name;
 
-    private String field;
+    private String value;
 
-    private Integer type;
-    private String typeName;
-
-    private String enumerationRange;
-
-    private String description;
-
-    private Integer necessary;
 }

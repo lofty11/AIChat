@@ -89,24 +89,11 @@ CREATE TABLE plugpara
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    value INTEGER NOT NULL,
-    deleted INTEGER NOT NULL,
-    plug_id bigint,
-    constraint fk_plug_id1  foreign key (plug_id) references plug (id) on update cascade on delete cascade
-);
-alter table plugpara character set utf8;
-
-DROP TABLE IF EXISTS userpara;
-CREATE TABLE userpara
-(
-    id bigint AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
     field VARCHAR(255) NOT NULL,
     type INTEGER NOT NULL,
     enumeration_range VARCHAR(255),
     necessary INTEGER NOT NULL,
     description VARCHAR(255),
-    deleted INTEGER NOT NULL,
     plug_id bigint,
     creator_id  bigint DEFAULT NULL,
     creator_name varchar(128) DEFAULT NULL,
@@ -115,6 +102,17 @@ CREATE TABLE userpara
     gmt_create  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     gmt_modified  datetime DEFAULT NULL,
     constraint fk_plug_id2  foreign key (plug_id) references plug (id) on update cascade on delete cascade
+);
+alter table plugpara character set utf8;
+
+DROP TABLE IF EXISTS userpara;
+CREATE TABLE userpara
+(
+    id bigint AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    value VARCHAR(255) NOT NULL,
+    plug_id bigint,
+    constraint fk_plug_id1  foreign key (plug_id) references plug (id) on update cascade on delete cascade
 );
 alter table userpara character set utf8;
 
@@ -188,16 +186,13 @@ alter table message  character set utf8;
 
 INSERT INTO `plug` VALUES (NULL, '文生图', '生成以文字信息相对应的图片', '用户可输入文字，插件通过文字描述对应的图片', 1, 1, 0);
 INSERT INTO `plug` VALUES (NULL, 'plug_test2', 'b', 'http', 1, 1, 0);
-INSERT INTO `plugpara` VALUES (NULL,'responseId', 1, 0,1);
-INSERT INTO `plugpara` VALUES (NULL,'object', 1, 0,1);
-INSERT INTO `plugpara` VALUES (NULL,'created', 4, 0,1);
-INSERT INTO `plugpara` VALUES (NULL,'data', 3, 0,1);
-INSERT INTO `plugpara` VALUES (NULL,'usage', 3, 0,1);
-INSERT INTO `userpara` VALUES (NULL, '提示', 'prompt', 1, '多个值由逗号分开', 1, '功能提示', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
-INSERT INTO `userpara` VALUES (NULL, '规格', 'size', 1, NULL, 1, '生成参数大小', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
-INSERT INTO `userpara` VALUES (NULL, '数量', 'n', 4, NULL, 0, '生成数量', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
-INSERT INTO `userpara` VALUES (NULL, '迭代轮次', 'steps', 4, '10-50', 0, '迭代次数', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
-INSERT INTO `userpara` VALUES (NULL, '采样方式', 'sampler_index', 1, NULL, 0, '生成数量', 0, 1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO `userpara` VALUES (NULL,'size', '1024*1024', 1);
+INSERT INTO `userpara` VALUES (NULL,'n', '1',1);
+INSERT INTO `userpara` VALUES (NULL,'steps', '20',1);
+INSERT INTO `userpara` VALUES (NULL,'sampler_index', 'Euler a',1);
+INSERT INTO `plugpara` VALUES (NULL, '类别', 'object', 1, 'image', 1, '说明数据类型', 1, NULL, NULL, NULL,NULL, NOW(), NULL);
+INSERT INTO `plugpara` VALUES (NULL, '数据', 'data', 3, 'object、b64_image、index', 1, '数据必要参数',  1, NULL, NULL, NULL, NULL, NOW(), NULL);
+INSERT INTO `plugpara` VALUES (NULL, '用法', 'usage', 3, 'prompt_tokens、total_tokens', 0, 'token',  1, NULL, NULL, NULL, NULL, NOW(), NULL);
 
 INSERT INTO user VALUES (NULL,0, 'admin', '123456', '10000');
 INSERT INTO user VALUES (NULL,1,'zmr','100000','181000000');
