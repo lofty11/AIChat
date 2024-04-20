@@ -100,23 +100,23 @@ public class PlugController {
         return new ReturnObject(ReturnNo.OK);
     }
 
-    /*编辑插件参数*/
-    @PutMapping("/{id}/plugParameter")
-    @Audit
-    public ReturnObject updatePlugParameter(@PathVariable Long id,
-                                   @Valid @RequestBody UserParaVo vo,
-                                   @LoginUser UserDto user) {
-        this.plugService.updatePlugParaService(id, vo.getName(),vo.getValue(),user);
-        return new ReturnObject(ReturnNo.OK);
-    }
-
     /*编辑用户参数*/
     @PutMapping("/{id}/userParameter")
     @Audit
     public ReturnObject updateUserParameter(@PathVariable Long id,
+                                   @Valid @RequestBody UserParaVo vo,
+                                   @LoginUser UserDto user) {
+        this.plugService.updateUserParaService(id, vo.getName(),vo.getValue(),user);
+        return new ReturnObject(ReturnNo.OK);
+    }
+
+    /*编辑插件参数*/
+    @PutMapping("/{id}/plugParameter")
+    @Audit
+    public ReturnObject updatePlugParameter(@PathVariable Long id,
                                        @Valid @RequestBody PlugParaVo vo,
                                        @LoginUser UserDto user) {
-        this.plugService.updateUserParaService(id, vo.getName(),vo.getField(),vo.getType(), vo.getEnumerationRange(),
+        this.plugService.updatePlugParaService(id, vo.getName(),vo.getField(),vo.getType(), vo.getEnumerationRange(),
                 vo.getNecessary(),vo.getDescription(),user);
         return new ReturnObject(ReturnNo.OK);
     }
@@ -164,14 +164,14 @@ public class PlugController {
         return new ReturnObject(ReturnNo.OK, ret);
     }
     /*根据id获取用户参数*/
-    @GetMapping("/{id}/plugParameter")
+    @GetMapping("/{id}/userParameter")
     public ReturnObject getUserParameter(@PathVariable Long id) {
         UserParaDto ret = this.plugService.retrieveUserPara(id);
         return new ReturnObject(ReturnNo.OK, ret);
     }
 
     /*根据id获取插件参数*/
-    @GetMapping("/{id}/userParameter")
+    @GetMapping("/{id}/plugParameter")
     public ReturnObject getPlugParameter(@PathVariable Long id) {
         PlugParaDto ret = this.plugService.retrievePlugPara(id);
         return new ReturnObject(ReturnNo.OK, ret);

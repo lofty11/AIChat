@@ -28,8 +28,9 @@ public class PlugControllerTest {
 
     @Test
     public void createFunctionTest() throws Exception {
-        String s = "{\"name\":\"search2\",\"ename\":\"web_search\",\"type\":\"http\",\"api\":\"api\",\"description\":\"gong\",\"deleted\":0}";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/func")
+        String s = "{\"name\":\"search2\",\"ename\":\"web_search\",\"type\":1,\"api\":1,\"description\":\"gong\",\"deleted\":0}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/function")
+                        .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
@@ -39,22 +40,25 @@ public class PlugControllerTest {
     public void createPlugTest() throws Exception {
         String s = "{\"name\":\"plug2\",\"purpose\":\"b\",\"description\":\"http\",\"available\":1,\"open\":1,\"deleted\":0}";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/plug")
+                        .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
     @Test
-    public void createPlugParaTest() throws Exception {
+    public void createPlugParameterTest() throws Exception {
+        String s = "{\"name\":\"a\",\"field\":\"b\",\"type\":1,\"necessary\":1,\"description\":\"d\"}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/userParameter",1)
+                        .header("Authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+    @Test
+    public void createUserParameterTest() throws Exception {
         String s = "{\"name\":\"aaa\",\"value\":1,\"deleted\":0}";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/plugpara",2)
-                        .contentType(MediaType.APPLICATION_JSON).content(s))
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();
-    }
-    @Test
-    public void createUserParaTest() throws Exception {
-        String s = "{\"name\":\"a\",\"field\":\"b\",\"type\":\"c\",\"necessary\":1,\"description\":\"d\",\"deleted\":0}";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/userpara",2)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/plugParameter",1)
+                        .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
@@ -63,7 +67,36 @@ public class PlugControllerTest {
     @Test
     public void updatePlugTest() throws Exception {
         String s = "{\"name\":\"aaa\",\"purpose\":\"b\",\"description\":\"http\",\"available\":1,\"open\":1,\"deleted\":0}";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{plugId}/plug", 2)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{plugId}/plug", 1)
+                        .header("Authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+    @Test
+    public void updateFunctionTest() throws Exception {
+        String s = "{\"name\":\"search2\",\"ename\":\"web_search\",\"type\":1,\"api\":1,\"description\":\"gong\",\"deleted\":0}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{functionId}/function", 1)
+                        .header("Authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+    @Test
+    public void updatePlugParameterTest() throws Exception {
+        String s = "{\"name\":\"a\",\"field\":\"test\",\"type\":1,\"necessary\":1,\"description\":\"d\"}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{id}/plugParameter", 1)
+                        .header("Authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+    @Test
+    public void updateUserParameterTest() throws Exception {
+        String s = "{\"name\":\"test\",\"value\":1,\"deleted\":0}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{id}/userParameter", 1)
+                        .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
@@ -77,27 +110,27 @@ public class PlugControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
-
     @Test
-    public void getPlugIdTest() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{plugName}/plug", "c")
-                        .contentType(MediaType.APPLICATION_JSON))
+    public void deleteFuncTest() throws Exception{
+        String s = "{\"name\":\"search2\",\"ename\":\"web_search\",\"type\":1,\"api\":1,\"description\":\"gong\",\"deleted\":0}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{functionId}/function", 2)
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
     @Test
-    public void getFunctionByIdTest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{funcId}/funcinfoById", 1)
-                        .contentType(MediaType.APPLICATION_JSON))
+    public void deletePlugParaTest() throws Exception{
+        String s = "{\"name\":\"a\",\"field\":\"b\",\"type\":1,\"necessary\":1,\"description\":\"d\"}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{id}/plugParameter", 2)
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
-
-
     @Test
-    public void getfuncTypesTest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/serviceApis", 1)
-                        .contentType(MediaType.APPLICATION_JSON))
+    public void deleteUserParaTest() throws Exception{
+        String s = "{\"name\":\"aaa\",\"value\":1,\"deleted\":0}";
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{id}/userParameter", 2)
+                        .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
@@ -115,16 +148,6 @@ public class PlugControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
-
-    @Test
-    public void updateUserParameterTest() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/plug/{id}/userParameter", 2)
-                        .header("Authorization", adminToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"test\", \"field\": 0, \"type\": \"string\",\"necessary\": 0}"))
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();
-    }
     @Test
     public void getUserParameterTest() throws Exception{
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{id}/userParameter", 1)
@@ -134,10 +157,46 @@ public class PlugControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
-
+    @Test
+    public void getPlugParameterTest() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{id}/userParameter", 1)
+                        .header("Authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"test\", \"field\": 0, \"type\": \"string\",\"necessary\": 0}"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+    @Test
+    public void getFunctionsTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/functions")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+    @Test
+    public void getFunctionByIdTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/id/{functionId}/function", 1)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+    @Test
+    public void getFunctionByNameTest() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/name/{functionName}/function","获取实时天气2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
     @Test
     public void getTypeUnions() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/common/typeUnions")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+    @Test
+    public void getfuncTypesTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/serviceApis", 1)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
@@ -146,13 +205,6 @@ public class PlugControllerTest {
     @Test
     public void getServiceApisTest() throws Exception{
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/serviceApis")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();
-    }
-    @Test
-    public void getFunctionByNameTest() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/name/{functionName}/function","获取实时天气2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();

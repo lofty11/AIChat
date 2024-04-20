@@ -104,7 +104,7 @@ public class PlugService {
     }
 
     @Transactional
-    public void updatePlugParaService(Long id, String name,  String value, UserDto user) {
+    public void updateUserParaService(Long id, String name,  String value, UserDto user) {
         UserPara userPara = this.userParaDao.findById(id);
         if (null == userPara) {
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
@@ -115,7 +115,7 @@ public class PlugService {
     }
 
     @Transactional
-    public void updateUserParaService(Long id, String name, String field,Integer type,String enumerationRange, Integer necessary,String description, UserDto user) {
+    public void updatePlugParaService(Long id, String name, String field,Integer type,String enumerationRange, Integer necessary,String description, UserDto user) {
         PlugPara plugPara = this.plugParaDao.findById(id);
         if (null == plugPara) {
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
