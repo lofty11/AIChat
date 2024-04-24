@@ -62,9 +62,9 @@ public class PlugController {
     @PostMapping("/{plugId}/plugParameter")
     @Audit
     public ReturnObject createPlugParameter(@PathVariable Long plugId,
-                                             @Valid @RequestBody UserParaVo vo,
+                                             @Valid @RequestBody PlugParaVo vo,
                                              @LoginUser UserDto user) {
-        this.plugService.createPlugPara(vo.getName(), vo.getValue(), plugId, user);
+        this.plugService.createPlugPara(vo.getName(),vo.getField(),vo.getType(), vo.getEnumerationRange(), vo.getNecessary(),vo.getDescription(), plugId, user);
         return new ReturnObject(ReturnNo.CREATED);
     }
 
@@ -72,9 +72,9 @@ public class PlugController {
     @PostMapping("/{plugId}/userParameter")
     @Audit
     public ReturnObject createUserParameter(@PathVariable Long plugId,
-                                       @Valid @RequestBody PlugParaVo vo,
+                                       @Valid @RequestBody UserParaVo vo,
                                        @LoginUser UserDto user) {
-        this.plugService.createUserPara(vo.getName(),vo.getField(),vo.getType(), vo.getEnumerationRange(), vo.getNecessary(),vo.getDescription(),0, plugId, user);
+        this.plugService.createUserPara(vo.getName(),vo.getValue(), plugId, user);
         return new ReturnObject(ReturnNo.CREATED);
     }
 
