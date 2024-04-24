@@ -126,7 +126,7 @@ public class UserService {
     }
 
     public MessageDto addFunctionCallMessage(UserDto user, Message bo) throws RuntimeException, IOException {
-        String content =this.functionCallService.FunctionCall((String) bo.getContent());
+        String content =this.functionCallService.FunctionCall(bo.getContent());
         bo.setContent(content);
         bo.setType((byte) 1);
         Message message=messageDao.addMessage(user,bo);

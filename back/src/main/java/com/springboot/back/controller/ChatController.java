@@ -24,11 +24,9 @@ import java.io.IOException;
 public class ChatController {
     private static Logger logger = LoggerFactory.getLogger(ChatController.class);
     private final UserService userService;
-    private final FunctionCallService functionCallService;
     @Autowired
-    public ChatController(UserService userService, FunctionCallService functionCallService){
+    public ChatController(UserService userService){
         this.userService=userService;
-        this.functionCallService=functionCallService;
     }
     @DeleteMapping("/{chatId}")
     @Audit

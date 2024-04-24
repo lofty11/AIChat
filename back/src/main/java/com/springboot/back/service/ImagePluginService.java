@@ -19,7 +19,6 @@ public class ImagePluginService {
     public String createImage(String content) throws IOException {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"prompt\":\""+content+"\",\"size\":\"1024x1024\",\"n\":1,\"steps\":20,\"sampler_index\":\"Euler a\"}");
-        System.out.println(body);
         Request request = new Request.Builder()
                 .url("https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/text2image/sd_xl?access_token=" + getAccessToken())
                 .method("POST", body)
