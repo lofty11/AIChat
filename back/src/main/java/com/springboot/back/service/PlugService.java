@@ -148,19 +148,19 @@ public class PlugService {
     }
     @Transactional
     public void deletePlugPara(Long id) {
-        UserPara userPara = this.userParaDao.findById(id);
-        if (null == userPara){
+        PlugPara plugPara = this.plugParaDao.findById(id);
+        if (null == plugPara){
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件参数", id));
         }
-        this.userParaDao.delete(id);
+        this.plugParaDao.delete(id);
     }
     @Transactional
     public void deleteUserPara(Long id) {
-        PlugPara plugPara = this.plugParaDao.findById(id);
-        if (null == plugPara){
+        UserPara userPara = this.userParaDao.findById(id);
+        if (null == userPara){
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "用户参数", id));
         }
-        this.plugParaDao.delete(id);
+        this.userParaDao.delete(id);
     }
 
     @Transactional
