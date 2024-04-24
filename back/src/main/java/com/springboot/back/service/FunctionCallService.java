@@ -61,7 +61,6 @@ public class FunctionCallService {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         if (!jsonObject.getString("result").isEmpty()){
             result=jsonObject.getString("result");
-            System.out.println(result);
             return result;
         }
 
@@ -97,9 +96,7 @@ public class FunctionCallService {
         ApiExplorerResponse response = client.sendRequest(request);
         String jsonResponse2 = response.getResult();
         JSONObject jsonObject2 = new JSONObject(jsonResponse2);
-        System.out.println(jsonResponse2);
         JSONObject dataJson = jsonObject2.getJSONObject("data");
-        System.out.println(dataJson);
 
         //第二次请求
         JSONObject contentBody2 = new JSONObject();
@@ -126,7 +123,6 @@ public class FunctionCallService {
         String jsonResponse3 = wenxinRequest(mediaType, contentBody2, messages);
         JSONObject jsonObject3 = new JSONObject(jsonResponse3);
         result=jsonObject3.getString("result");
-        System.out.println(result);
         return result;
     }
 
@@ -154,7 +150,6 @@ public class FunctionCallService {
         contentBody.put("messages", messages);
         contentBody.put("disable_search", false);
         contentBody.put("enable_citation", false);
-        System.out.println(contentBody);
         RequestBody body = RequestBody.create(mediaType, String.valueOf(contentBody));
         OkHttpClient HTTP_CLIENT = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
@@ -169,7 +164,6 @@ public class FunctionCallService {
         Response response = HTTP_CLIENT.newCall(request).execute();
         String jsonResponse = response.body().string();
         response.close();
-        System.out.println(jsonResponse);
         return jsonResponse;
     }
 
