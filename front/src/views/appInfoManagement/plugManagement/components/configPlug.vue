@@ -62,13 +62,13 @@
                 prop="description"
                 label="描述"
               /><el-table-column
-              label="操作"
-            >
-              <template v-slot="data">
-                <el-button type="text" size="small" @click="openPlugParamDialog('编辑插件参数',data.row.id)">编辑</el-button>
-                <el-button type="text" size="small" style="color: red" @click="delPlugPara(data.row.id)">删除</el-button>
-              </template>
-            </el-table-column>
+                label="操作"
+              >
+                <template v-slot="data">
+                  <el-button type="text" size="small" @click="openPlugParamDialog('编辑插件参数',data.row.id)">编辑</el-button>
+                  <el-button type="text" size="small" style="color: red" @click="delPlugPara(data.row.id)">删除</el-button>
+                </template>
+              </el-table-column>
             </el-table>
           </el-form-item>
           <el-form-item>
@@ -98,9 +98,12 @@
 
 import UserParam from '@/views/appInfoManagement/plugManagement/components/UserParam.vue'
 import PlugParam from '@/views/appInfoManagement/plugManagement/components/PlugParam.vue'
-import {delPlugParaById, delUserParaById, getPlugById, getUserParaById} from '@/api/plug'
-import {getTypeUnions} from '@/api/common'
-
+import {
+  delPlugParaById,
+  delUserParaById,
+  getPlugById, getUserParaById
+} from '@/api/plug'
+import { getTypeUnions } from '@/api/common'
 export default {
   components: { UserParam, PlugParam },
   props: {
