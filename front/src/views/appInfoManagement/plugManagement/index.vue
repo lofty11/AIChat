@@ -159,7 +159,7 @@ export default {
   watch: {
     searchData(newValue) {
       if (newValue === '') {
-        getAllFunc().then((response) => {
+        getAllFunc({ pageSize: this.pageSize }).then((response) => {
           this.funcTable = response.data.list
         })
         this.isSearch = false
@@ -245,7 +245,7 @@ export default {
           })
           break
         case 'addFunc':
-          getAllFunc().then(response => {
+          getAllFunc({ pageSize: this.pageSize }).then(response => {
             this.funcTable = response.data.list
           })
           break

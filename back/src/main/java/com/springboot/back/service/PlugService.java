@@ -63,13 +63,13 @@ public class PlugService {
     }
 
     @Transactional
-    public void createPlugPara(String name, String value, Long plugId, UserDto user) {
+    public void createUserPara(String name, String value, Long plugId, UserDto user) {
         UserPara userPara = UserPara.builder().plug_id(plugId).name(name).value(value).build();
         this.userParaDao.insert(userPara, user);
     }
 
     @Transactional
-    public void createUserPara(String name, String field,Integer type,String enumerationRange, Integer necessary,String description, Integer deleted, Long plugId, UserDto user) {
+    public void createPlugPara(String name, String field,Integer type,String enumerationRange, Integer necessary,String description, Long plugId, UserDto user) {
         PlugPara plugPara = PlugPara.builder().plug_id(plugId).name(name).field(field).type(type).enumerationRange(enumerationRange).necessary(necessary).description(description).build();
         this.plugParaDao.insert(plugPara, user);
     }
@@ -148,19 +148,19 @@ public class PlugService {
     }
     @Transactional
     public void deletePlugPara(Long id) {
-        UserPara userPara = this.userParaDao.findById(id);
-        if (null == userPara){
+        PlugPara plugPara = this.plugParaDao.findById(id);
+        if (null == plugPara){
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件参数", id));
         }
-        this.userParaDao.delete(id);
+        this.plugParaDao.delete(id);
     }
     @Transactional
     public void deleteUserPara(Long id) {
-        PlugPara plugPara = this.plugParaDao.findById(id);
-        if (null == plugPara){
+        UserPara userPara = this.userParaDao.findById(id);
+        if (null == userPara){
             throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "用户参数", id));
         }
-        this.plugParaDao.delete(id);
+        this.userParaDao.delete(id);
     }
 
     @Transactional
