@@ -134,7 +134,6 @@ export default {
             })
           } else {
             modifyFuncById(this.funcId, this.funcForm).then((response) => {
-              console.log('编辑函数')
               if (response.errno === 0) {
                 this.$message.success('编辑函数成功')
                 this.$emit('update:funcDialogVisible', false)
