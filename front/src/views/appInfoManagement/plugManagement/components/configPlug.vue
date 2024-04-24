@@ -98,12 +98,9 @@
 
 import UserParam from '@/views/appInfoManagement/plugManagement/components/UserParam.vue'
 import PlugParam from '@/views/appInfoManagement/plugManagement/components/PlugParam.vue'
-import {
-  delPlugParaById,
-  delUserParaById,
-  getPlugById, getUserParaById
-} from '@/api/plug'
-import { getTypeUnions } from '@/api/common'
+import {delPlugParaById, delUserParaById, getPlugById, getUserParaById} from '@/api/plug'
+import {getTypeUnions} from '@/api/common'
+
 export default {
   components: { UserParam, PlugParam },
   props: {

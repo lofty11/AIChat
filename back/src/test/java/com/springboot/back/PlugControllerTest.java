@@ -48,7 +48,7 @@ public class PlugControllerTest {
     @Test
     public void createPlugParameterTest() throws Exception {
         String s = "{\"name\":\"a\",\"field\":\"b\",\"type\":1,\"necessary\":1,\"description\":\"d\"}";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/userParameter",1)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/plugParameter",1)
                         .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
@@ -57,7 +57,7 @@ public class PlugControllerTest {
     @Test
     public void createUserParameterTest() throws Exception {
         String s = "{\"name\":\"aaa\",\"value\":1,\"deleted\":0}";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/plugParameter",1)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/userParameter",1)
                         .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
