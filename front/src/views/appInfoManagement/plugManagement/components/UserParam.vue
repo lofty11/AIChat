@@ -38,7 +38,7 @@ export default {
       type: String,
       default: '0'
     },
-    userId: {
+    plugId: {
       type: String,
       default: '0'
     },
@@ -78,7 +78,7 @@ export default {
       this.$refs.paramForm.validate(valid => {
         if (valid) {
           if (this.userParaId === '0') {
-            createUserPara(this.userId, this.paramForm).then(response => {
+            createUserPara(this.plugId, this.paramForm).then(response => {
               if (response.errno === 1) {
                 this.$message.success('新增用户参数成功！')
                 this.addItem('addUserPara')

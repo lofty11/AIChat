@@ -119,7 +119,6 @@ export default {
       this.$emit('update:funcDialogVisible', false)
     },
     confirm() {
-      console.log('confirm')
       this.$refs.funcForm.validate((valid) => {
         if (valid) {
           if (this.funcId === '0') {
@@ -131,6 +130,7 @@ export default {
               } else {
                 this.$message.error('新增函数失败')
               }
+              this.$refs.funcForm.resetFields()
             })
           } else {
             modifyFuncById(this.funcId, this.funcForm).then((response) => {
@@ -141,9 +141,9 @@ export default {
               } else {
                 this.$message.error('编辑函数失败')
               }
+              this.$refs.funcForm.resetFields()
             })
           }
-          this.$refs.funcForm.resetFields()
         } else {
           this.$message.error('请将表单填写完整！')
           return false
