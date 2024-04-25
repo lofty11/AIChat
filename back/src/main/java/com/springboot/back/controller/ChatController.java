@@ -11,7 +11,9 @@ import com.springboot.back.dao.bo.Message;
 import com.springboot.back.service.UserService;
 import com.springboot.back.service.dto.ChatDto;
 import com.springboot.back.service.dto.MessageDto;
+import io.lettuce.core.dynamic.annotation.Param;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,21 @@ public class ChatController {
     public ReturnObject createAiMessage( @LoginUser UserDto user,@Valid @RequestBody Message bo) throws IOException {
         MessageDto dto= this.userService.addFunctionCallMessage(user,bo);
         return new ReturnObject(ReturnNo.CREATED,dto);
+
+    }
+    @GetMapping("/message/redis/{id}")
+    @Audit
+    public ReturnObject getMessageWithRedis(@PathVariable Long id) {
+        MessageDto dto= this.userService.getMessageWithRedis(id);
+
+        return new ReturnObject(ReturnNo.OK,dto);
+
+    }
+    @GetMapping("/message/{id}")
+    @Audit
+    public ReturnObject getMessageWithoutRedis(@PathVariable Long id) {
+        MessageDto dto= this.userService.getMessageWithoutRedis(id);
+        return new ReturnObject(ReturnNo.OK,dto);
 
     }
     @PostMapping("/imagemessage")

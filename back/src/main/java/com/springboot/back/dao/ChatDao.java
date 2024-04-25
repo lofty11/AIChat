@@ -28,11 +28,11 @@ public class ChatDao {
 
     private ChatPoMapper chatPoMapper;
     private MessageDao messageDao;
-    private final static String CHATNAMEKEY = "C%s";
 
     @Autowired
     public ChatDao(ChatPoMapper chatPoMapper, MessageDao messageDao){
         this.chatPoMapper=chatPoMapper;this.messageDao=messageDao;
+
     }
     public List<Chat> findAllChats(UserDto user, Integer page, Integer pageSize) throws RuntimeException{
         Pageable pageable = PageRequest.of(page-1,pageSize);
@@ -68,6 +68,7 @@ public class ChatDao {
         return true;
     }
     public  Boolean findById(UserDto user,Long chatId)throws RuntimeException{
+
         Optional<ChatPo> ret = chatPoMapper.findById(chatId);
         if(ret.isPresent()){
             return ret.get().getUserId().equals(user.getId());
