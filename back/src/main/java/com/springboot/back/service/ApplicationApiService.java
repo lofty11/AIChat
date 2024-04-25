@@ -96,7 +96,7 @@ public class ApplicationApiService {
     public void updateApplicationService(Long id, String apiName, String apiCode, String requestUrl, Integer requestMethod, UserDto user) {
         ApplicationService applicationService = this.applicationServiceDao.findById(id);
         if (null == applicationService) {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "应用服务API", id));
         }
         applicationService.setApiName(apiName);
         applicationService.setApiCode(apiCode);
@@ -110,7 +110,7 @@ public class ApplicationApiService {
                                      Integer required, String description, UserDto user) {
         ExtensionInput extensionInput = this.extensionInputDao.findById(id);
         if (null == extensionInput) {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件入参", id));
         }
         extensionInput.setFieldName(fieldName);
         extensionInput.setField(field);
@@ -126,7 +126,7 @@ public class ApplicationApiService {
                                      Integer required, String description, UserDto user) {
         ExtensionOutput extensionOutput = this.extensionOutputDao.findById(id);
         if (null == extensionOutput) {
-            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), id));
+            throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "插件出参", id));
         }
         extensionOutput.setFieldName(fieldName);
         extensionOutput.setField(field);

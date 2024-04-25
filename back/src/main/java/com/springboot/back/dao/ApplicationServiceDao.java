@@ -57,7 +57,6 @@ public class ApplicationServiceDao {
             return null;
         }
         Optional<ApplicationServicePo> po = this.applicationServicePoMapper.findById(id);
-        System.out.println(po);
         if(po.isPresent()) {
             return this.getBo(po.get());
         } else {

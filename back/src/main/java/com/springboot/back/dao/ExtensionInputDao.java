@@ -53,14 +53,6 @@ public class ExtensionInputDao {
         }
     }
 
-    public ExtensionInput findByApplicationIdAndFieldName(Long applicationId, String fieldName) {
-        ExtensionInputPo po = this.extensionInputPoMapper.findByApplicationIdAndFieldName(applicationId, fieldName);
-        if(null == po) {
-            throw new BusinessException(ReturnNo.RESOURCE_NAME_NOTEXIST, String.format(ReturnNo.RESOURCE_NAME_NOTEXIST.getMessage(), "插件入参", fieldName));
-        }
-        return getBo(po);
-    }
-
     public void delete(Long id) {
         this.extensionInputPoMapper.deleteById(id);
     }

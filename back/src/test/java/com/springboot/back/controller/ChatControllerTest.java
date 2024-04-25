@@ -1,5 +1,6 @@
-package com.springboot.back;
+package com.springboot.back.controller;
 
+import com.springboot.back.BackApplication;
 import com.springboot.back.service.UserService;
 import com.springboot.core.model.ReturnNo;
 import com.springboot.core.util.JwtUtil;

@@ -101,7 +101,7 @@ import PlugParam from '@/views/appInfoManagement/plugManagement/components/PlugP
 import {
   delPlugParaById,
   delUserParaById,
-  getPlugById, getUserParaById
+  getPlugById
 } from '@/api/plug'
 import { getTypeUnions } from '@/api/common'
 export default {
@@ -214,7 +214,7 @@ export default {
           })
           break
         case 'addUserPara':
-          getUserParaById(this.plugId).then(response => {
+          getPlugById(this.plugId).then(response => {
             this.userParamTable = response.data.userParas
           })
           break
