@@ -55,14 +55,6 @@ public class ExtensionOutputDao {
         }
     }
 
-    public ExtensionOutput findByApplicationIdAndFieldName(Long applicationId, String fieldName) {
-        ExtensionOutputPo po = this.extensionOutputPoMapper.findByApplicationIdAndFieldName(applicationId, fieldName);
-        if(null == po) {
-            throw new BusinessException(ReturnNo.RESOURCE_NAME_NOTEXIST, String.format(ReturnNo.RESOURCE_NAME_NOTEXIST.getMessage(), "插件入参", fieldName));
-        }
-        return getBo(po);
-    }
-
     public void delete(Long id) {
         this.extensionOutputPoMapper.deleteById(id);
     }
