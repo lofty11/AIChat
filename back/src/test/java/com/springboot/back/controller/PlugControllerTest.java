@@ -1,4 +1,4 @@
-package com.springboot.back;
+package com.springboot.back.controller;
 
 import com.springboot.core.util.JwtUtil;
 import org.junit.jupiter.api.BeforeAll;
