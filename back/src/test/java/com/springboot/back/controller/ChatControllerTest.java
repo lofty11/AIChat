@@ -115,7 +115,7 @@ public class ChatControllerTest {
     public void createAiMessageTest() throws Exception {
         String body = "{\n" +
                 "  \"chatId\": 1,\n" +
-                "\"content\": \"今天厦门的天气如何\",\n"+
+                "\"content\": \"你好\",\n"+
                 "\"type\": 0\n"+
                 "}";
         mockMvc.perform(MockMvcRequestBuilders.post("/chat/aimessage")

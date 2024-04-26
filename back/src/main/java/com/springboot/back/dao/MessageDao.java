@@ -5,25 +5,33 @@ import com.springboot.core.util.Common;
 import com.springboot.back.dao.bo.Message;
 import com.springboot.back.mapper.MessagePoMapper;
 import com.springboot.back.mapper.po.MessagePo;
+import com.springboot.core.util.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
 public class MessageDao {
     private final static Logger logger = LoggerFactory.getLogger(MessageDao.class);
     private MessagePoMapper messagePoMapper;
+    private RedisUtil redisUtil;
+    private final static String KEY = "C%d";
 
+    @Value("${back.timeout}")
+    private int timeout;
     @Autowired
-    public MessageDao(MessagePoMapper messagePoMapper){
+    public MessageDao(RedisUtil redisUtil,MessagePoMapper messagePoMapper){
         this.messagePoMapper=messagePoMapper;
+        this.redisUtil=redisUtil;
 
     }
     public List<Message> findAllMessages(Long chatId,Integer page, Integer pageSize) throws RuntimeException{
@@ -44,6 +52,24 @@ public class MessageDao {
         messagePoMapper.deleteAllByChatId(chatId);
         return true;
     }
+    public Message findByIdWithRedis(Long id) throws RuntimeException {
+        String key = String.format(KEY, id);
+        if (redisUtil.hasKey(key)) {
+            logger.debug("findById : redis has key");
+            return Common.cloneObj(redisUtil.get(key), Message.class);
+        }
+        Optional<MessagePo> ret = messagePoMapper.findById(id);
+        if (ret.isEmpty() ) return null;
+        Message bo = Common.cloneObj(ret.get(), Message.class);
+        redisUtil.set(key, bo, timeout);
+        return bo;
+    }
+    public Message findByIdWithoutRedis(Long id) throws RuntimeException {
 
+        Optional<MessagePo> ret = messagePoMapper.findById(id);
+        if (ret.isEmpty() ) return null;
+        Message bo = Common.cloneObj(ret.get(), Message.class);
+        return bo;
+    }
 
 }

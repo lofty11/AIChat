@@ -13,11 +13,17 @@ spring:
         format_sql: true
   data:
     redis:
-      port: 6379
-      host: localhost
-      password: 123456
-      database: 0
+      repositories:
+        #forbid redis to scan repositories
+        enabled: false
+  redis:
+    port: 6379
+    host: localhost
+    password: 123456
+    database: 0
 core:
   page-size:
     max: 1000
     default: 10
+back:
+  timeout: 3600

@@ -144,4 +144,14 @@ public class UserService {
         logger.debug("addMessage : dto = {}",dto);
         return dto;
     }
+    public MessageDto getMessageWithRedis(Long id) throws RuntimeException{
+        Message bo=this.messageDao.findByIdWithRedis(id);
+        if(bo!=null) return Common.cloneObj(bo,MessageDto.class);
+        return null;
+    }
+    public MessageDto getMessageWithoutRedis(Long id) throws RuntimeException{
+        Message bo=this.messageDao.findByIdWithoutRedis(id);
+        if(bo!=null) return Common.cloneObj(bo,MessageDto.class);
+        return null;
+    }
 }
