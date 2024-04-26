@@ -83,7 +83,8 @@ export default {
 
         ],
         field: [
-          { required: true, message: '请输入字段', trigger: 'blur' }
+          { required: true, message: '请输入字段', trigger: 'blur' },
+          { pattern: '^[A-Za-z0-9_]+$', message: '只能输入数字、字母或下划线' }
         ],
         type: [
           { required: true, message: '请选择类型', trigger: 'blur' }
@@ -149,9 +150,11 @@ export default {
     },
     handleClose() {
       this.$emit('update:parameterDialogVisible', false)
+      this.$message.info('取消')
     },
     cancel() {
       this.$emit('update:parameterDialogVisible', false)
+      this.$message.info('取消')
     },
     confirm() {
       this.$refs.form.validate((valid) => {

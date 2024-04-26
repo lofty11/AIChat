@@ -11,6 +11,7 @@ import com.springboot.back.mapper.po.ChatPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class ChatDao {
 
     private ChatPoMapper chatPoMapper;
     private MessageDao messageDao;
+
 
     @Autowired
     public ChatDao(ChatPoMapper chatPoMapper, MessageDao messageDao){

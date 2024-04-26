@@ -147,7 +147,7 @@ export default {
           this.message = response.data
           this.loading = true
           if (this.selectedPlugin === '') {
-            createAiMessage(this.message).then(response => {
+            createAiMessage({ chatId: this.chatId, content: response.data.content, type: 0 }).then(response => {
               if (response.errno === 1) {
                 this.message = response.data
               }
