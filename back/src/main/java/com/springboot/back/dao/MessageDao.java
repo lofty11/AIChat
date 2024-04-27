@@ -1,5 +1,7 @@
 package com.springboot.back.dao;
 
+import com.springboot.core.exception.BusinessException;
+import com.springboot.core.model.ReturnNo;
 import com.springboot.core.model.dto.UserDto;
 import com.springboot.core.util.Common;
 import com.springboot.back.dao.bo.Message;
@@ -41,7 +43,7 @@ public class MessageDao {
             Message bo= Common.cloneObj(po,Message.class);
             return bo;
         }).collect(Collectors.toList());
-    }
+         }
     public Message addMessage(UserDto user, Message bo)throws RuntimeException {
         MessagePo po=Common.cloneObj(bo,MessagePo.class);
         Common.putGmtFields(po,"create");
@@ -49,7 +51,9 @@ public class MessageDao {
         return Common.cloneObj(messagePoMapper.save(po),Message.class);
     }
     public Boolean deleteMessage(Long chatId)throws RuntimeException{
-        messagePoMapper.deleteAllByChatId(chatId);
+
+        if(this.findAllMessages(chatId,1,10)!=null)
+            messagePoMapper.deleteAllByChatId(chatId);
         return true;
     }
     public Message findByIdWithRedis(Long id) throws RuntimeException {
@@ -59,7 +63,7 @@ public class MessageDao {
             return Common.cloneObj(redisUtil.get(key), Message.class);
         }
         Optional<MessagePo> ret = messagePoMapper.findById(id);
-        if (ret.isEmpty() ) return null;
+        if (ret.isEmpty() ) throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "对话内容", id));
         Message bo = Common.cloneObj(ret.get(), Message.class);
         redisUtil.set(key, bo, timeout);
         return bo;
@@ -67,7 +71,7 @@ public class MessageDao {
     public Message findByIdWithoutRedis(Long id) throws RuntimeException {
 
         Optional<MessagePo> ret = messagePoMapper.findById(id);
-        if (ret.isEmpty() ) return null;
+        if (ret.isEmpty() )  throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "对话内容", id));
         Message bo = Common.cloneObj(ret.get(), Message.class);
         return bo;
     }

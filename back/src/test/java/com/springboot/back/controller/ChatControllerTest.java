@@ -88,7 +88,7 @@ public class ChatControllerTest {
     }
     @Test
     public void getAllMessageTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/chat/messages/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/chat/messages/60")
                         .header("Authorization", userToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -98,7 +98,7 @@ public class ChatControllerTest {
     @Test
     public void createMessageTest() throws Exception {
         String body = "{\n" +
-                "  \"chatId\": 1,\n" +
+                "  \"chatId\": 60,\n" +
                 "\"content\": \"今天厦门的天气如何\",\n"+
                 "\"type\": 0\n"+
                 "}";
@@ -171,6 +171,23 @@ public class ChatControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errno", is(ReturnNo.OK.getErrNo())));
 
+    }
+    @Test
+    public void GetMessageTest() throws  Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get("/chat/message/140")
+                        .header("Authorization", userToken)
+                        .param("token",userToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errno", is(ReturnNo.OK.getErrNo())));
+        mockMvc.perform(MockMvcRequestBuilders.get("/chat/message/redis/140")
+                        .header("Authorization", userToken)
+                        .param("token",userToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errno", is(ReturnNo.OK.getErrNo())));
     }
 //    @Test
 //    public void logoutTest() throws Exception {

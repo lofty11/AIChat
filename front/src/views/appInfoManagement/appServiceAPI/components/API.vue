@@ -205,10 +205,12 @@ export default {
 
         ],
         apiCode: [
-          { required: true, message: '请输入API code', trigger: 'blur' }
+          { required: true, message: '请输入API code', trigger: 'blur' },
+          { pattern: '^[A-Za-z0-9_]+$', message: '只能输入数字、字母或下划线' }
         ],
         requestUrl: [
-          { required: true, message: '请输入请求URL', trigger: 'blur' }
+          { required: true, message: '请输入请求URL', trigger: 'blur' },
+          { pattern: '^[^\u4e00-\u9fff]*$', message: '请输入正确URL' }
         ],
         requestMethod: [
           { required: true, message: '请选择请求方式', trigger: 'blur' }
@@ -250,9 +252,11 @@ export default {
     },
     handleClose() {
       this.$emit('update:apiDialogVisible', false)
+      this.$message.info('取消')
     },
     cancel() {
       this.$emit('update:apiDialogVisible', false)
+      this.$message.info('取消')
     },
     confirm() {
       this.$refs.form.validate((valid) => {

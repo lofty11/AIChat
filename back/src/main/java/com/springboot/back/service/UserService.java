@@ -98,7 +98,7 @@ public class UserService {
            logger.debug("findAllMessages : list = {}", list);
            return new PageDto<>(list, page, pageSize);
        }
-        throw new BusinessException(ReturnNo.IDENTIFYNOTMATTCH,
+       else throw new BusinessException(ReturnNo.IDENTIFYNOTMATTCH,
                 String.format(ReturnNo.IDENTIFYNOTMATTCH.getMessage(), user.getUserName(), user.getId()));
 
     }
@@ -147,11 +147,13 @@ public class UserService {
     public MessageDto getMessageWithRedis(Long id) throws RuntimeException{
         Message bo=this.messageDao.findByIdWithRedis(id);
         if(bo!=null) return Common.cloneObj(bo,MessageDto.class);
-        return null;
+        else  throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "对话内容", id));
+
     }
     public MessageDto getMessageWithoutRedis(Long id) throws RuntimeException{
         Message bo=this.messageDao.findByIdWithoutRedis(id);
         if(bo!=null) return Common.cloneObj(bo,MessageDto.class);
-        return null;
+        else  throw new BusinessException(ReturnNo.RESOURCE_ID_NOTEXIST, String.format(ReturnNo.RESOURCE_ID_NOTEXIST.getMessage(), "对话内容", id));
+
     }
 }
