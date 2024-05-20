@@ -1,0 +1,50 @@
+{
+  "无redis" : {
+    "transaction" : "无redis",
+    "sampleCount" : 91578,
+    "errorCount" : 122,
+    "errorPct" : 0.13321976,
+    "meanResTime" : 812.2862477887533,
+    "medianResTime" : 103.0,
+    "minResTime" : 0.0,
+    "maxResTime" : 14194.0,
+    "pct1ResTime" : 2252.0,
+    "pct2ResTime" : 6334.950000000001,
+    "pct3ResTime" : 8920.990000000002,
+    "throughput" : 28.199173405609535,
+    "receivedKBytesPerSec" : 8.592809505042583,
+    "sentKBytesPerSec" : 13.953663840221312
+  },
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 180971,
+    "errorCount" : 170,
+    "errorPct" : 0.0939377,
+    "meanResTime" : 859.4157737979995,
+    "medianResTime" : 125.0,
+    "minResTime" : 0.0,
+    "maxResTime" : 16026.0,
+    "pct1ResTime" : 3425.0,
+    "pct2ResTime" : 8040.450000000357,
+    "pct3ResTime" : 10528.980000000003,
+    "throughput" : 55.72553026258013,
+    "receivedKBytesPerSec" : 17.116457628280866,
+    "sentKBytesPerSec" : 26.15134938016198
+  },
+  "有redis" : {
+    "transaction" : "有redis",
+    "sampleCount" : 89393,
+    "errorCount" : 48,
+    "errorPct" : 0.05369548,
+    "meanResTime" : 907.697269361141,
+    "medianResTime" : 113.0,
+    "minResTime" : 0.0,
+    "maxResTime" : 16026.0,
+    "pct1ResTime" : 3562.0,
+    "pct2ResTime" : 7153.0,
+    "pct3ResTime" : 8750.0,
+    "throughput" : 27.53883078959148,
+    "receivedKBytesPerSec" : 8.527510727102857,
+    "sentKBytesPerSec" : 12.20321308244644
+  }
+}

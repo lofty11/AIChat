@@ -27,7 +27,6 @@
             </template>
           </el-table-column>
         </el-table>
-
       </el-form>
 
     </el-aside>
@@ -67,7 +66,6 @@
           >
             <template v-slot="data">
               <el-button type="text" size="small" @click="openFuncDialog('编辑函数',data.row.id)">编辑</el-button>
-              <el-button type="text" size="small" @click="configFuncDialog(data.row.id)">渲染</el-button>
               <el-button type="text" size="small" style="color: red" @click="delFunc(data.row.id,data.$index)">删除</el-button>
             </template>
           </el-table-column>
@@ -82,20 +80,34 @@
           />
         </el-form-item>
       </el-form>
-
     </el-main>
     <!--    创建、编辑插件-->
-    <Plug :plug-id.sync="plugId" :plug-dialog-visible.sync="plugDialogVisible" :dialog-title="plugDialogTitle" @add-item="addItemToList" />
+    <Plug
+      :plug-id.sync="plugId"
+      :plug-dialog-visible.sync="plugDialogVisible"
+      :dialog-title="plugDialogTitle"
+      @add-item="addItemToList"
+    />
     <!--    创建、编辑插件-->
 
     <!--    配置插件-->
-    <config-plug :plug-id.sync="plugId" :config-plug-dialog-visible.sync="configPlugDialogVisible" />
+    <config-plug
+      :plug-id.sync="plugId"
+      :config-plug-dialog-visible.sync="configPlugDialogVisible"
+    />
     <!--    配置插件-->
 
-    <!--    编辑、创建、配置函数-->
-    <Func :func-id="funcId" :func-dialog-visible.sync="funcDialogVisible" :dialog-title="funcDialogTitle" @add-item="addItemToList" />
-    <config-func ref="configFunc" :config-func-dialog-visible.sync="configFuncDialogVisible" />
-    <!--    编辑、创建、配置函数-->
+    <!--    编辑、创建函数-->
+    <Func
+      :func-id="funcId"
+      :func-dialog-visible.sync="funcDialogVisible"
+      :dialog-title="funcDialogTitle"
+      @add-item="addItemToList"
+    />
+    <config-func
+      :config-func-dialog-visible.sync="configFuncDialogVisible"
+    />
+    <!--    编辑、创建函数-->
 
   </div>
 </template>
