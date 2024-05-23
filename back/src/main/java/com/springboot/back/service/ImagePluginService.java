@@ -6,13 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 @Service
 public class ImagePluginService {
     public static final String API_KEY = "lmScT1iloim1AJlWPnj2lS1A";
 
     public static final String SECRET_KEY = "p3nLLoSLt5zLlW5UdNyfCotEgjOHthY8";
 
-    static final OkHttpClient HTTP_CLIENT = new OkHttpClient().newBuilder().build();
+    static final OkHttpClient HTTP_CLIENT = new OkHttpClient().newBuilder().callTimeout(120, TimeUnit.SECONDS).build();
     @Autowired
     public ImagePluginService(){}
 

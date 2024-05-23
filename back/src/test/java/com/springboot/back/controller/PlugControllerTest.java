@@ -11,6 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.hamcrest.CoreMatchers.is;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -28,11 +31,12 @@ public class PlugControllerTest {
 
     @Test
     public void createFunctionTest() throws Exception {
-        String s = "{\"name\":\"search2\",\"ename\":\"web_search\",\"type\":1,\"api\":1,\"description\":\"gong\",\"deleted\":0}";
+        String s = "{\"name\":\"search123\",\"ename\":\"web_search\",\"type\":1,\"api\":1,\"description\":\"gong\",\"deleted\":0}";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/function")
                         .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
     }
 
@@ -43,15 +47,17 @@ public class PlugControllerTest {
                         .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
     }
     @Test
     public void createPlugParameterTest() throws Exception {
-        String s = "{\"name\":\"a\",\"field\":\"b\",\"type\":1,\"necessary\":1,\"description\":\"d\"}";
+        String s = "{\"name\":\"b\",\"field\":\"b\",\"type\":1,\"necessary\":1,\"description\":\"d\"}";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/plug/{plugId}/plugParameter",1)
                         .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
     }
     @Test
@@ -61,6 +67,7 @@ public class PlugControllerTest {
                         .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
     }
 
@@ -71,6 +78,7 @@ public class PlugControllerTest {
                         .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
 
@@ -81,6 +89,7 @@ public class PlugControllerTest {
                         .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
     @Test
@@ -90,6 +99,7 @@ public class PlugControllerTest {
                         .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
     @Test
@@ -99,6 +109,7 @@ public class PlugControllerTest {
                         .header("Authorization", adminToken)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
 
@@ -108,6 +119,7 @@ public class PlugControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{plugId}/plug", 2)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
     @Test
@@ -116,6 +128,7 @@ public class PlugControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{functionId}/function", 2)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
     @Test
@@ -124,6 +137,7 @@ public class PlugControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{id}/plugParameter", 2)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
     @Test
@@ -132,6 +146,7 @@ public class PlugControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/plug/{id}/userParameter", 2)
                         .contentType(MediaType.APPLICATION_JSON).content(s))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
     @Test
@@ -139,13 +154,15 @@ public class PlugControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/plugs")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.list[0].id", is(1)))
                 .andReturn();
     }
     @Test
     public void getplugTest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{plugId}/plug", 1)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/{plugId}/plug", 3)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.name", is("plug2")))
                 .andReturn();
     }
     @Test
@@ -155,6 +172,7 @@ public class PlugControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"test\", \"field\": 0, \"type\": \"string\",\"necessary\": 0}"))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.id", is(1)))
                 .andReturn();
     }
     @Test
@@ -164,6 +182,7 @@ public class PlugControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"test\", \"field\": 0, \"type\": \"string\",\"necessary\": 0}"))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.name", is("size")))
                 .andReturn();
     }
     @Test
@@ -171,34 +190,32 @@ public class PlugControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/functions")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.list[0].id", is(1)))
                 .andReturn();
     }
     @Test
     public void getFunctionByIdTest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/id/{functionId}/function", 1)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/id/{functionId}/function", 3)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.name", is("获取实时天气3")))
                 .andReturn();
     }
     @Test
     public void getFunctionByNameTest() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/name/{functionName}/function","获取实时天气2")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/name/{functionName}/function","获取实时天气3")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.id", is(3)))
                 .andReturn();
     }
-    @Test
-    public void getTypeUnions() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/common/typeUnions")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();
-    }
+
     @Test
     public void getfuncTypesTest() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/serviceApis", 1)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].id", is(1)))
                 .andReturn();
     }
 
@@ -207,6 +224,7 @@ public class PlugControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/plug/serviceApis")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].id", is(1)))
                 .andReturn();
     }
 

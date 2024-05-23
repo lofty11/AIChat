@@ -36,6 +36,7 @@ public class ChatController {
         this.userService.deleteChat(user,chatId);
         return new ReturnObject(ReturnNo.OK);
     }
+    /*新建对话*/
     @PostMapping("/chat")
     @Audit
     public ReturnObject createChat( @LoginUser UserDto user,@Valid @RequestBody Chat bo) {

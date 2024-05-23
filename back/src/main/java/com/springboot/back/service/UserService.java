@@ -87,7 +87,9 @@ public class UserService {
         return new PageDto<>(list,page,pageSize);
     }
     @Transactional
-    public PageDto<MessageDto> findAllMessages(UserDto user,Long chatId, Integer page, Integer pageSize)throws RuntimeException {
+    public PageDto<MessageDto> findAllMessages
+            (UserDto user,Long chatId, Integer page, Integer pageSize)
+            throws RuntimeException {
         logger.debug("findAllMessages : chatId = {}, page = {}, pageSize = {}",chatId,page,pageSize);
        if(chatDao.findById(user,chatId)) {
            List<Message> bos = messageDao.findAllMessages(chatId, page, pageSize);
@@ -99,7 +101,8 @@ public class UserService {
            return new PageDto<>(list, page, pageSize);
        }
        else throw new BusinessException(ReturnNo.IDENTIFYNOTMATTCH,
-                String.format(ReturnNo.IDENTIFYNOTMATTCH.getMessage(), user.getUserName(), user.getId()));
+                String.format(ReturnNo.IDENTIFYNOTMATTCH.getMessage(),
+                        user.getUserName(), user.getId()));
 
     }
     @Transactional

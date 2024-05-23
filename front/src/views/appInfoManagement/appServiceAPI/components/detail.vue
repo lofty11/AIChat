@@ -128,15 +128,16 @@ export default {
     }
   },
   watch: {
-    id(newValue) {
-      if (newValue !== 0) {
-        getApiById(newValue).then(response => {
+    detailDialogVisible(newValue) {
+      if (newValue !== false && this.id !== 0) {
+        getApiById(this.id).then(response => {
           if (response.errno === 0) {
             this.list = response.data
           }
         })
       }
     }
+
   },
   methods: {
     handleClose() {
