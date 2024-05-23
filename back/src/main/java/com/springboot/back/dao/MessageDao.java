@@ -36,7 +36,8 @@ public class MessageDao {
         this.redisUtil=redisUtil;
 
     }
-    public List<Message> findAllMessages(Long chatId,Integer page, Integer pageSize) throws RuntimeException{
+    public List<Message> findAllMessages
+            (Long chatId,Integer page, Integer pageSize) throws RuntimeException{
         Pageable pageable = PageRequest.of(page-1,pageSize);
         Page<MessagePo> pos = messagePoMapper.findByChatId(chatId,pageable);
         return pos.stream().map((po)->{

@@ -42,10 +42,10 @@
             <el-col :span="2">
               <strong>插件：</strong>
             </el-col>
-            <el-col v-for="(plugin, index) in plugins" :key="index" :span="3">
+            <el-col v-for="(plugin, index) in plugins" :key="index" :span="5">
               <el-tooltip placement="top" effect="light">
                 <div slot="content"><strong>{{ plugin.name }}</strong><br>{{ plugin.description }}</div>
-                <el-radio v-model="selectedPlugin" :label="plugin.id" :title="plugin.description">{{ plugin.name }}</el-radio>
+                <el-switch v-model="selectedPlugin" :active-text="plugin.name" active-color="#ffd04b" />
               </el-tooltip>
             </el-col>
           </el-row>
@@ -99,8 +99,14 @@ export default {
   data() {
     return {
       loading: false,
-      plugins: [],
-      selectedPlugin: '',
+      plugins: [
+        {
+          id: 1,
+          name: '图片生成',
+          description: '根据文本生成图片'
+        }
+      ],
+      selectedPlugin: false,
       sidebarItems: [
         { chatName: 'Chat' },
         { chatName: 'Settings' }
@@ -133,12 +139,6 @@ export default {
         this.sidebarItems = response.data.list
       }
     })
-    getAllPlug().then(response => {
-      if (response.errno === 0) {
-        console.log(response.data)
-        this.plugins = response.data.list
-      }
-    })
   },
   methods: {
     createMessages() {
@@ -146,7 +146,7 @@ export default {
         if (response.errno === 1) {
           this.message = response.data
           this.loading = true
-          if (this.selectedPlugin === '') {
+          if (this.selectedPlugin === false) {
             createAiMessage({ chatId: this.chatId, content: response.data.content, type: 0 }).then(response => {
               if (response.errno === 1) {
                 this.message = response.data
