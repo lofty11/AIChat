@@ -140,6 +140,7 @@ export default {
           this.$refs.plugForm.resetFields()
         } else {
           this.$message.error('请将表单填写完整！')
+          this.$refs.plugForm.resetFields()
           return false
         }
       })

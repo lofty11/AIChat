@@ -44,26 +44,11 @@
         <el-form-item>
           <el-button type="primary" @click="openFuncDialog('新建函数','0')">新建函数</el-button>
         </el-form-item>
-        <el-table
-          :data="filteredData"
-          style="width: 100%"
-        >
-          <el-table-column
-            prop="name"
-            label="函数名称"
-          />
-          <el-table-column
-            prop="typeName"
-            label="函数类型"
-          />
-          <el-table-column
-            prop="apiName"
-            label="服务Api"
-          />
-          <el-table-column
-            fixed="right"
-            label="操作"
-          >
+        <el-table :data="filteredData" style="width: 100%">
+          <el-table-column prop="name" label="函数名称" />
+          <el-table-column prop="typeName" label="函数类型" />
+          <el-table-column prop="apiName" label="服务Api" />
+          <el-table-column fixed="right" label="操作">
             <template v-slot="data">
               <el-button type="text" size="small" @click="openFuncDialog('编辑函数',data.row.id)">编辑</el-button>
               <el-button type="text" size="small" style="color: red" @click="delFunc(data.row.id,data.$index)">删除</el-button>
@@ -162,6 +147,7 @@ export default {
     }
   },
   computed: {
+    // 模糊查询函数名称
     filteredData() {
       return this.funcTable.filter(item => {
         return item.name.includes(this.searchData)
@@ -169,6 +155,7 @@ export default {
     }
   },
   watch: {
+    // 监控函数名称输入框
     searchData(newValue) {
       if (newValue === '') {
         getAllFunc({ pageSize: this.pageSize }).then((response) => {
@@ -178,6 +165,7 @@ export default {
       }
     }
   },
+  // 获取所有插件和函数
   mounted() {
     getAllPlug().then((response) => {
       this.plugTable = response.data.list
@@ -191,6 +179,7 @@ export default {
     })
   },
   methods: {
+    // 根据输入的函数名称查询相关函数
     search() {
       if (this.searchData === '') {
         this.$message.error('请输入函数名称！')
@@ -203,20 +192,19 @@ export default {
         })
       }
     },
+    // 编辑和新增插件
     openPlugDialog(title, id) {
       this.plugDialogTitle = title
       this.plugId = id
       this.plugDialogVisible = true
     },
+    // 编辑和新增函数
     openFuncDialog(title, id) {
       this.funcDialogTitle = title
       this.funcId = id
       this.funcDialogVisible = true
     },
-    configFuncDialog(id) {
-      this.configFuncDialogVisible = true
-      this.funcId = id
-    },
+    // 删除函数
     delFunc(id, index) {
       this.$confirm('确定删除该函数？').then(() => {
         delFuncById(id).then(response => {
@@ -231,6 +219,7 @@ export default {
         })
       })
     },
+    // 删除插件
     delPlug(id, index) {
       this.$confirm('确定删除该插件？').then(() => {
         delPlugById(id).then(response => {
@@ -245,10 +234,12 @@ export default {
         })
       })
     },
+    // 配置插件界面
     configPlugDialog(id) {
       this.configPlugDialogVisible = true
       this.plugId = id
     },
+    // 在新增插件或者函数之后立即获取新插件和函数展示在前端
     addItemToList(type) {
       switch (type) {
         case 'addPlug':
@@ -263,6 +254,7 @@ export default {
           break
       }
     },
+    // 处理每页数据条数变化
     handleCurrentChange(val) {
       getAllFunc({ page: val, pageSize: this.pageSize }).then(response => {
         if (response.errno === 0) {
