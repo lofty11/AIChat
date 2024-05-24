@@ -41,7 +41,7 @@ mvn spring-boot:run
 
 张梦芮：
 
-廖锟鹏：
+廖锟鹏：插件和函数管理后端
 
 # 已完成的工作
 
@@ -96,3 +96,11 @@ mvn spring-boot:run
 ![2](assets/2.png)
 - 查询银行货币汇率
 ![3](assets/3.png)
+
+插件和函数管理后端部分代码展示
+- 插件模块controller
+![image-20240524222509.png](assets/image-20240524222509.png)
+
+![image-20240524222841.png](assets/image-20240524222841.png)
+
+![image-20240524222845.png](assets/image-20240524222845.png)
